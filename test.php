@@ -1,4 +1,3 @@
-
 <?php
 $servername = "localhost";
 $username = "root";
@@ -22,9 +21,12 @@ $sql = "SELECT * FROM dani_test";
 $result = $conn->query($sql);
 $insertsql = "INSERT INTO $tablename VALUES($db_index, $db_companyID, $db_countryID, '$db_ID', '$db_PW')";
 if(mysqli_query($conn, $insertsql)){
-   echo "<script>location.href='http://heronation.net/test/dani/dani.html?index=" . $db_index . "&companyID=" . $db_companyID .
-   "&countryID=" . $db_countryID . "&ID=" . $db_ID . "&PW=" . $db_PW . "';</script>";
-   echo "success";
+  echo "index=" . $db_index . "&companyID=" . $db_companyID .
+  "&countryID=" . $db_countryID . "&ID=" . $db_ID . "&PW=" . $db_PW;
+
+  // echo "<script>location.href='http://heronation.net/test/dani/dani.html?index=" . $db_index . "&companyID=" . $db_companyID .
+  // "&countryID=" . $db_countryID . "&ID=" . $db_ID . "&PW=" . $db_PW . "';</script>";
+  // echo "success";
 }
 
 $conn->close();
