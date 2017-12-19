@@ -11,6 +11,7 @@ $conn =mysqli_connect($servername, $username, $password, $dbname);
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
+// print_r($_GET);
 $db_index = (int)($_GET['index']);
 $db_companyID = (int)($_GET['companyID']);
 $db_countryID = (int)($_GET['countryID']);
