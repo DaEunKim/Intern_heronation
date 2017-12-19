@@ -46,11 +46,99 @@ else{
         alert(data);
       });
     }
+
+    $(document).ready(function(){
+      $("#box-left").click(function(){
+        $("body").css("background-color", "Tomato");
+      });
+      $("#box-center").click(function(){
+        $("body").css("background-color", "Orange");
+      });
+      $("#box-right").click(function(){
+        $("body").css("background-color", "yellow");
+      });
+
+    });
   </script>
+  <style>
+  #container {
+    display: flex;
+  }
+  #box-left {
+    background: Tomato;
+    flex: 1;
+    text-align: center;
+    border-radius: 15px 50px;
+    padding: 20px;
+    width: 200px;
+    height: 150px;
+
+  }
+  #box-center {
+    background: Orange;
+    flex: 1;
+    text-align: center;
+    border-radius: 15px 50px;
+    padding: 20px;
+    width: 200px;
+    height: 150px;
+  }
+  #box-right {
+    background: yellow;
+    flex: 1;
+    text-align: center;
+    border-radius: 15px 50px;
+    padding: 20px;
+    width: 200px;
+    height: 150px;
+  }
+  body {
+    background-color : powderblue;
+  }
+  button {
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    border-radius: 15px 50px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+  }
+
+</style>
 
   </head>
   <body>
-    <div id="daeun" action="/test/dani/test.php" method="GET">
+    <div id='container' action="/test/dani/test.php" method="GET" >
+      <div id='box-left' >
+        index : <br>
+        <input type="text" name="index" value=" ">
+        <br>
+      </div>
+      <div id='box-center'>
+        companyID : <br>
+        <input type="text" name="companyID" value=" ">
+        <br>
+        countryID : <br>
+        <input type="text" name="countryID" value=" ">
+        <br>
+
+      </div>
+      <div id='box-right'>
+        ID : <br>
+        <input type="text" name="ID" value=" ">
+        <br>
+        PW :<br>
+        <input type="text" name="PW" value=" ">
+        <br><br>
+      </div>
+    </div>
+      <button type="button" onclick="add()" value="submit"> submit </button>
+
+
+    <!-- <div id="daeun" action="/test/dani/test.php" method="GET">
       index : <br>
       <input type="text" onclick="add()" name="index" value=" ">
       <br>
@@ -67,7 +155,7 @@ else{
       <input type="text" name="PW" value=" ">
       <br><br>
       <button type="button" onclick="add()" value="submit"> submit </button>
-    </div>
+    </div> -->
 
   </body>
 </html>
