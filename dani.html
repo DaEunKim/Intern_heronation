@@ -1,0 +1,69 @@
+<?
+if($_GET==null){
+}
+else{
+  $db_index = (int)($_GET['index']);
+  $db_companyID = (int)($_GET['companyID']);
+  $db_countryID = (int)($_GET['countryID']);
+  $db_ID = htmlspecialchars($_GET['ID']);
+  $db_PW = htmlspecialchars($_GET['PW']);
+
+  echo "-----result-----<br>";
+  echo "db_index : " .$db_index. "<br>";
+  echo "db_companyID : " .$db_companyID ."<br>";
+  echo "db_countryID : " .$db_countryID ."<br>";
+  echo "db_ID : " .$db_ID ."<br>";
+  echo "db_PW : " .$db_PW ."<br>";
+  echo "----------------<br><br>";
+
+
+}
+?>
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Dani World~</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script>
+    // $.get("/test/dani/test.php", function(data){
+    //   alert(data);
+    // });
+    function add() {
+		$.ajax({
+			url: "/test/dani/test.php",
+			type: "GET",
+			data: $("form").serialize(),}).done(function(data) {
+        alert(data);
+      });
+	}
+
+
+  </script>
+
+  </head>
+  <body>
+    <form id="daeun" action="/test/dani/test.php" method="GET">
+      index : <br>
+      <input type="text" name="index" value=" ">
+      <br>
+      companyID : <br>
+      <input type="text" name="companyID" value=" ">
+      <br>
+      countryID : <br>
+      <input type="text" name="countryID" value=" ">
+      <br>
+      ID : <br>
+      <input type="text" name="ID" value=" ">
+      <br>
+      PW :<br>
+      <input type="text" name="PW" value=" ">
+      <br><br>
+      <!-- <input type="submit" value="Submit"> -->
+      <input type="button" onclick="add()" value="submit"> 
+    </form>
+
+  </body>
+</html>
