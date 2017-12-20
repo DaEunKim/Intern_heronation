@@ -32,30 +32,41 @@ else{
     //   alert(data);
     // });
     function add() {
-      $.ajax({
-        url: "/test/dani/test.php",
-        type: "GET",
-        data: {
-          index:$('input[name=index]').val(),
-          companyID:$('input[name=companyID]').val(),
-          countryID:$('input[name=countryID]').val(),
-          ID:$('input[name=ID]').val(),
-          PW:$('input[name=PW]').val()
-        }
-      }).done(function(data){
-        alert(data);
-      });
+      // $.ajax({
+      //   url: "/test/dani/test.php",
+      //   type: "GET",
+      //   data: {
+      //     index:$('input[name=index]').val(),
+      //     companyID:$('input[name=companyID]').val(),
+      //     countryID:$('input[name=countryID]').val(),
+      //     ID:$('input[name=ID]').val(),
+      //     PW:$('input[name=PW]').val()
+      //   }
+      // }).done(function(data){
+      //   alert(data);
+      // });
     }
-
     $(document).ready(function(){
       $("#box-left").click(function(){
         $("body").css("background-color", "Tomato");
+        var index = $('input[name=index]').val();
+        $("#Text_board").html(index);
       });
       $("#box-center").click(function(){
         $("body").css("background-color", "Orange");
+        var companyID = $('input[name=companyID]').val();
+        var countryID = $('input[name=countryID]').val();
+        $("#Text_board").html(function(){
+          return companyID +" "+ countryID;
+        });
       });
       $("#box-right").click(function(){
         $("body").css("background-color", "yellow");
+        var ID = $('input[name=ID]').val();
+        var PW = $('input[name=PW]').val();
+        $("#Text_board").html(function(){
+          return ID + PW;
+        });
       });
 
     });
@@ -91,6 +102,19 @@ else{
     padding: 20px;
     width: 200px;
     height: 150px;
+  }
+  #print_text {
+    background:lightGreen;
+    flex: 1;
+    text-align: center;
+    border-radius: 15px 50px;
+    margin-left: 35%;
+    padding: 20px;
+    width: 200px;
+    height: 200px;
+    color: red;
+    font-size:30px;
+
   }
   body {
     background-color : powderblue;
@@ -135,7 +159,12 @@ else{
         <br><br>
       </div>
     </div>
-      <button type="button" onclick="add()" value="submit"> submit </button>
+    <button type="button" onclick="add()" value="submit"> submit </button>
+    <div id="print_text">Text board
+      <div id="Text_board">
+      </div>
+
+    </div>
 
 
     <!-- <div id="daeun" action="/test/dani/test.php" method="GET">
