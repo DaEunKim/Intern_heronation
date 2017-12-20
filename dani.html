@@ -32,19 +32,19 @@ else{
     //   alert(data);
     // });
     function add() {
-      // $.ajax({
-      //   url: "/test/dani/test.php",
-      //   type: "GET",
-      //   data: {
-      //     index:$('input[name=index]').val(),
-      //     companyID:$('input[name=companyID]').val(),
-      //     countryID:$('input[name=countryID]').val(),
-      //     ID:$('input[name=ID]').val(),
-      //     PW:$('input[name=PW]').val()
-      //   }
-      // }).done(function(data){
-      //   alert(data);
-      // });
+      $.ajax({
+        url: "/test/dani/test.php",
+        type: "GET",
+        data: {
+          index:$('input[name=index]').val(),
+          companyID:$('input[name=companyID]').val(),
+          countryID:$('input[name=countryID]').val(),
+          ID:$('input[name=ID]').val(),
+          PW:$('input[name=PW]').val()
+        }
+      }).done(function(data){
+        alert(data);
+      });
     }
     $(document).ready(function(){
       $("#box-left").click(function(){
