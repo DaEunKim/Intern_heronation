@@ -1,0 +1,57 @@
+/* dynamic.css */
+<style>
+#container {
+  display: flex;
+}
+#box-center {
+  background: Tomato;
+  color : yellow;
+  font-size: 20px;
+  flex: 1;
+  text-align: center;
+  border-radius: 15px 50px;
+  padding: 10px;
+  width: 100%;
+  height: 80px;
+}
+#print_text {
+  background:lightGreen;
+  position: absolute;
+  flex: 1;
+  text-align: center;
+  border-radius: 15px 50px;
+  margin-left: 35%;
+  padding: 20px;
+  width: 500px;
+  height: 500px;
+  left: 50%;
+  top: 50%;
+  margin-left: -250px;
+  margin-top: -250px;
+  border: #000 solid 1px;
+  color: red;
+  font-size: 30px;
+}
+
+body {
+  background-color : powderblue;
+  text-align: center;
+  margin: 0 auto;
+
+}
+button {
+  background-color: #4CAF50; /* Green */
+  border: none;
+  color: white;
+  padding: 10px;
+  border-radius: 25px 25px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+}
+#inputCss {
+  margin: 25px 25px 75px 90px;
+}
+
+</style>

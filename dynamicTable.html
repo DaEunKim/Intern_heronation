@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html"; charset="utf-8">
+
+    <title>Dani World~</title>
+    <link rel="stylesheet" type="text/css" href="./dynamic.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script>
+    // $.get("/test/dani/test.php", function(data){
+    //   alert(data);
+    // });
+    function add() {
+      $.ajax({
+        url: "/test/dani/dynamicTable.php",
+        type: "GET",
+        // dataType:"json",
+        data: {
+          Product_PKey:$('input[name=Product_PKey]').val()
+        }
+      }).done(function(data){
+        alert(data);
+        // console.log(data);
+      });
+    }
+    // $(document).ready(function(){
+    //   $("#box-center").click(function(){
+    //     $("body").css("background-color", "Orange");
+    //     var PKey = $('input[name=Product_PKey]').val();
+    //     $("#Text_board").html(PKey);
+    //   });
+    // });
+  </script>
+  </head>
+
+  <body>
+    <div id='container' action="/test/dani/dynamicTable.php" method="GET" >
+      <div id='box-center'>
+        Product 테이블의 PKey값<br>
+        <input id="inputCss" type="text" name="Product_PKey" value=" ">
+        <button id="submitButton" type="button" onclick="add()" value="submit"> submit </button>
+      </div>
+    </div>
+
+    <form id="print_text" name="form" method="post">
+    </form>
+  </body>
+</html>
