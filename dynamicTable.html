@@ -5,33 +5,74 @@
     <meta http-equiv="Content-Type" content="text/html"; charset="utf-8">
 
     <title>Dani World~</title>
-    <link rel="stylesheet" type="text/css" href="./dynamic.css">
+    <link rel="stylesheet" type="text/css" href="./dynamicTable.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
     <script>
-    // $.get("/test/dani/test.php", function(data){
-    //   alert(data);
-    // });
     function add() {
       $.ajax({
         url: "/test/dani/dynamicTable.php",
         type: "GET",
-        // dataType:"json",
+        datatype:"JSON",
         data: {
           Product_PKey:$('input[name=Product_PKey]').val()
+        },
+        success : function(data){
+          var jsonData = JSON.parse(data);
+          makeTable(jsonData);
+        },
+        error : function(){
+          alert('통신실패!!');
         }
-      }).done(function(data){
-        alert(data);
-        // console.log(data);
       });
     }
-    // $(document).ready(function(){
-    //   $("#box-center").click(function(){
-    //     $("body").css("background-color", "Orange");
-    //     var PKey = $('input[name=Product_PKey]').val();
-    //     $("#Text_board").html(PKey);
-    //   });
-    // });
+    function makeTable(jsonData) {
+      $('#print_text').empty();
+      var row = jsonData.length;
+      // var col = jsonData['Product'].length;
+      // alert(col);
+
+      var strTable = "<table border = '1px'>";
+
+      strTable += "<tr>";
+      strTable += "<th>"+ jsonData[0]['Product'] + " "+jsonData[0]['Category']+ "</th> ";
+      strTable += "</tr>";
+
+      strTable += "<tr>";
+      strTable += "<td></td>";
+
+      strTable += "<td>"+jsonData[0]['SizeType']+ "</td>";
+      strTable += "<td>"+jsonData[1]['SizeType']+"</td>";
+      strTable += "<td>"+jsonData[2]['SizeType']+"</td>";
+      strTable += "</tr>";
+
+
+      strTable += "<tr>";
+      strTable += "<td>"+jsonData[0]['ProductSizeList']+ "</td>"
+      for(var i=0; i<row/3; i++){
+        strTable += "<td>"+ jsonData[i]['Size']+ "</td>";
+      }
+      strTable += "</tr>";
+
+      strTable += "<tr>";
+      strTable += "<td>"+jsonData[3]['ProductSizeList']+ "</td>";
+      for(var i=3; i<6; i++){
+        strTable += "<td>"+ jsonData[i]['Size']+ "</td>";
+      }
+      strTable += "</tr>";
+
+      strTable += "<tr>";
+      strTable += "<td>"+jsonData[6]['ProductSizeList']+ "</td>";
+      for(var i=6; i<row; i++){
+        strTable += "<td>"+ jsonData[i]['Size']+ "</td>";
+      }
+
+      strTable += "</tr>";
+
+      strTable += "</table>";
+
+      $("#print_text").append(strTable);
+ }
   </script>
   </head>
 
@@ -44,7 +85,10 @@
       </div>
     </div>
 
-    <form id="print_text" name="form" method="post">
-    </form>
+    <div id="print_text">
+
+    </div>
+
+
   </body>
 </html>
