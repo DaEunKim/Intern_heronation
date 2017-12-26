@@ -5,7 +5,7 @@
     <meta http-equiv="Content-Type" content="text/html"; charset="utf-8">
 
     <title>Dani World~</title>
-    <link rel="stylesheet" type="text/css" href="./dynamicTable.css">
+    <link rel="stylesheet" type="text/css" href="./dynamic.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
     <script>
@@ -26,50 +26,47 @@
         }
       });
     }
+
     function makeTable(jsonData) {
       $('#print_text').empty();
       var row = jsonData.length;
-      // var col = jsonData['Product'].length;
-      // alert(col);
+      var size;
+      for(var i = 0;i<row;i++){
+        if(i==row-1){
+          break;
+        }
+        if(jsonData[i]['ProductSizeList'] != jsonData[i+1]['ProductSizeList']){
+          size = i+1;
+          break;
+        }
+        else{
+          size = row;
+        }
+      }
 
-      var strTable = "<table border = '1px'>";
-
+      var strTable;
       strTable += "<tr>";
-      strTable += "<th>"+ jsonData[0]['Product'] + " "+jsonData[0]['Category']+ "</th> ";
-      strTable += "</tr>";
+      strTable += "<td>"+jsonData[0]['Product'] + " "+jsonData[0]['Category']+"</td>";
 
-      strTable += "<tr>";
-      strTable += "<td></td>";
-
-      strTable += "<td>"+jsonData[0]['SizeType']+ "</td>";
-      strTable += "<td>"+jsonData[1]['SizeType']+"</td>";
-      strTable += "<td>"+jsonData[2]['SizeType']+"</td>";
-      strTable += "</tr>";
-
-
-      strTable += "<tr>";
-      strTable += "<td>"+jsonData[0]['ProductSizeList']+ "</td>"
-      for(var i=0; i<row/3; i++){
-        strTable += "<td>"+ jsonData[i]['Size']+ "</td>";
+      var tmp;
+      if(row==size){
+        tmp = size;
+      }else{
+        tmp = row/size;
+      }
+      for(var i=0; i<tmp; i++){
+        strTable += "<td>"+ jsonData[i]['SizeType']+ "</td>";
       }
       strTable += "</tr>";
 
-      strTable += "<tr>";
-      strTable += "<td>"+jsonData[3]['ProductSizeList']+ "</td>";
-      for(var i=3; i<6; i++){
-        strTable += "<td>"+ jsonData[i]['Size']+ "</td>";
+      for(var i = 0;i<row/size;i++){
+        strTable += "<tr>";
+        strTable += "<td>"+jsonData[i*size]['ProductSizeList']+ "</td>"
+        for(var j=i*size; j<i*size+size; j++){
+          strTable += "<td>"+ jsonData[j]['Size']+ "</td>";
+        }
+        strTable += "</tr>";
       }
-      strTable += "</tr>";
-
-      strTable += "<tr>";
-      strTable += "<td>"+jsonData[6]['ProductSizeList']+ "</td>";
-      for(var i=6; i<row; i++){
-        strTable += "<td>"+ jsonData[i]['Size']+ "</td>";
-      }
-
-      strTable += "</tr>";
-
-      strTable += "</table>";
 
       $("#print_text").append(strTable);
  }
@@ -81,13 +78,13 @@
       <div id='box-center'>
         Product 테이블의 PKey값<br>
         <input id="inputCss" type="text" name="Product_PKey" value=" ">
-        <button id="submitButton" type="button" onclick="add()" value="submit"> submit </button>
+        <button type="button" onclick="add()" value="submit"> submit </button>
       </div>
     </div>
 
-    <div id="print_text">
+    <table id="print_text" border = '1px'>
 
-    </div>
+    </table>
 
 
   </body>

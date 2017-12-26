@@ -49,14 +49,6 @@ if(mysqli_query($conn, $sql)){
     }
     echo json_encode($jsonArr, JSON_UNESCAPED_UNICODE);
   }
-    //
-    // print_r("Name : " .$rs['Name'] ."<br>");
-    // print_r("NameKR : " .$rs['NameKR'] ."<br>");
-    // print_r("Size : " .$rs['Size'] ."<br>");
-
-    // print_r("2 : " .$rs[2]."<br>");
-    // print_r("3 : " .$rs[3]. "<br>");
-    // print_r("4 : " .$rs[4]. "<br>");
 
 $conn->close();
 
