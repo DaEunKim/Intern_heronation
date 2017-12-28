@@ -25,7 +25,7 @@ if($db_PW == $db_PW_Check){
   if($result_set){
     echo "회원가입 성공";
   }else{
-    echo "실패";
+    echo "중복된 아이디";
   }
 }
 else{

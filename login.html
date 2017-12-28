@@ -1,3 +1,11 @@
+<?
+if(isset($_COOKIE["id"])){
+  echo "<script type='text/javascript'>alert('쿠키 성공');</script>";
+}
+else{
+  echo "<script type='text/javascript'>alert('쿠키 실패');</script>";
+}
+?>
 <!DOCTYPE html>
 <html>
   <head>
@@ -32,8 +40,8 @@
     <div id='container' action="/test/dani/login.php" method="GET" >
       <div id='box-right'>
         로그인 <br>
-        ID : <input type="text" name="ID" value="ID"><br>
-        PW : <input type="password" name="PW" value="PW"> <br><br>
+        ID : <input type="text" name="ID" placeholder="ID"><br>
+        PW : <input type="password" name="PW" placeholder="PW"> <br><br>
         <button type="button" onclick="Login()" value="login"> login </button><br><br>
         회원가입 : <button id="join" type="button" onclick="Join()" value="join"> join </button>
       </div>

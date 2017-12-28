@@ -13,35 +13,27 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-$db_ID = htmlspecialchars($_GET['ID']);
-$db_PW = htmlspecialchars($_GET['PW']);
+$input_id = htmlspecialchars($_GET['ID']);
+$input_pw = htmlspecialchars($_GET['PW']);
 
-$select_sql = "SELECT * FROM dani_login WHERE ID='$db_ID'";
 
+$select_sql = "SELECT * FROM dani_login WHERE ID='$input_id'";
 $result_set = mysqli_query($conn, $select_sql);
 $row = mysqli_fetch_array($result_set);
-$arrlength = count($row);
 
+$db_id = $row[1];
+$db_pw = $row[2];
 
-if($row[1]==$db_ID && $row[2]==$db_PW){
-  echo "로그인 성공";
-  // echo $_GET["ID"];
-  // echo $_GET["PW"];
-
-  $cookie_name = $row[1];
-  $cookie_value = $row[2];
-  setcookie($cookie_name, $cookie_value, time() + (86400 * 30), "/");
-
-  if(!isset($_COOKIE[$cookie_name])) {
-      echo "Cookie named '" . $cookie_name . "' is not set!";
-  } else {
-      echo "Cookie '" . $cookie_name . "' is set!";
-      echo "Value is: " . $_COOKIE[$cookie_name];
-  }
+if(($row[1]==$input_id && $row[2]==$input_pw ) ){
+  echo "로그인 성공 ";
+  setcookie("id", $db_id, time() + (86400 * 30), "/");
+  setcookie("pw", $db_pw, time() + (86400 * 30), "/");
 
 }else{
   echo "다시 로그인해보던지 회원가입을 해라";
 }
+
+
 
 $conn->close();
 ?>
