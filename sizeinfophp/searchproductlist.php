@@ -49,9 +49,7 @@ else{
     // left join Category on Product.CategoryID = Category.PKey
     // where Product.UserID = '.$userID.'
     // order by Product.PKey desc;';
-
     $i = (int)($_POST['pageNo'])*10;
-
     $productListQuery =
     'SELECT Product.CreatedDate as ProductCreatedDate,
     Category.NameKR as CategoryName, Product.PKey as ProductPKey, Product.Name as ProductName
@@ -60,22 +58,22 @@ else{
     order by Product.PKey desc limit '.$i.', 10;';
     // where Product.CreatedDate > "2017-09-26"
 }
-
 // echo $productListQuery;
-$productTable = mysqli_query($conn, $productListQuery);
-while($productRow = mysqli_fetch_array($productTable)){
-    echo
-    '<tr>
-        <td><input type="checkbox" name="sizeInfoList_chk"></td>
+if($productTable = mysqli_query($conn, $productListQuery)){
 
-        <td>'.date("Y.m.d", strtotime($productRow["ProductCreatedDate"])).'</td>
-        <td>'.$productRow["CategoryName"].'</td>
-        <td class="searchlist_productPKey">'.$productRow["ProductPKey"].'</td>
-        <td class="updateProductInfo">'.$productRow["ProductName"].'</td>
-        <td style="width:180px" id="download_button">
-            <button type="submit" id="downloadImg">이미지파일</button>
-            <button type="submit" id="downloadHTML">HTML소스</button>
-        </td>
-    </tr>';
+  $jsonArr = array();
+  $i = 0;
+  while($productRow = mysqli_fetch_array($productTable)){
+    $jsonArr[$i] = array(
+      'date' => $productRow[0],
+      'CategoryName' => $productRow[1],
+      'ProductPKey' => $productRow[2],
+      'ProductName' => $productRow[3]
+    );
+    $i++;
+  }
+  echo json_encode($jsonArr, JSON_UNESCAPED_UNICODE);
 }
+
+
 ?>

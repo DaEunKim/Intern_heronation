@@ -8,10 +8,19 @@ if(isset($_COOKIE["userPKeyZeyo"])){
 
 $productCategoryTable = mysqli_query($conn,'SELECT * from Category where Category.State != -1;');
 
-?>
+$allQuery = 'SELECT Product.CreatedDate as ProductCreatedDate,
+Category.NameKR as CategoryName, Product.PKey as ProductPKey, Product.Name as ProductName
+from Product
+left join Category on Product.CategoryID = Category.PKey
+order by Product.PKey desc;';
 
+if ($result=mysqli_query($conn,$allQuery)){
+  $rowcount=mysqli_num_rows($result);
+}
+
+?>
 <style>
-.center {
+.bottom {
   text-align: center;
   padding: 40px;
 }
@@ -42,40 +51,90 @@ $productCategoryTable = mysqli_query($conn,'SELECT * from Category where Categor
 <script>
 
 $(document).ready(function(){
-  var pageNo = 0;
-    $(".pageNum").click(function(){
-      $(".pageNum").css("background-color", "white");
-      $(this).css("background-color", "red");
 
-      pageNo = $(this).text()-1;
+  var rowcount = '<?= $rowcount ?>'; //38
+  makePageNum(rowcount);
+  $(".pageNum").click(function(){
 
-      $.ajax({
-        type:"POST",
-        url: './sizeinfophp/searchproductlist.php',
-        data :{
-          pageNo : pageNo
-        },
-        success : function(resData){
-          makeTable(resData);
-        },
-        error : function(){
-          alert('통신실패!!');
-        }
-      });
+
+    $(".pageNum").css("background-color", "white");
+    $(this).css("background-color", "red");
+
+    pageNo = $(this).text()-1;
+    $.ajax({
+      type:"POST",
+      url: './sizeinfophp/searchproductlist.php',
+      data :{
+        pageNo : pageNo
+      },
+      success : function(resData){
+        var jsonData = JSON.parse(resData);
+        var row = jsonData.length;
+        makeTable(jsonData);
+      },
+      error : function(){
+        alert('통신실패!!');
+      }
     });
-});
+  });
+  $(".pageNum:first").trigger('click');
 
-function makeTable(resData) {
-  $("#sizeInfoList_table").empty();
-  var strTable = ' ';
-  strTable += "<tr><td>선택</td><td>등록일</td><td>카테고리</td><td>제품번호</td><td>상품명</td><td>다운로드</td></tr>";
-  strTable += resData;
-  $("#sizeInfoList_table").append(strTable);
+});
+function makePageNum(rowcount){
+  var num;
+  while(rowcount%10!=0){
+    rowcount++;
+    num = rowcount/10;
+  }
+  var text_number = 1;
+  var page = ' ';
+  while (1) {
+    if(num==0){
+      break;
+    }
+    page += "<a class='pageNum' href='#'>";
+    page += text_number;
+    page += "</a>";
+    num--;
+    text_number++;
+  }
+  page+= '<a href="#"> > </a><a href="#"> >> </a>';
+  $(".paging").append(page);
+
 }
 
+function makeTable(jsonData) {
+  $("#sizeInfoList_table").empty();
+  var row = jsonData.length;
+  var strTable = ' ';
+  strTable += '<tr><td>선택</td><td>등록일</td><td>카테고리</td><td>제품번호</td><td>상품명</td><td>다운로드</td></tr>';
 
+
+  for(var i = 0;i<row;i++){
+    strTable += '<tr>';
+    strTable += '<td><input type="checkbox" name="sizeInfoList_chk"></td>';
+    strTable += '<td>';
+    strTable += jsonData[i]['date'];
+    strTable += '</td>';
+    strTable += '<td>';
+    strTable += jsonData[i]["CategoryName"];
+    strTable += '</td>';
+
+    strTable += '<td class="searchlist_productPKey">';
+    strTable += jsonData[i]['ProductPKey'];
+    strTable += '</td>';
+
+    strTable += '<td class="updateProductInfo">';
+    strTable += jsonData[i]['ProductName'];
+    strTable += '</td>';
+    strTable += '<td style="width:180px" id="download_button"><button type="submit" id="downloadImg">이미지파일</button><button type="submit" id="downloadHTML">HTML소스</button></td>'
+    strTable += '</tr>';
+
+  }
+  $("#sizeInfoList_table").append(strTable);
+}
 </script>
-
+<body>
 <div id="myPage_main" class="mainDiv">
     <table id="myPage_mainTable" class="mainTable">
         <tr>
@@ -129,24 +188,15 @@ function makeTable(resData) {
                                 <!-- <td>이미지 호스팅 URL</td> -->
                                 <td>다운로드</td>
                             </tr>
-                            <? include "./sizeinfophp/searchproductlist.php"; ?>
+
+                            <!-- <? include "./sizeinfophp/searchproductlist.php"; ?> -->
                         </table>
                     </div><!-- id:sizeInfoList end -->
 
-                    <div class="center">
+                    <div class="bottom">
                       <div class="paging">
+                        <a href="#"> << </a>
                         <a href="#"> < </a>
-                        <a class="pageNum" href="#">1</a>
-                        <a class="pageNum" href="#">2</a>
-                        <a class="pageNum" href="#">3</a>
-                        <a class="pageNum" href="#">4</a>
-                        <a class="pageNum" href="#">5</a>
-                        <a class="pageNum" href="#">6</a>
-                        <a class="pageNum" href="#">7</a>
-                        <a class="pageNum" href="#">8</a>
-                        <a class="pageNum" href="#">9</a>
-                        <a class="pageNum" href="#">10</a>
-                        <a href="#"> > </a>
                       </div>
                     </div>
 
