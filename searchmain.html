@@ -1,0 +1,159 @@
+<?
+//include './sizeinfophp/connectdb.php';
+include $_SERVER["DOCUMENT_ROOT"]."/sizeinfo/header.html";
+
+if(isset($_COOKIE["userPKeyZeyo"])){
+    $userID = $_COOKIE["userPKeyZeyo"];
+}
+
+$productCategoryTable = mysqli_query($conn,'SELECT * from Category where Category.State != -1;');
+
+?>
+
+<style>
+.center {
+  text-align: center;
+  padding: 40px;
+}
+.paging {
+    display: inline-block;
+}
+
+.paging a {
+  color: black;
+  float: left;
+  padding: 8px 16px;
+  text-decoration: none;
+  transition: background-color .3s;
+  border: 1px solid #ddd;
+  margin: 0 4px;
+}
+
+.paging a.active {
+  background-color: #4CAF50;
+  color: white;
+  border: 1px solid #4CAF50;
+}
+
+.paging a:hover:not(.active) {background-color: #ddd;}
+</style>
+
+<script src="js_css/searchmain.js"></script>
+<script>
+
+$(document).ready(function(){
+  var pageNo = 0;
+    $(".pageNum").click(function(){
+      $(".pageNum").css("background-color", "white");
+      $(this).css("background-color", "red");
+
+      pageNo = $(this).text()-1;
+
+      $.ajax({
+        type:"POST",
+        url: './sizeinfophp/searchproductlist.php',
+        data :{
+          pageNo : pageNo
+        },
+        success : function(resData){
+          makeTable(resData);
+        },
+        error : function(){
+          alert('통신실패!!');
+        }
+      });
+    });
+});
+
+function makeTable(resData) {
+  $("#sizeInfoList_table").empty();
+  var strTable = ' ';
+  strTable += "<tr><td>선택</td><td>등록일</td><td>카테고리</td><td>제품번호</td><td>상품명</td><td>다운로드</td></tr>";
+  strTable += resData;
+  $("#sizeInfoList_table").append(strTable);
+}
+
+
+</script>
+
+<div id="myPage_main" class="mainDiv">
+    <table id="myPage_mainTable" class="mainTable">
+        <tr>
+            <td id="myPage_left" class="mainLeft"><? include 'leftmenu.html'; ?>
+                <input id="hPageKey" type="hidden" value=1>
+            </td>
+            <td id="myPage_right" class="mainRight">
+
+                <div id="sizeInfoSearchList">
+                    <div id="sizeInfoSearch">
+                        <div id = "sizeInfoSearch_name"> 상품명: <input id="searchName" type="text" placeholder="Search..." <?if(isset($_GET['productName']))
+                            echo 'value='.$_GET["productName"].''?>>
+                        </div>
+                        <div id = "sizeInfoSearch_category">상품 카테고리: <select id="sizeInfoSearch_selectItem">
+                                <option value=0 selected>카테고리 선택</option>
+                                <?
+                                if(isset($_GET['categoryPKey'])){
+                                    $selectedCategoryPKey = $_GET["categoryPKey"];
+                                }
+                                while($productCategoryRow = mysqli_fetch_array($productCategoryTable)){
+                                    if(isset($selectedCategoryPKey) &&
+                                    ($selectedCategoryPKey == $productCategoryRow['PKey'])){
+                                        echo
+                                        '<option value='.$productCategoryRow['PKey'].' selected>'.$productCategoryRow['NameKR'].'</option>';
+                                    }
+                                    else{
+                                        echo
+                                        '<option value='.$productCategoryRow['PKey'].'>'.$productCategoryRow['NameKR'].'</option>';
+                                    }
+                                }
+                                ?>
+                            </select>
+                        </div>
+
+                        <!-- <div id="sizeInfoSearch_date">등록일 <input id="searchStartDate" type="text"> ~ <input id="searchEndDate"  type="text">
+                        </div> -->
+                        <button type="submit" id="sizeInfoSearch_submit">검색</button>
+                    </div>
+
+                    <div id="sizeInfoList">
+                        <button type="submit" id="sizeInfoList_delSelectedItem">삭제</button>
+                        <button type="submit" id="sizeInfoList_instSizeInfo">신규 등록</button>
+                        <table id="sizeInfoList_table">
+                            <tr>
+                                <td>선택</td>
+                                <!-- <input type="checkbox" id="sizeInfoList_checkAll"> -->
+                                <td>등록일</td>
+                                <td>카테고리</td>
+                                <td>제품번호</td>
+                                <td>상품명</td>
+                                <!-- <td>이미지 호스팅 URL</td> -->
+                                <td>다운로드</td>
+                            </tr>
+                            <? include "./sizeinfophp/searchproductlist.php"; ?>
+                        </table>
+                    </div><!-- id:sizeInfoList end -->
+
+                    <div class="center">
+                      <div class="paging">
+                        <a href="#"> < </a>
+                        <a class="pageNum" href="#">1</a>
+                        <a class="pageNum" href="#">2</a>
+                        <a class="pageNum" href="#">3</a>
+                        <a class="pageNum" href="#">4</a>
+                        <a class="pageNum" href="#">5</a>
+                        <a class="pageNum" href="#">6</a>
+                        <a class="pageNum" href="#">7</a>
+                        <a class="pageNum" href="#">8</a>
+                        <a class="pageNum" href="#">9</a>
+                        <a class="pageNum" href="#">10</a>
+                        <a href="#"> > </a>
+                      </div>
+                    </div>
+
+                </div><!-- id:sizeInfoSearchList end -->
+            </td>
+        </tr>
+    </table>
+</div>
+<!-- </body>
+</html> -->
