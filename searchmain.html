@@ -49,12 +49,23 @@ if ($result=mysqli_query($conn,$allQuery)){
 
 <script src="js_css/searchmain.js"></script>
 <script>
-
 $(document).ready(function(){
-  var rowcount = '<?= $rowcount ?>';
-
-  makePageNum(rowcount);
+  var regisDate = 0;
   var pageNo;
+  var categoryPKey = $("#sizeInfoSearch_selectItem option:selected").val();
+
+  var rowcount = '<?= $rowcount ?>';
+  makePageNum(rowcount);
+
+
+  // alert(categoryPKey);
+  // = $("#sizeInfoSearch_selectItem option:eq(2)").val();
+  // $("#sizeInfoSearch_selectItem").select(function(){
+  //   regisDate = $("#sizeInfoSearch_selectItem option:selected").val();
+  //   alert(regisDate);
+  // });
+
+
   $(".pageNum").click(function(){
     $(".pageNum").css("background-color", "white");
     $(this).css("background-color", "red");
@@ -63,10 +74,13 @@ $(document).ready(function(){
       type:"POST",
       url: './sizeinfophp/searchproductlist.php',
       data :{
-        pageNo : pageNo
+        pageNo : pageNo,
+        categoryPKey : categoryPKey,
+        regisDate : regisDate
       },
       success : function(resData){
         var jsonData = JSON.parse(resData);
+        // alert(resData);
         makeTable(jsonData);
       },
       error : function(){
@@ -93,7 +107,68 @@ $(document).ready(function(){
   $(".last").click(function(){
     $(".pageNum:last").trigger('click');
   });
+
+
 });
+function SetSelectBox(){
+  // var schField = $("#sizeInfoSearch_selectItem").val("regisDate").prop("selected", true);
+  var test = $("#sizeInfoSearch_selectItem option:selected").val();
+
+  if(test == "regisDate"){
+    regisDate = 1;
+    categoryPKey = $("#sizeInfoSearch_selectItem option:selected").val();
+
+    $(".pageNum").css("background-color", "white");
+    $(".pageNum:eq(0)").css("background-color", "red");
+    pageNo = 0;
+    $.ajax({
+      type:"POST",
+      url: './sizeinfophp/searchproductlist.php',
+      data :{
+        pageNo : pageNo,
+        categoryPKey : categoryPKey,
+        regisDate : regisDate
+      },
+      success : function(resData){
+        var jsonData = JSON.parse(resData);
+        makeTable(jsonData);
+      },
+      error : function(){
+        alert('통신실패!!');
+      }
+    });
+
+  }
+  else if(test =="totalCategory"){
+    regisDate = 0;
+    categoryPKey = $("#sizeInfoSearch_selectItem option:selected").val();
+
+    $(".pageNum").css("background-color", "white");
+    $(".pageNum:eq(0)").css("background-color", "red");
+    pageNo = 0;
+    $.ajax({
+      type:"POST",
+      url: './sizeinfophp/searchproductlist.php',
+      data :{
+        pageNo : pageNo,
+        categoryPKey : categoryPKey,
+        regisDate : regisDate
+      },
+      success : function(resData){
+        var jsonData = JSON.parse(resData);
+        // alert(resData);
+        makeTable(jsonData);
+      },
+      error : function(){
+        alert('통신실패!!');
+      }
+    });
+  }
+  // alert(flag);
+
+  // alert(schField);
+}
+
 function makePageNum(rowcount){
   var num;
   while(rowcount%10!=0){
@@ -156,8 +231,11 @@ function makeTable(jsonData) {
                 <div id="sizeInfoSearchList">
                     <div id="sizeInfoSearch">
                         <div>
-                          <select id="sizeInfoSearch_selectItem">
-                            <option value=0 selected>정렬 방식</option>
+                          <select id="sizeInfoSearch_selectItem" onchange="SetSelectBox()">
+                            <option value="sortingMethod">정렬 방식</option>
+                            <option value="regisDate">등록일</option>
+                            <option value="totalCategory">전체 카테고리</option>
+
                             <?
                             if(isset($_GET['categoryPKey'])){
                                 $selectedCategoryPKey = $_GET["categoryPKey"];
@@ -166,7 +244,7 @@ function makeTable(jsonData) {
                                 if(isset($selectedCategoryPKey) &&
                                 ($selectedCategoryPKey == $productCategoryRow['PKey'])){
                                     echo
-                                    '<option value='.$productCategoryRow['PKey'].' selected>'.$productCategoryRow['NameKR'].'</option>';
+                                    '<option value='.$productCategoryRow['PKey'].'>'.$productCategoryRow['NameKR'].'</option>';
                                 }
                                 else{
                                     echo
