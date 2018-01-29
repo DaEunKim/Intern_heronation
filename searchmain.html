@@ -57,19 +57,13 @@ $(document).ready(function(){
   var rowcount = '<?= $rowcount ?>';
   makePageNum(rowcount);
 
-
-  // alert(categoryPKey);
-  // = $("#sizeInfoSearch_selectItem option:eq(2)").val();
-  // $("#sizeInfoSearch_selectItem").select(function(){
-  //   regisDate = $("#sizeInfoSearch_selectItem option:selected").val();
-  //   alert(regisDate);
-  // });
-
+  DateSorting();
 
   $(".pageNum").click(function(){
     $(".pageNum").css("background-color", "white");
     $(this).css("background-color", "red");
     pageNo = $(this).text()-1;
+    regisDate= $(".hiddenVal").val();
     $.ajax({
       type:"POST",
       url: './sizeinfophp/searchproductlist.php',
@@ -80,7 +74,6 @@ $(document).ready(function(){
       },
       success : function(resData){
         var jsonData = JSON.parse(resData);
-        // alert(resData);
         makeTable(jsonData);
       },
       error : function(){
@@ -108,16 +101,19 @@ $(document).ready(function(){
     $(".pageNum:last").trigger('click');
   });
 
-
 });
-function SetSelectBox(){
-  // var schField = $("#sizeInfoSearch_selectItem").val("regisDate").prop("selected", true);
-  var test = $("#sizeInfoSearch_selectItem option:selected").val();
+function DateSorting() {
 
-  if(test == "regisDate"){
-    regisDate = 1;
+  $("#DateButton").click(function() {
+    if($("#hiddenVal").val()==1){
+      $("#hiddenVal").val('0');
+    }
+    else{
+      $("#hiddenVal").val('1');
+    }
+    regisDate = $("#hiddenVal").val();
+
     categoryPKey = $("#sizeInfoSearch_selectItem option:selected").val();
-
     $(".pageNum").css("background-color", "white");
     $(".pageNum:eq(0)").css("background-color", "red");
     pageNo = 0;
@@ -138,8 +134,15 @@ function SetSelectBox(){
       }
     });
 
-  }
-  else if(test =="totalCategory"){
+  });
+
+
+}
+
+
+function SetSelectBox(){
+  var sorting = $("#sizeInfoSearch_selectItem option:selected").val();
+  if(sorting =="totalCategory"){
     regisDate = 0;
     categoryPKey = $("#sizeInfoSearch_selectItem option:selected").val();
 
@@ -164,6 +167,7 @@ function SetSelectBox(){
       }
     });
   }
+
   // alert(flag);
 
   // alert(schField);
@@ -229,11 +233,13 @@ function makeTable(jsonData) {
             <td id="myPage_right" class="mainRight">
 
                 <div id="sizeInfoSearchList">
+
+                  <input type="hidden" id="hiddenVal" value=1>
                     <div id="sizeInfoSearch">
                         <div>
                           <select id="sizeInfoSearch_selectItem" onchange="SetSelectBox()">
                             <option value="sortingMethod">정렬 방식</option>
-                            <option value="regisDate">등록일</option>
+                            <!-- <option value="regisDate">등록일</option> -->
                             <option value="totalCategory">전체 카테고리</option>
 
                             <?
@@ -253,6 +259,10 @@ function makeTable(jsonData) {
                             }
                             ?>
                           </select>
+                        </div>
+                        <div>
+                          <button id="DateButton" onclick="SetSelectBox()" value=0>등록일 <img src = "./img/up.png" width=10px><img src = "./img/down.png" width=10px></button>
+
                         </div>
                         <div>
                           <select id="sizeInfoSearch_selectItem">

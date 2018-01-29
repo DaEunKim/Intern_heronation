@@ -66,7 +66,7 @@ else{
   //   $productListQuery .=" order by Product.Pkey limit $i, 10";
   // }
   if(isset($_POST['regisDate'])){
-    if(($_POST['regisDate'])==0){
+    if($_POST['regisDate']==0){
       $productListQuery .= " order by Product.CreatedDate";
     }
     else{
