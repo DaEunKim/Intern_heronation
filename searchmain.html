@@ -50,14 +50,17 @@ if ($result=mysqli_query($conn,$allQuery)){
 <script src="js_css/searchmain.js"></script>
 <script>
 $(document).ready(function(){
-  var regisDate = 0;
-  var pageNo;
-  var categoryPKey = $("#sizeInfoSearch_selectItem option:selected").val();
 
   var rowcount = '<?= $rowcount ?>';
   makePageNum(rowcount);
-
   DateSorting();
+  originProcess();
+});
+
+function originProcess(){
+  var regisDate = 0;
+  var pageNo;
+  var categoryPKey = $("#sizeInfoSearch_selectItem option:selected").val();
 
   $(".pageNum").click(function(){
     $(".pageNum").css("background-color", "white");
@@ -75,6 +78,7 @@ $(document).ready(function(){
       success : function(resData){
         var jsonData = JSON.parse(resData);
         makeTable(jsonData);
+        // alert(resData);
       },
       error : function(){
         alert('통신실패!!');
@@ -101,9 +105,9 @@ $(document).ready(function(){
     $(".pageNum:last").trigger('click');
   });
 
-});
-function DateSorting() {
+}
 
+function DateSorting() {
   $("#DateButton").click(function() {
     if($("#hiddenVal").val()==1){
       $("#hiddenVal").val('0');
@@ -112,38 +116,56 @@ function DateSorting() {
       $("#hiddenVal").val('1');
     }
     regisDate = $("#hiddenVal").val();
-
     categoryPKey = $("#sizeInfoSearch_selectItem option:selected").val();
-    $(".pageNum").css("background-color", "white");
-    $(".pageNum:eq(0)").css("background-color", "red");
-    pageNo = 0;
-    $.ajax({
-      type:"POST",
-      url: './sizeinfophp/searchproductlist.php',
-      data :{
-        pageNo : pageNo,
-        categoryPKey : categoryPKey,
-        regisDate : regisDate
-      },
-      success : function(resData){
-        var jsonData = JSON.parse(resData);
-        makeTable(jsonData);
-      },
-      error : function(){
-        alert('통신실패!!');
-      }
+
+    $(".pageNum").click(function(){
+      $(".pageNum").css("background-color", "white");
+      $(this).css("background-color", "red");
+      pageNo = $(this).text()-1;
+      $.ajax({
+        type:"POST",
+        url: './sizeinfophp/searchproductlist.php',
+        data :{
+          pageNo : pageNo,
+          categoryPKey : categoryPKey,
+          regisDate : regisDate
+        },
+        success : function(resData){
+          var jsonData = JSON.parse(resData);
+          makeTable(jsonData);
+          // alert(resData);
+        },
+        error : function(){
+          alert('통신실패!!');
+        }
+      });
     });
 
+    $(".pageNum:first").trigger('click');
+    $(".first").click(function(){
+      $(".pageNum:first").trigger('click');
+    });
+    $(".previous").click(function(){
+      var tmpCount = pageNo-1;
+      if(tmpCount>=0){
+        $(".pageNum:eq("+tmpCount+")").trigger('click');
+      }
+    });
+    $(".next").click(function(){
+      var tmpCount = pageNo+1;
+      $(".pageNum:eq("+tmpCount+")").trigger('click');
+    });
+    $(".last").click(function(){
+      $(".pageNum:last").trigger('click');
+    });
   });
 
-
 }
-
 
 function SetSelectBox(){
   var sorting = $("#sizeInfoSearch_selectItem option:selected").val();
   if(sorting =="totalCategory"){
-    regisDate = 0;
+    regisDate = 1;
     categoryPKey = $("#sizeInfoSearch_selectItem option:selected").val();
 
     $(".pageNum").css("background-color", "white");
@@ -167,10 +189,34 @@ function SetSelectBox(){
       }
     });
   }
+  else{
+    regisDate=1;
+    categoryPKey = sorting;
 
-  // alert(flag);
+    console.log(categoryPKey);
+    $(".pageNum").css("background-color", "white");
+    $(".pageNum:eq(0)").css("background-color", "red");
+    pageNo = 0;
+    $.ajax({
+      type:"POST",
+      url: './sizeinfophp/searchproductlist.php',
+      data :{
+        pageNo : pageNo,
+        categoryPKey : categoryPKey,
+        regisDate : regisDate
+      },
+      success : function(resData){
+        var jsonData = JSON.parse(resData);
+        // alert(resData);
+        makeTable(jsonData);
+      },
+      error : function(){
+        alert('통신실패!!');
+      }
+    });
 
-  // alert(schField);
+  }
+
 }
 
 function makePageNum(rowcount){
@@ -250,18 +296,18 @@ function makeTable(jsonData) {
                                 if(isset($selectedCategoryPKey) &&
                                 ($selectedCategoryPKey == $productCategoryRow['PKey'])){
                                     echo
-                                    '<option value='.$productCategoryRow['PKey'].'>'.$productCategoryRow['NameKR'].'</option>';
+                                    '<option class="productCategoryRow" value='.$productCategoryRow['PKey'].'>'.$productCategoryRow['NameKR'].'</option>';
                                 }
                                 else{
                                     echo
-                                    '<option value='.$productCategoryRow['PKey'].'>'.$productCategoryRow['NameKR'].'</option>';
+                                    '<option class="productCategoryRow" value='.$productCategoryRow['PKey'].'>'.$productCategoryRow['NameKR'].'</option>';
                                 }
                             }
                             ?>
                           </select>
                         </div>
                         <div>
-                          <button id="DateButton" onclick="SetSelectBox()" value=0>등록일 <img src = "./img/up.png" width=10px><img src = "./img/down.png" width=10px></button>
+                          <button id="DateButton" value=0>등록일 <img src = "./img/up.png" width=10px><img src = "./img/down.png" width=10px></button>
 
                         </div>
                         <div>

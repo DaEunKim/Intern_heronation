@@ -53,7 +53,6 @@ else{
     // where Product.UserID = '.$userID.'
     // order by Product.PKey desc;';
 
-  $sortMethod;
 
   $i = (int)($_POST['pageNo'])*10;
   $productListQuery =
@@ -65,15 +64,25 @@ else{
   // if(isset($productListQuery) ) {
   //   $productListQuery .=" order by Product.Pkey limit $i, 10";
   // }
+
+
+  if(isset($_POST['categoryPKey']) && $_POST['categoryPKey']!="sortingMethod" && $_POST['categoryPKey']!="totalCategory"){
+
+    $categoryID = $_POST['categoryPKey'];
+    $productListQuery .= " where Product.CategoryID = $categoryID";
+  }
+
   if(isset($_POST['regisDate'])){
     if($_POST['regisDate']==0){
-      $productListQuery .= " order by Product.CreatedDate";
-    }
-    else{
       $productListQuery .= " order by Product.CreatedDate desc";
     }
+    else{
+      $productListQuery .= " order by Product.CreatedDate";
+    }
   }
+
   $productListQuery .= " limit $i, 10";
+
 
 
   //   if(isset($_POST['regisDate']) ){
