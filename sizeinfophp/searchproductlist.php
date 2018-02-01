@@ -80,6 +80,11 @@ else{
     }
   }
 
+  $rowcount=0;
+  if($result = mysqli_query($conn, $productListQuery)){
+    $rowcount = mysqli_num_rows($result);
+  }
+
   $productListQuery .= " limit $i, 10";
 
 
@@ -109,7 +114,8 @@ if($productTable = mysqli_query($conn, $productListQuery)){
       'date' => $productRow[0],
       'CategoryName' => $productRow[1],
       'ProductPKey' => $productRow[2],
-      'ProductName' => $productRow[3]
+      'ProductName' => $productRow[3],
+      'rowcount' => $rowcount
     );
     $i++;
   }
