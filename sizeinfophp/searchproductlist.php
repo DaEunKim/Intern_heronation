@@ -67,7 +67,6 @@ else{
 
 
   if(isset($_POST['categoryPKey']) && $_POST['categoryPKey']!="sortingMethod" && $_POST['categoryPKey']!="totalCategory"){
-
     $categoryID = $_POST['categoryPKey'];
     $productListQuery .= " where Product.CategoryID = $categoryID";
   }
@@ -100,8 +99,9 @@ else{
 
 }
 // echo $productListQuery;
-if($productTable = mysqli_query($conn, $productListQuery)){
 
+
+if($productTable = mysqli_query($conn, $productListQuery)){
   $jsonArr = array();
   $i = 0;
   while($productRow = mysqli_fetch_array($productTable)){

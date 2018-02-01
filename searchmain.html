@@ -14,12 +14,14 @@ from Product
 left join Category on Product.CategoryID = Category.PKey
 order by Product.PKey desc;';
 
-if ($result=mysqli_query($conn,$allQuery)){
-  $rowcount=mysqli_num_rows($result);
+
+if($result = mysqli_query($conn, $allQuery)){
+  $rowcount = mysqli_num_rows($result);
 }
 
 ?>
 <style>
+/* 페이징 숫자와 위치 꾸며주는 css */
 .bottom {
   text-align: center;
   padding: 40px;
@@ -50,64 +52,46 @@ if ($result=mysqli_query($conn,$allQuery)){
 <script src="js_css/searchmain.js"></script>
 <script>
 $(document).ready(function(){
-
-  var rowcount = '<?= $rowcount ?>';
+  var rowcount = "<?= $rowcount ?>"; //페이지 수를 구하기 위한 row 갯수
   makePageNum(rowcount);
-  DateSorting();
-  originProcess();
-});
 
-function originProcess(){
-  var regisDate = 0;
-  var pageNo;
-  var categoryPKey = $("#sizeInfoSearch_selectItem option:selected").val();
+  var regisDate = 0; //등록일 기준으로 정렬하기 위해 필요한 변수
+  var pageNo; // 넘어가는 페이지의 숫자를 알기 위한 변수
+  var categoryPKey = $("#sizeInfoSearch_selectItem option:selected").val(); //정렬 방식을 위한 카테고리의 키 값 변수
 
+  //상품 관리 표와 페이지 구현
   $(".pageNum").click(function(){
     $(".pageNum").css("background-color", "white");
     $(this).css("background-color", "red");
     pageNo = $(this).text()-1;
-    regisDate= $(".hiddenVal").val();
-    $.ajax({
-      type:"POST",
-      url: './sizeinfophp/searchproductlist.php',
-      data :{
-        pageNo : pageNo,
-        categoryPKey : categoryPKey,
-        regisDate : regisDate
-      },
-      success : function(resData){
-        var jsonData = JSON.parse(resData);
-        makeTable(jsonData);
-        // alert(resData);
-      },
-      error : function(){
-        alert('통신실패!!');
-      }
-    });
+    regisDate= $("#hiddenVal").val();
+    categoryPKey = $("#sizeInfoSearch_selectItem option:selected").val();
+    originAjax(pageNo, categoryPKey, regisDate);
   });
-  $(".pageNum:first").trigger('click');
+  $(".pageNum:first").trigger('click');//트리거로 첫번째 페이지는 항상 선택되어있도록 함
 
+  //< : 이전 보기
   $(".first").click(function(){
     $(".pageNum:first").trigger('click');
   });
-
+  // << : 처음으로 돌아가기
   $(".previous").click(function(){
     var tmpCount = pageNo-1;
     if(tmpCount>=0){
       $(".pageNum:eq("+tmpCount+")").trigger('click');
     }
   });
+  // > : 다음 보기
   $(".next").click(function(){
     var tmpCount = pageNo+1;
     $(".pageNum:eq("+tmpCount+")").trigger('click');
   });
+  // >> : 마지막으로 가기
   $(".last").click(function(){
     $(".pageNum:last").trigger('click');
   });
 
-}
-
-function DateSorting() {
+  //등록일 기준으로 정렬(hiddenVal에 따라 오름차순, 내림차순)
   $("#DateButton").click(function() {
     if($("#hiddenVal").val()==1){
       $("#hiddenVal").val('0');
@@ -115,110 +99,46 @@ function DateSorting() {
     else{
       $("#hiddenVal").val('1');
     }
-    regisDate = $("#hiddenVal").val();
-    categoryPKey = $("#sizeInfoSearch_selectItem option:selected").val();
-
-    $(".pageNum").click(function(){
-      $(".pageNum").css("background-color", "white");
-      $(this).css("background-color", "red");
-      pageNo = $(this).text()-1;
-      $.ajax({
-        type:"POST",
-        url: './sizeinfophp/searchproductlist.php',
-        data :{
-          pageNo : pageNo,
-          categoryPKey : categoryPKey,
-          regisDate : regisDate
-        },
-        success : function(resData){
-          var jsonData = JSON.parse(resData);
-          makeTable(jsonData);
-          // alert(resData);
-        },
-        error : function(){
-          alert('통신실패!!');
-        }
-      });
-    });
-
     $(".pageNum:first").trigger('click');
-    $(".first").click(function(){
-      $(".pageNum:first").trigger('click');
-    });
-    $(".previous").click(function(){
-      var tmpCount = pageNo-1;
-      if(tmpCount>=0){
-        $(".pageNum:eq("+tmpCount+")").trigger('click');
-      }
-    });
-    $(".next").click(function(){
-      var tmpCount = pageNo+1;
-      $(".pageNum:eq("+tmpCount+")").trigger('click');
-    });
-    $(".last").click(function(){
-      $(".pageNum:last").trigger('click');
-    });
+  });
+
+});
+
+//정렬 방식대로 정렬하는 함수
+function SetSelectBox(){
+  var sorting = $("#sizeInfoSearch_selectItem option:selected").val(); //정렬 방식의 종류에 따라 값이 달라짐
+  regisDate = 1;
+  categoryPKey = sorting;
+  $(".pageNum").css("background-color", "white");
+  $(".pageNum:eq(0)").css("background-color", "red");
+  pageNo = 0;
+  originAjax(pageNo, categoryPKey, regisDate);
+  $(".pageNum:first").trigger('click');
+}
+
+//공통의 ajax가 있는 함수
+function originAjax(pageNo, categoryPKey, regisDate){
+  $.ajax({
+    type:"POST",
+    url: './sizeinfophp/searchproductlist.php',
+    data :{
+      pageNo : pageNo,
+      categoryPKey : categoryPKey,
+      regisDate : regisDate
+    },
+    success : function(resData){
+      var jsonData = JSON.parse(resData);
+      makeTable(jsonData);
+    },
+    error : function(){
+      alert('통신실패!!');
+    }
   });
 
 }
 
-function SetSelectBox(){
-  var sorting = $("#sizeInfoSearch_selectItem option:selected").val();
-  if(sorting =="totalCategory"){
-    regisDate = 1;
-    categoryPKey = $("#sizeInfoSearch_selectItem option:selected").val();
-
-    $(".pageNum").css("background-color", "white");
-    $(".pageNum:eq(0)").css("background-color", "red");
-    pageNo = 0;
-    $.ajax({
-      type:"POST",
-      url: './sizeinfophp/searchproductlist.php',
-      data :{
-        pageNo : pageNo,
-        categoryPKey : categoryPKey,
-        regisDate : regisDate
-      },
-      success : function(resData){
-        var jsonData = JSON.parse(resData);
-        // alert(resData);
-        makeTable(jsonData);
-      },
-      error : function(){
-        alert('통신실패!!');
-      }
-    });
-  }
-  else{
-    regisDate=1;
-    categoryPKey = sorting;
-
-    console.log(categoryPKey);
-    $(".pageNum").css("background-color", "white");
-    $(".pageNum:eq(0)").css("background-color", "red");
-    pageNo = 0;
-    $.ajax({
-      type:"POST",
-      url: './sizeinfophp/searchproductlist.php',
-      data :{
-        pageNo : pageNo,
-        categoryPKey : categoryPKey,
-        regisDate : regisDate
-      },
-      success : function(resData){
-        var jsonData = JSON.parse(resData);
-        // alert(resData);
-        makeTable(jsonData);
-      },
-      error : function(){
-        alert('통신실패!!');
-      }
-    });
-
-  }
-
-}
-
+//데이터 갯수에 따라 페이지 숫자 만들어내는 함수
+//10개씩 보여지도록 설정함
 function makePageNum(rowcount){
   var num;
   while(rowcount%10!=0){
@@ -242,6 +162,7 @@ function makePageNum(rowcount){
   $(".paging").append(page);
 }
 
+//동적으로 표를 생성하는 함수
 function makeTable(jsonData) {
   $("#sizeInfoList_table").empty();
   var row = jsonData.length;
@@ -367,12 +288,10 @@ function makeTable(jsonData) {
                         <table id="sizeInfoList_table">
                             <tr>
                                 <td>선택</td>
-                                <!-- <input type="checkbox" id="sizeInfoList_checkAll"> -->
                                 <td>등록일</td>
                                 <td>카테고리</td>
                                 <td>제품번호</td>
                                 <td>상품명</td>
-                                <!-- <td>이미지 호스팅 URL</td> -->
                                 <td>다운로드</td>
                             </tr>
 
