@@ -54,7 +54,9 @@ else{
     // order by Product.PKey desc;';
 
 
-  $i = (int)($_POST['pageNo'])*10;
+  $showDataNum = 10;
+  $i = (int)($_POST['pageNo']) * $showDataNum;
+
   $productListQuery =
   "SELECT Product.CreatedDate as ProductCreatedDate,
   Category.NameKR as CategoryName, Product.PKey as ProductPKey, Product.Name as ProductName
@@ -85,7 +87,7 @@ else{
     $rowcount = mysqli_num_rows($result);
   }
 
-  $productListQuery .= " limit $i, 10";
+  $productListQuery .= " limit $i, $showDataNum";
 
 
 

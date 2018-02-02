@@ -114,6 +114,7 @@ function SetSelectBox(){
   pageNo = 0;
   originAjax(pageNo, categoryPKey, regisDate, 1);
 
+
 }
 
 //공통의 ajax가 있는 함수
@@ -127,6 +128,10 @@ function originAjax(pageNo, categoryPKey, regisDate, clickOption){
       regisDate : regisDate
     },
     success : function(resData){
+      if(resData=="[]"){
+        alert("해당하는 데이터가 없습니다. 다른 카테고리를 선택해주시기 바랍니다. ");
+        return;
+      }
       var jsonData = JSON.parse(resData);
       rowcount = jsonData[0]['rowcount'];
       makeTable(jsonData);
@@ -145,19 +150,23 @@ function originAjax(pageNo, categoryPKey, regisDate, clickOption){
 //데이터 갯수에 따라 페이지 숫자 만들어내는 함수
 //10개씩 보여지도록 설정함
 function makePageNum(rowcount){
+  var showDataNum = 10;
+  // alert(rowcount);
   var num;
-  while(rowcount%10!=0){
+
+  while(rowcount%showDataNum!=0){
     rowcount++;
-    num = rowcount/10;
+    num = rowcount/showDataNum;
   }
   var first_page = 1;
   var last_page = num;
+  var text_number = 2;
 
-  var text_number = 1;
   var page = ' ';
   page += '<a class= "first" href="#"> << </a> <a class= "previous" href="#"> < </a>';
+  page += "<a class='pageNum' href='#'> " + first_page + " </a>";
   while (1) {
-    if(num==0){
+    if(num==2){
       break;
     }
     page += "<a class='pageNum' href='#'>";
@@ -165,7 +174,19 @@ function makePageNum(rowcount){
     page += "</a>";
     num--;
     text_number++;
+    if(text_number ==8){
+      break;
+    }
+
+    // if(text_number%showDataNum==1){
+    //   page += "<a class='next' href='#'> ... </a>";
+    //
+    //   // break;
+    // }
   }
+  page += "<a href='#'> ... </a>";
+
+  page += "<a class='pageNum' href='#'> " + last_page + " </a>";
   page += '<a class="next" href="#"> > </a> <a class="last" href="#"> >> </a>';
   $("#addPage").html(page);
   $(".pageNum").css("background-color", "white");
