@@ -22,15 +22,15 @@ if($result = mysqli_query($conn, $allQuery)){
 ?>
 <style>
 /* 페이징 숫자와 위치 꾸며주는 css */
-.bottom {
+#myPage_main .bottom {
   text-align: center;
   padding: 40px;
 }
-.paging {
+#myPage_main .bottom .paging {
     display: inline-block;
 }
 
-.paging a {
+#myPage_main .bottom .paging a {
   color: black;
   float: left;
   padding: 8px 16px;
@@ -40,13 +40,96 @@ if($result = mysqli_query($conn, $allQuery)){
   margin: 0 4px;
 }
 
-.paging a.active {
+#myPage_main .bottom .paging a.active {
   background-color: #4CAF50;
   color: white;
   border: 1px solid #4CAF50;
 }
 
-.paging a:hover:not(.active) {background-color: #ddd;}
+#myPage_main .bottom .paging a:hover:not(.active) {background-color: #ddd;}
+
+#sizeInfoSearch_method {
+  /* position: absolute; */
+  /* left: 401px; */
+  /* top: 125px; */
+  width: 100px;
+	height: 30px;
+	border-radius: 2px;
+	background-color: #ffffff;
+	border: solid 1px #282828;
+
+}
+
+#sizeInfoSearch_method #sizeInfoSearch_selectItem{
+  /* position: absolute; */
+  /* left: 411px; */
+  /* top: 129px; */
+  width: 100px;
+  line-height: 5.71;
+  text-align: left;
+  font-family: NotoSansCJKkr;
+	font-size: 14px;
+	color: #282828;
+  background-color: #ffffff;
+  border: solid 0px;
+
+
+}
+#sizeInfoSearch_dateButton {
+  /* position: absolute; */
+  /* left: 506px; */
+  /* top: 125px; */
+  width: 80px;
+  height: 30px;
+  border-radius: 2px;
+  background-color: #7b91aa;
+  font-family: NotoSansCJKkr;
+  font-size: 14px;
+  line-height: 5.71;
+  letter-spacing: 25px;
+  text-align: left;
+  color: #ffffff;
+}
+#sizeInfoSearch_dateButton #DateButton {
+  background-color: #7b91aa;
+  font-family: NotoSansCJKkr;
+  font-size: 14px;
+  color: #ffffff;
+}
+#sizeInfoSearch_filter{
+  margin-left: 150px;
+  /* position: absolute; */
+  /* left: 948px; */
+  /* top: 125px; */
+  width: 100px;
+	height: 30px;
+	border-radius: 2px;
+	background-color: #ffffff;
+	border: solid 1px #282828;
+
+}
+#sizeInfoSearch_filter #sizeInfoSearch_selectItem {
+  font-family: NotoSansCJKkr;
+	font-size: 14px;
+	text-align: left;
+	color: #282828;
+  background-color: #ffffff;
+  border: solid 0px;
+
+}
+#sizeInfoSearch_name #searchName {
+  width: 200px;
+  height: 30px;
+  border-radius: 2px;
+  background-color: #ffffff;
+  border: solid 1px #282828;
+}
+#sizeInfoList_table {
+  /* position: absolute; */
+
+  width: 850px;
+  height: 360.5px;
+}
 </style>
 
 <script src="js_css/searchmain.js"></script>
@@ -100,6 +183,13 @@ $(document).ready(function(){
       $("#hiddenVal").val('1');
     }
     $(".pageNum:first").trigger('click');
+  });
+
+
+  $("#searchName").keyup(function(){
+    var text = $(this).val();
+    alert(text);
+
   });
 
 });
@@ -234,7 +324,7 @@ function makeTable(jsonData) {
 
                   <input type="hidden" id="hiddenVal" value=1>
                     <div id="sizeInfoSearch">
-                        <div>
+                        <div id="sizeInfoSearch_method">
                           <select id="sizeInfoSearch_selectItem" onchange="SetSelectBox()">
                             <option value="sortingMethod">정렬 방식</option>
                             <!-- <option value="regisDate">등록일</option> -->
@@ -258,11 +348,11 @@ function makeTable(jsonData) {
                             ?>
                           </select>
                         </div>
-                        <div>
-                          <button id="DateButton" value=0>등록일 <img src = "./img/up.png" width=10px><img src = "./img/down.png" width=10px></button>
+                        <div id="sizeInfoSearch_dateButton">
+                          <button id="DateButton" value=0>등록일 </button>
 
                         </div>
-                        <div>
+                        <div id="sizeInfoSearch_filter">
                           <select id="sizeInfoSearch_selectItem">
                             <option value=0 selected>검색 필터</option>
                             <?
