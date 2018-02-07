@@ -62,11 +62,6 @@ else{
   Category.NameKR as CategoryName, Product.PKey as ProductPKey, Product.Name as ProductName
   from Product
   left join Category on Product.CategoryID = Category.PKey";
-  // order by Product.PKey desc limit $i, 10";
-  // if(isset($productListQuery) ) {
-  //   $productListQuery .=" order by Product.Pkey limit $i, 10";
-  // }
-
 
   if(isset($_POST['categoryPKey']) && $_POST['categoryPKey']!="sortingMethod" && $_POST['categoryPKey']!="totalCategory"){
     $categoryID = $_POST['categoryPKey'];
@@ -88,25 +83,7 @@ else{
   }
 
   $productListQuery .= " limit $i, $showDataNum";
-
-
-
-  //   if(isset($_POST['regisDate']) ){
-  //
-  //
-  //   }
-    // if(isset($_POST['categoryPKey'])){
-    //   $productListQuery .=" where Product.CategoryID = $_POST['categoryPKey']";
-    // }
-    // if(isset($_POST['regisDate']) ){
-    //   $productListQuery .=" order by date";
-    // }
-
-  // }
-
 }
-// echo $productListQuery;
-
 
 if($productTable = mysqli_query($conn, $productListQuery)){
   $jsonArr = array();

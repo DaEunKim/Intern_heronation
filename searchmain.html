@@ -21,7 +21,97 @@ if($result = mysqli_query($conn, $allQuery)){
 
 ?>
 <style>
-/* 페이징 숫자와 위치 꾸며주는 css */
+/* 상단 부분 - 정렬방식, 등록일, 검색필터, 검색창 등이 있는 부분 */
+#sizeInfoSearchList {
+  background-color: white;
+}
+#sizeInfoSearch_method {
+  left: 401px;
+  top: 125px;
+  width: 100px;
+	height: 30px;
+	border-radius: 2px;
+	background-color: #ffffff;
+	border: solid 1px #282828;
+
+}
+#sizeInfoSearch_method #sizeInfoSearch_selectItem{
+  left: 411px;
+  top: 129px;
+  width: 100px;
+  line-height: 5.71;
+  text-align: left;
+  font-family: NotoSansCJKkr;
+	font-size: 14px;
+	color: #282828;
+  background-color: #ffffff;
+  border: solid 0px;
+
+
+}
+#sizeInfoSearch_dateButton {
+  left: 506px;
+  top: 125px;
+  width: 80px;
+  height: 30px;
+  border-radius: 2px;
+  background-color: #7b91aa;
+  font-family: NotoSansCJKkr;
+  font-size: 14px;
+  line-height: 5.71;
+  letter-spacing: 25px;
+  text-align: left;
+  color: #ffffff;
+}
+#sizeInfoSearch_dateButton #DateButton {
+  left: 521px;
+  top: 125px;
+  background-color: #7b91aa;
+  font-family: NotoSansCJKkr;
+  font-size: 14px;
+  color: #ffffff;
+}
+
+/* 검색필터 */
+#sizeInfoSearch_filter{
+  left: 948px;
+  top: 125px;
+  margin-left: 150px;
+  width: 100px;
+	height: 30px;
+	border-radius: 2px;
+	background-color: #ffffff;
+	border: solid 1px #282828;
+}
+#sizeInfoSearch_filter #sizeInfoSearch_selectItem {
+  left: 958px;
+  top: 130px;
+  font-family: NotoSansCJKkr;
+	font-size: 14px;
+	text-align: left;
+	color: #282828;
+  background-color: #ffffff;
+  border: solid 0px;
+
+}
+#sizeInfoSearch_name #searchName {
+  margin-left: 15px;
+  left: 1053px;
+  top: 125px;
+  width: 200px;
+  height: 30px;
+  border-radius: 2px;
+  background-color: #ffffff;
+  border: solid 1px #282828;
+}
+#sizeInfoList_table {
+  margin-top: 35px;
+  width: 850px;
+  height: 360.5px;
+}
+
+
+/* bottom 부분 - 페이징 숫자와 위치 꾸며주는 css */
 #myPage_main .bottom {
   text-align: center;
   padding: 40px;
@@ -48,88 +138,6 @@ if($result = mysqli_query($conn, $allQuery)){
 
 #myPage_main .bottom .paging a:hover:not(.active) {background-color: #ddd;}
 
-#sizeInfoSearch_method {
-  /* position: absolute; */
-  /* left: 401px; */
-  /* top: 125px; */
-  width: 100px;
-	height: 30px;
-	border-radius: 2px;
-	background-color: #ffffff;
-	border: solid 1px #282828;
-
-}
-
-#sizeInfoSearch_method #sizeInfoSearch_selectItem{
-  /* position: absolute; */
-  /* left: 411px; */
-  /* top: 129px; */
-  width: 100px;
-  line-height: 5.71;
-  text-align: left;
-  font-family: NotoSansCJKkr;
-	font-size: 14px;
-	color: #282828;
-  background-color: #ffffff;
-  border: solid 0px;
-
-
-}
-#sizeInfoSearch_dateButton {
-  /* position: absolute; */
-  /* left: 506px; */
-  /* top: 125px; */
-  width: 80px;
-  height: 30px;
-  border-radius: 2px;
-  background-color: #7b91aa;
-  font-family: NotoSansCJKkr;
-  font-size: 14px;
-  line-height: 5.71;
-  letter-spacing: 25px;
-  text-align: left;
-  color: #ffffff;
-}
-#sizeInfoSearch_dateButton #DateButton {
-  background-color: #7b91aa;
-  font-family: NotoSansCJKkr;
-  font-size: 14px;
-  color: #ffffff;
-}
-#sizeInfoSearch_filter{
-  margin-left: 150px;
-  /* position: absolute; */
-  /* left: 948px; */
-  /* top: 125px; */
-  width: 100px;
-	height: 30px;
-	border-radius: 2px;
-	background-color: #ffffff;
-	border: solid 1px #282828;
-
-}
-#sizeInfoSearch_filter #sizeInfoSearch_selectItem {
-  font-family: NotoSansCJKkr;
-	font-size: 14px;
-	text-align: left;
-	color: #282828;
-  background-color: #ffffff;
-  border: solid 0px;
-
-}
-#sizeInfoSearch_name #searchName {
-  width: 200px;
-  height: 30px;
-  border-radius: 2px;
-  background-color: #ffffff;
-  border: solid 1px #282828;
-}
-#sizeInfoList_table {
-  /* position: absolute; */
-
-  width: 850px;
-  height: 360.5px;
-}
 </style>
 
 <script src="js_css/searchmain.js"></script>
@@ -349,7 +357,7 @@ function makeTable(jsonData) {
                           </select>
                         </div>
                         <div id="sizeInfoSearch_dateButton">
-                          <button id="DateButton" value=0>등록일 </button>
+                          <button id="DateButton" value=0>등록일</button>
 
                         </div>
                         <div id="sizeInfoSearch_filter">
