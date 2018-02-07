@@ -1,0 +1,162 @@
+<?
+//error_reporting(E_ALL ^ E_NOTICE);
+include "header.html";
+
+$DEFAULT_CATEGORY = 1;
+
+$numOfNews=0;
+// USer News확인
+if(isset($_COOKIE["userPKeyZeyo"]) && !empty($_COOKIE["userPKeyZeyo"])){
+    $newsTable = mysqli_query($conn, 'SELECT *,
+    News.Subject as NewsSubject, News.Contents as NewsContents
+    from News
+    where News.Receiver='.$_COOKIE["userPKeyZeyo"].' and News.IsRead=0');
+
+    $numOfNews = mysqli_num_rows($newsTable);
+}
+
+
+$isUpdate = 0;
+// GET productPKey가 존재할 경우(update) themecolor load
+if(isset($_GET["productPKey"])){
+    $isUpdate = 1;
+
+    $productPKey = $_GET["productPKey"];
+
+    $themeColorTable = mysqli_query($conn,'SELECT BorderColor as ThemeColor,
+    Product.Name as ProductName,
+    Product.CategoryID as ProductCategoryID
+    from ProductSpecInfo
+    left join Product on Product.PKey = ProductSpecInfo.ProductID
+    where ProductID = '.$productPKey.';');
+    $numOfThemeColor = mysqli_num_rows($themeColorTable);
+    if($numOfThemeColor == 1){
+        $themeColorRow = mysqli_fetch_array($themeColorTable);
+    }
+}
+
+?>
+<script src="<?=$server_root_path?>js_css/script.js"></script>
+<script src="<?=$server_root_path?>js_css/datepicker.js"></script>
+
+<div id="insertSizeInfo_main" class="mainDiv">
+<!-- <div id="insertSizeInfo_main" style="display:none"> -->
+    <table id="insertSizeInfo_mainTable" class="mainTable">
+        <tr>
+            <td id="insertSizeInfo_left" class="mainLeft"><? include 'leftmenu.html'; ?>
+                <input id="hPageKey" type="hidden" value=2>
+            </td>
+            <td id="insertSizeInfo_right" class="mainRight">
+                <div id="sizeInfo_description">
+                    <div class="description1"><b style="color:#52030c">-</b> 드래그시 순서가 변경됩니다.&nbsp;&nbsp;&nbsp;
+                    </div>
+                    <div class="description2" style="vertical-align:top;">
+                        <img style="width:12px; height:12px;" src="img/checked_icon.svg", alt="-"> 출력될 항목을 체크하세요.&nbsp;&nbsp;&nbsp;
+                    </div>
+                    <div id= "themeColorChangeButton" class="description3">
+                        <img src="img/color_picker_icon.png"> 적용테마변경
+                        <div style="opacity:0; float:right;"><input type="text "id='colorPicker'></div>
+                    </div>
+                </div>
+                <div id="sizeInfo_name_category">
+                    <div>
+                        상품명: <input id="sizeInfo_name" type="text" placeholder=' 상품명을 기입하세요.' value="<? if($isUpdate) echo $themeColorRow["ProductName"];?>">
+                    </div>
+                    <div>
+                        상품 카테고리: <select id="sizeInformation_selectItem" disabled="true">
+                            <?
+                            $productCategoryTable = mysqli_query($conn,'SELECT * from Category where Category.State != -1');
+
+                            while($productCategoryRow = mysqli_fetch_array($productCategoryTable)){
+                                if($isUpdate && ($themeColorRow["ProductCategoryID"] == $productCategoryRow['PKey'])){
+                                    echo
+                                    '<option value='.$productCategoryRow['PKey'].' selected>'.$productCategoryRow['NameKR'].'</option>';
+                                }
+                                else{
+                                    echo
+                                    '<option value='.$productCategoryRow['PKey'].'>'.$productCategoryRow['NameKR'].'</option>';
+                                }
+                            }
+                            ?>
+                        </select>
+                    </div>
+                </div><br>
+
+                <div id="sizeInformation_includeCategory">
+                    <? include 'insertsizeinfoincludecategory.html';?>
+                </div>
+            </td>
+        </tr>
+    </table>
+
+<?
+if($numOfNews){
+    $newsIter =0;
+    while($newsRow = mysqli_fetch_array($newsTable)){
+
+        // News.Type=0 (popup)일 경우만 News.isRead 1로
+        if($newsRow["Type"] == 0){
+            $uptdNewsQuery =
+            'UPDATE News Set
+            News.IsRead = 1
+            where News.PKey = '.$newsRow["PKey"].' ';
+
+            $uptdNews = mysqli_query($conn, $uptdNewsQuery);
+        }
+?>
+    <div class="news_layer">
+        <div class="news_bg"></div>
+        <div id="news_loadLayer<?=$newsIter?>" class="news_fadeIn_layer" style="z-index:<?=$newsIter+1;?>">
+            <table class="myNewsTable">
+                <tr>
+                    <td><img src="img/checked_icon_fill_white.svg"></td>
+                    <td colspan="2"><?=$newsRow["NewsSubject"];?></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        <div class="alertImgDiv">!</div>
+                    </td>
+                    <td class="notificationText"><?=$newsRow["NewsContents"];?></td>
+                </tr>
+                <tr>
+                    <td colspan="3">
+                        <button type="button" class="myNews_close">닫기
+                        <button type="button" class="myNews_goToSee">보러가기
+                    </td>
+                </tr>
+            </table>
+        </div>
+    </div>
+<?
+        $newsIter++;
+    }
+
+}
+?>
+</div>
+
+<input id="hProductPKey" type="hidden" <? if($isUpdate) echo 'value='.$productPKey.'';?>>
+<input id="hProductNameChanged" type="hidden" value=0>
+<input id="hThemeColor" type="hidden" value=<? if($isUpdate && ($numOfThemeColor==1) ) echo $themeColorRow["ThemeColor"]; else echo '#52030c';?>>
+
+
+<!-- <div id="preview_wrap"> -->
+<div id="preview_wrap" style="display:none">
+    <? include 'previewsizeinfo.html';?>
+</div>
+<!-- <div id ="preview_button"> -->
+<div id="preview_button" style="display:none">
+    <input id="preview_back" type="button" value="뒤로가기">
+    <input id="preview_save" type="button" value="저장">
+    <?
+    if(isset($_GET["productPKey"])){
+        echo '<input id="preview_newProduct" class="update_newProduct" type="button" value="새 상품으로 저장">';
+    }
+    ?>
+</div>
+
+<!-- end previewWrap -->
+
+</body>
+</html>

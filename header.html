@@ -1,0 +1,111 @@
+<?
+include "sizeinfophp/connectdb.php";
+$server_root = $_SERVER['HTTP_HOST'];
+$server_root_path = "http://".$server_root."/sizeinfo/";
+
+if(!isset($_COOKIE["loginSuccessZeyo"])){
+    header('Location: $server_root_path');
+}
+// 자동로그인이 체크되었을 경우
+if(isset($_COOKIE["isAutoLoginZeyo"]) && $_COOKIE["isAutoLoginZeyo"] == 1
+&& isset($_COOKIE["userIdZeyo"]) && isset($_COOKIE["userPasswordZeyo"])){
+    //echo "<script>alert('자동로그인');</script>";
+    $redirectFlag = false;
+    $query = 'SELECT PKey from User where BINARY Email="'.$_COOKIE["userIdZeyo"].'" and BINARY PWD="'.$_COOKIE["userPasswordZeyo"].'";';
+    $result = mysqli_query($conn, $query);
+    $row = mysqli_fetch_array($result);
+    if(mysqli_num_rows($result) != 1){
+        header('Location: $server_root_path');
+    }
+}
+// 자동로그인이 체크해제되었을 경우
+/*else if(isset($_COOKIE["isAutoLoginZeyo"]) && $_COOKIE["isAutoLoginZeyo"] == 0
+&& $_COOKIE["loginSuccessZeyo"] == 1){
+    //echo "<script>alert('비자동로그인');</script>";
+    $redirectFlag = false;
+}*/
+
+// 자동로그인이 체크해제되었을 경우
+else if(isset($_COOKIE["isAutoLoginZeyo"]) && $_COOKIE["isAutoLoginZeyo"] == 0 && $_COOKIE["loginSuccessZeyo"] == 1){
+    header('Pragma:no-cache');
+    header('Cache-Control:no-cache,must-revalidate');
+
+    if(!isset($_COOKIE["userIdZeyo"])){
+        echo "<script>alert('비자동로그인');</script>";
+        header('Location: $server_root_path');
+    }
+    else{
+        setcookie("userPKeyZeyo", $_COOKIE["userPKeyZeyo"], time() + (3600), "/");        setcookie("isAutoLoginZeyo", 0, time() + (3600), "/");
+        setcookie("isPersonalUserZeyo", $_COOKIE["isPersonalUserZeyo"], time() + (3600), "/");
+        setcookie("userIdZeyo", $_COOKIE["userIdZeyo"], time() + (3600), "/");
+        setcookie("loginSuccessZeyo", 1, time() + (3600), "/");
+    }
+}
+
+// 비회원 시작일 경우
+else if($_COOKIE["loginSuccessZeyo"] == 2 && isset($_COOKIE["loginNonMemberZeyo"]) && $_COOKIE["loginNonMemberZeyo"] == 1){
+    header('Pragma:no-cache');
+    header('Cache-Control:no-cache,must-revalidate');
+
+    if(isset($_GET["productPKey"])){
+        header('Location: $server_root_path');
+    }
+    else{
+        setcookie("userPKeyZeyo", "", time()-1, "/");
+        setcookie("userIdZeyo", "", time()-1, "/");
+        setcookie("userPasswordZeyo", "", time()-1, "/");
+        setcookie("loginSuccessZeyo", 2, time() + (3600), "/");
+        setcookie("loginNonMemberZeyo", 1, time() + (3600), "/");
+    }
+}
+else{
+    header('Location: $server_root_path');
+}
+
+// 주소에 productPKey가 있을 경우 유저의 product인지 검사
+if(isset($_GET["productPKey"]) && isset($_COOKIE["userPKeyZeyo"])) {
+    checkLoginUser($_COOKIE["userPKeyZeyo"], $_GET["productPKey"]);
+}
+
+
+function checkLoginUser($cookieUserPKey, $getProductPKey){
+    include "sizeinfophp/connectdb.php";
+
+    $query = 'SELECT User.PKey from User
+    left join Product on Product.UserID = User.PKey
+    where User.PKey ="'.$cookieUserPKey.'"
+    and Product.PKey = "'.$getProductPKey.'"; ';
+    $result = mysqli_query($conn, $query);
+    $row = mysqli_fetch_array($result);
+    if(mysqli_num_rows($result) != 1){
+        include "sizeinfophp/trylogout.php";
+        //echo "<script>alert('잘못된 접근 경로');</script>";
+        header('Location: $server_root_path');
+    }
+
+}
+
+
+?>
+
+<!DOCTYPE html>
+<html lang="ko">
+
+<html>
+    <head>
+        <meta charset="utf-8">
+        <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script>
+        <script src="<?=$server_root_path?>js_css/leftmenu.js"></script>
+        <script src="<?=$server_root_path?>js_css/washingmethodicon.js"></script>
+        <script src="<?=$server_root_path?>js_css/spectrum-master/spectrum.js"></script>
+        <!-- <script src="<?=$server_root_path?>js_css/script.js"></script> -->
+        <script src="<?=$server_root_path?>js_css/mypage.js"></script>
+        <link rel="stylesheet" type="text/css" href="<?=$server_root_path?>js_css/style.css?ver=1" />
+        <link rel="stylesheet" type="text/css" href="<?=$server_root_path?>js_css/mypage.css?ver=1" />
+        <link rel='stylesheet' href='<?=$server_root_path?>js_css/spectrum-master/spectrum.css' />
+        <link rel="stylesheet" href="http://code.jquery.com/ui/1.8.18/themes/base/jquery-ui.css" type="text/css" />
+        <title></title>
+    </head>
+    <body>
+        <!-- <div id="sizeInfoTitle">SIZE Information</div> -->

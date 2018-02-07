@@ -1,0 +1,111 @@
+<?
+
+$leftProductPkey = 0;
+if(isset($_GET["productPKey"])){
+    $leftProductPkey=$_GET["productPKey"];
+}
+
+$isLoginUser = 0;
+if(isset($_COOKIE["loginSuccessZeyo"]) && $_COOKIE["loginSuccessZeyo"] == 1){
+    $isLoginUser = 1;
+}
+
+if(isset($_COOKIE["userPKeyZeyo"])){
+    $userID = $_COOKIE["userPKeyZeyo"];
+
+    // User의 product 목록
+    $productNameListQuery =
+    'SELECT Product.PKey as ProductPKey, Product.Name as ProductName
+    from Product
+    left join User on User.PKey = Product.UserID
+    where Product.UserID = '.$userID.'
+    order by Product.PKey desc;';
+
+    $productNameTable = mysqli_query($conn, $productNameListQuery);
+}
+
+
+
+
+?>
+
+<link rel="stylesheet" type="text/css" href="<?=$server_root_path?>js_css/leftmenu.css?ver=1" />
+
+<div class="leftmenu_wrap">
+    <table class="leftmenu_table">
+        <tr>
+            <td style="padding-top:20%;">
+                <div>
+                    <img src="<?=$server_root_path?>img/zeyo_logo.svg" alt="Zeyo">
+                </div>
+            </td>
+        </tr>
+    </table>
+<?
+if($isLoginUser){
+?>
+    <hr>
+    <div id="leftmenu_productManage" class="leftmenu_menuDiv">상품관리</div>
+<?
+}
+?>
+    <hr>
+    <div id="leftmenu_insertProduct" class="leftmenu_menuDiv">상품등록</div>
+    <hr>
+<?
+if($isLoginUser){
+?>
+    <div>
+        <table class="leftmenu_productListTable">
+            <?
+            while($productNameRow = mysqli_fetch_array($productNameTable)){
+                //if($leftProductPkey == $productNameRow["ProductPKey"]){
+                    echo
+                    '<tr>
+                        <td>
+                            <input class="leftmenu_productPKey" type="hidden" value='.$productNameRow["ProductPKey"].'>
+                            <div class="leftmenu_productNameDiv">'.$productNameRow["ProductName"].'</div>
+                        </td>
+                    </tr>';
+                /*}
+                else{
+                    echo
+                    '<tr>
+                        <td>
+                            <input class="leftmenu_productPKey" type="hidden" value='.$productNameRow["ProductPKey"].'>
+                            <div class="leftmenu_productNameDiv">'.$productNameRow["ProductName"].'</div>
+                        </td>
+                    </tr>';
+                }*/
+            }
+            ?>
+
+        </table>
+    </div>
+
+    <!-- <div id="leftmenu_inquiry" class="leftmenu_menuDiv">1:1 문의</div> -->
+    <hr>
+    <div id="leftmenu_myPage" class="leftmenu_menuDiv">계정정보수정</div>
+    <hr>
+<?
+}
+if($isLoginUser){
+?>
+    <div id="leftmenu_logout" class="leftmenu_menuDiv">LOGOUT</div>
+<?
+}
+else{
+?>
+    <div id="leftmenu_goToMain" class="leftmenu_menuDiv">로그인 페이지</div>
+    <hr>
+<?
+}
+if($isLoginUser){
+?>
+    <hr>
+    <div id="leftmenu_secession" class="leftmenu_menuDiv">회원탈퇴</div>
+    <hr>
+<?
+}
+?>
+</div>

@@ -1,50 +1,77 @@
 <?
-if(isset($_COOKIE["id"])){
-  echo "<script type='text/javascript'>alert('쿠키 성공');</script>";
-}
-else{
-  echo "<script type='text/javascript'>alert('쿠키 실패');</script>";
-}
+include "sizeinfophp/loginsave.php";
 ?>
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <title>Dani World~</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-    <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
-    <script>
-    function Login() {
-      $.ajax({
-        url: "/test/dani/login.php",
-        type: "GET",
-        data: {
-          ID:$('input[name=ID]').val(),
-          PW:$('input[name=PW]').val()
-        },
-        success : function(data){
-          alert(data);
-        },
-        error : function(){
-          alert('통신실패!!');
-        }
-      });
-    }
-    function Join() {
-      $("#box-right").load("/test/dani/join.html");
-    }
-  </script>
-  <style></style>
-</head>
-<body>
-    <div id='container' action="/test/dani/login.php" method="GET" >
-      <div id='box-right'>
-        로그인 <br>
-        ID : <input type="text" name="ID" placeholder="ID"><br>
-        PW : <input type="password" name="PW" placeholder="PW"> <br><br>
-        <button type="button" onclick="Login()" value="login"> login </button><br><br>
-        회원가입 : <button id="join" type="button" onclick="Join()" value="join"> join </button>
-      </div>
-    </div>
-  </body>
-</html>
+
+<div class="zeyo_rightBody">
+    <table id="zeyo_right_mainTable">
+        <tr class="rightTable_upperTr">
+            <td style="width:13%"><div style="display:none;"><input class="zeyo_personalUserCheckBox" name="zeyo_userRadio" type="radio" <? if($isPersonal == 1) echo "checked" ?> ></div></td>
+            <td>
+                <div class="zeyo_selectUserDiv">
+                    <div class="zeyo_personalUserCheckBoxImg"></div>
+                    <div>개인회원</div>
+                </div>
+            </td>
+            <td><div>|</div></td>
+            <td>
+                <div class="zeyo_selectUserDiv">
+                    <div class="zeyo_companyUserCheckBoxImg" ></div>
+                    <div>기업회원</div>
+                </div>
+            </td>
+            <td style="width:13%"><div style="display:none;"><input class="zeyo_companyUserCheckBox" name="zeyo_userRadio" type="radio" <? if($isPersonal == 0) echo "checked" ?> ></div></td>
+        </tr>
+        <tr class="rightTable_upperTr">
+            <td colspan="5" style="padding-top: 5%;">
+                <div class="login_inputDiv">
+                    <input id="zeyo_userID" type="text" placeholder="Email" value="<?=$saveId?>" maxlength="50">
+                </div>
+            </td>
+        </tr>
+        <tr class="rightTable_upperTr">
+            <td colspan="5">
+                <div class="login_inputDiv">
+                    <input id="zeyo_userPWD" type="password" placeholder="PASSWORD" value="<?=$savePWD?>">
+                </div>
+            </td>
+        </tr>
+        <tr class="rightTable_upperTr">
+            <td colspan="5" style="padding-bottom: 5%;">
+                <div class="login_Button">
+                    <button id="zeyo_loginButton" type="button">LOGIN
+                </div>
+            </td>
+        </tr>
+        <tr class="rightTable_middleTr">
+            <td colspan="5">
+                <div class="zeyo_findInfoDiv">
+                    <div>
+                        <input id="zeyo_autoLogin" type="checkbox" <? if($isAutoLogin == 1) echo "checked" ?> >자동로그인
+                    </div>
+                    <div>|</div>
+                    <div>아이디 찾기</div>
+                    <div>|</div>
+                    <div>비밀번호 찾기</div>
+                </div>
+            </td>
+        </tr>
+        <tr class="rightTable_lowerTr">
+            <td colspan="5">
+                <div class="login_alertDiv">회원가입 시 많은 혜택을 받으실 수 있습니다.<br>로그인/회원가입 시<br><b class="zeyo_termsOfUse">이용약관</b> <b class="zeyo_personalInfo">개인정보처리방침</b>에 동의하게 됩니다.</div>
+            </td>
+        </tr>
+        <tr class="rightTable_lowerTr" style="height:25%;">
+            <td colspan="2" style="width:48%;">
+                <div class="zeyo_nonMember rightTable_lowerTr_button">
+                    <div class="rightTable_lowerTr_buttonText">비회원으로<br>시작</div>
+                </div>
+            </td>
+            <td><div>|</div></td>
+            <td colspan="2" style="width:48%;">
+                <div id="zeyo_regist" class="rightTable_lowerTr_button">
+                    <div class="rightTable_lowerTr_buttonText">동의하고<br>회원가입</div>
+                </div>
+            </td>
+        </tr>
+    </table>
+</div>

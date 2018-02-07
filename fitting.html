@@ -1,0 +1,299 @@
+<?
+$server_root_path = "http://210.122.38.109/sizeinfo/";
+include $_SERVER["DOCUMENT_ROOT"]."/sizeinfo/sizeinfophp/connectdb.php";
+?>
+  <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+  <script src="<?=$server_root_path?>js_css/fitting.js"></script>
+
+  <!Doctype <html>
+  <style>
+    #Fitting_Pyo {
+      border: 2px solid black;
+    }
+
+    #fitting_preview {
+      border: 3px solid black;
+    }
+
+    }
+  </style>
+
+  <head>
+    <h1>Fitting </h1>
+  </head>
+
+  <body>
+    <?
+
+  if (isset($_GET["ProductID"]))
+  {
+    echo "GetOk"; //isset에 들어왔음을 알림.
+    $newOrUpdateCheckingNum=$_GET["ProductID"];
+
+    $specCategoryQuery = "select ProductAdditionalInfo.Name as AdditionalCustomizedSpecInfoName,
+    ProductAdditionalInfo.IsHide as ProductAdditionalInfoIsHide
+    from ProductAdditionalInfo
+    where ProductId=  $newOrUpdateCheckingNum;";
+    //SpecCategoryInfo. ex)신축성 두께 비침
+    $specDetailQuery = "select ProductAdditionalInfo.Name as AdditionalCustomizedSpecInfoName, ProductAdditionalInfo.IsHide as ProductAdditionalInfoIsHide
+, ProductAdditionalItem.Name as CustomizedSpecItemName, ProductAdditionalItem.IsChecked as ProductAdditionalItemIsChecked
+, ProductAdditionalItem.Num as CustomizedSpecItemNum
+from ProductAdditionalItem
+left join ProductAdditionalInfo on ProductAdditionalItem.ProductAdditionalInfoID = ProductAdditionalInfo.PKey
+where ProductAdditionalInfo.ProductID=$newOrUpdateCheckingNum;";
+//CategorySpecDetailInfo. ex) 좋음 보통 나쁨 두꺼움
+
+$fittingTableSpecType= mysqli_query($conn, $specCategoryQuery) or die;
+$fittingTableData=mysqli_query($conn, $specDetailQuery) or die;
+
+$numofRows=mysqli_num_rows($fittingTableSpecType); //속성 값의 row의 개수 할당. (신축성 두께, 비침)
+$numofRowsData=mysqli_num_rows($fittingTableData); //속성에 속하는 특징 row의 개수 할당. (좋음 보통 나쁨)
+
+if($numofRows==0) //데이터가 없음 -> 신규등록 해야함.
+{
+  echo "<input type='hidden' id='ProductID' value='-1'>";
+  echo "<script>location.href='http://210.122.38.109/sizeinfo/fitting.html'</script>";
+}
+  else{
+    echo "<input type='hidden' id='ProductID' value= '$newOrUpdateCheckingNum'>"; //because it must update .
+  }
+    // ProductID= $_GET["ProductID"]을 가진 데이터가 있는지 쿼리문작성-> 확인. 없으면 패스.
+    // 있으면, 해당 정보를 통해 테이블의 체킹order를 알맞게 초기화하여 뷰해준다.
+  }
+else{
+  $queryForSpecType= "select AdditionalCustomizedSpecInfo.Name as AdditionalCustomizedSpecInfoName,
+  AdditionalCustomizedSpecInfo.PKey as AdditionalCustomizedSpecInfoPKey from AdditionalCustomizedSpecInfo
+  where AdditionalCustomizedSpecInfo.SpecViewListID=7";
+  //SpecCategoryInfo. ex)신축성 두께 비침
+
+  $queryForData = "select CustomizedSpecItem.Name as CustomizedSpecItemName, AdditionalCustomizedSpecInfo.Name as AdditionalCustomizedSpecInfoName,
+AdditionalCustomizedSpecInfo.PKey as AdditionalCustomizedSpecInfoPKey, CustomizedSpecItem.Num as CustomizedSpecItemNum  from AdditionalCustomizedSpecInfo
+left join CustomizedSpecItem on CustomizedSpecItem.AdditionalCustomizedSpecInfoID = AdditionalCustomizedSpecInfo.PKey";
+//CategorySpecDetailInfo. ex) 좋음 보통 나쁨 두꺼움
+
+
+$fittingTableSpecType= mysqli_query($conn, $queryForSpecType) or die;
+$fittingTableData=mysqli_query($conn, $queryForData) or die;
+
+$numofRows=mysqli_num_rows($fittingTableSpecType); //row의 개수 할당.
+$numofRowsData=mysqli_num_rows($fittingTableData); //테이블에 들어갈 데이터 개수 할당
+
+  $isHide=-1;
+  $isChecked=-1;
+  $preventUndefined=-1;
+  echo "<input type='hidden' id='ProductID' value='-1'>";
+}
+?>
+
+      <input type="hidden" id="hNumofRows" value="<?=$numofRows?>">
+      <table id=Fitting_Pyo>
+
+        <?
+  $tempiter=0;
+  $i=0;
+  $specTemp=NULL;
+  $ItemNumTemp;
+  $specNameTemp;
+
+  while($SpecRow=mysqli_fetch_array($fittingTableSpecType)){
+
+if(!isset($preventUndefined))
+{
+  {
+    $isHide= $SpecRow['ProductAdditionalInfoIsHide'];
+  }
+}
+
+if($specTemp==NULL)
+{
+  echo '<tr id="">
+    <td class ="SpecInfo">
+      <label class="SpecInfoText" >
+      <input class="SpecInfoname" type = "checkbox" name = "SpecInfoname" '.(( $isHide==1)? "": "checked").'>'.$SpecRow['AdditionalCustomizedSpecInfoName'].'
+    </label>
+    </td>';
+}
+//체크박스가 클래스명이라 라벨이 특정한 체크박스를 못 잡아내는 듯. -> 라벨을 바로 넣어버림.해결.
+//라디오박스를 겟할 때 -> isChecked==1 일때만 체크.
+else{
+  echo '<tr id="">
+    <td class ="SpecInfo">
+    <label class="SpecInfoText">
+      <input class="SpecInfoname" type = "checkbox" name = "SpecInfoname" '.(( $isHide==1)? "": "checked").'>'.$SpecRow['AdditionalCustomizedSpecInfoName'].'
+    </label>
+    </td>
+  <td >
+  <label>
+  <input type= "radio" class=  "Fitting_Pyo_'.$tempiter.'" name='.$SpecRow['AdditionalCustomizedSpecInfoName'].' value ='.$RowData['CustomizedSpecItemNum'].' '.$ItemNumTemp.' '.(( ($isChecked==1) || ($isChecked==-1) )? "checked": "").'>
+  <!-- 2~ 각 row의 첫번째 속성 ex)두꺼움, 있음, 많이비침 -->
+  '.$specTemp.'
+</label>
+</td>';
+
+}
+
+  for(; $i<$numofRowsData; $i++){
+    $RowData=mysqli_fetch_array($fittingTableData);
+
+    if(!isset($preventUndefined)){
+    $isChecked= $RowData['ProductAdditionalItemIsChecked'];
+    }
+
+  if($i>0)
+  {
+   if($specNameTemp==$RowData['AdditionalCustomizedSpecInfoName'] )
+   //if($temp==$RowData['AdditionalCustomizedSpecInfoPKey']) 수정 specNameTemp가 같은역할 대신 수행.
+    {
+      echo '<td>
+        <label>
+        <input type= "radio" class="Fitting_Pyo_'.$tempiter.'" name='.$SpecRow['AdditionalCustomizedSpecInfoName'].' value ='.$RowData['CustomizedSpecItemNum'].' '.(( $isChecked==1)? "checked": "").'>
+      '.$RowData['CustomizedSpecItemName'].'</label>
+    </td>';
+    }
+    else{
+      //$temp=$RowData['AdditionalCustomizedSpecInfoPKey']; 수정 specNameTemp가 같은역할 대신 수행.
+      $specNameTemp=$RowData['AdditionalCustomizedSpecInfoName'];
+      $specTemp=$RowData['CustomizedSpecItemName'];
+      $ItemNumTemp=$RowData['CustomizedSpecItemNum'];
+      $tempiter++;
+      break;
+    }
+  }
+  else
+  {
+    echo '<td>
+      <label>
+      <input type= "radio" class="Fitting_Pyo_'.$tempiter.'" name='.$SpecRow['AdditionalCustomizedSpecInfoName'].' value ='.$RowData['CustomizedSpecItemNum'].'  '.(( $isChecked==1 || $isChecked==-1)? "checked": "").'>
+    '.$RowData['CustomizedSpecItemName'].'</label>
+      <!-- 첫번째 속성 ex)좋음 -->
+    </td>';
+
+  }
+  //$temp=$RowData['AdditionalCustomizedSpecInfoPKey']; 수정 specNameTemp가 같은역할 대신 수행.
+  $specNameTemp=$RowData['AdditionalCustomizedSpecInfoName'];
+}
+
+echo '</tr>';
+}
+?>
+          <!-- otherinfo -->
+          <?
+$queryForSelectFromCountry = "select Country.Country as CountryName, Country.Code as CountryCode,
+Country.ISOCode as CountryISOCode
+from Country;";
+$queryForSelectCountry = mysqli_query($conn, $queryForSelectFromCountry) or die ($queryForSelectFromCountry);
+
+$queryForSelectFromWarranty = "SELECT Warranty.PKey as WarrantyPKey, Warranty.Name as WarrantyName
+from Warranty;";
+$queryForSelectWarranty = mysqli_query($conn, $queryForSelectFromWarranty) or die ($queryForSelectFromWarranty);
+?>
+      </table>
+      <div id=o therInfo>
+        otherInfo
+        <table>
+          <tr>
+            <td>
+              <label for="madeCountry">제조국</label>
+            </td>
+            <td>
+              <select name="madeCountry" id="madeCountry">
+        <option value= "" selected disabled hidden>제조국을 선택하세요.</option>
+      <?
+      while($countryRow = mysqli_fetch_array($queryForSelectCountry))
+      {//////
+        echo "<option value='" .$countryRow['CountryISOCode']. "'>" .$countryRow["CountryName"]. "</option>";
+      }
+      ?>
+       <option value="direct">직접입력</option>
+       </select></td>
+            <td>
+              <input type="text" id="selboxDirectCountry" name="selboxDirectCountry" style="display:none" />
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <label for="Manufacturer">
+        제조사
+      </label>
+            </td>
+            <td>
+              <input id="Manufacturer" type="text" name="Manufacturer">
+            </td>
+
+          </tr>
+          <tr>
+            <td>
+              <label for="productionDateName">
+        제조년월
+      </label>
+            </td>
+            <td>
+              <input id="productionDateName" type="text">
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              <label for="warrantyDate">품질보증기간</label>
+            </td>
+            <td>
+              <select id="warrantyDate">
+              <option value= "" selected disabled hidden>보증기간을 선택하세요.</option>
+           <?
+           while($WarrantyRow = mysqli_fetch_array($queryForSelectWarranty))
+           {
+             echo "<option value='" .$WarrantyRow['WarrantyPKey']. "'>" .$WarrantyRow["WarrantyName"]. "</option>";
+           }
+           ?>
+           <option value="direct">직접입력</option>
+       </select>
+            </td>
+            <td>
+              <input type="text" id="selboxDirectWarranty" name="selboxDirectWarranty" style="display:none" />
+            </td>
+          </tr>
+
+          <tr>
+            <td>
+              <label for="ASnumber">
+        A/S 전화번호
+      </label>
+            </td>
+            <td>
+              <input id="ASnumber" type="text">
+            </td>
+          </tr>
+
+
+        </table>
+      </div>
+
+
+
+
+      <label>
+      <div name="forSend" id="forSend" style="width:50px; border:1px solid black; margin-top:5px; text-align:center">전송
+      </div>
+      </label>
+
+      <label>
+      <div name="Preview" id="Preview" style="width:100px; border:1px solid black; margin-top:5px; text-align:center">미리보기
+      </div>
+    </label>
+
+      <div class="previewShow" style="display:none">
+        <table id="fitting_preview">
+        </table>
+      </div>
+      <div class="previewShow" style="display:none">
+        otherInfo
+        <table id="otherInfo_preview">
+        </table>
+      </div>
+      <!-- <form name="forSend" id="forSend" style="width:50px;"> -->
+      <!-- <label for = "PKey"> Product.PKey : </label>
+  <input id="PKey" type= "text" name = "PKey"/> -->
+      <!-- <input type="button" value="전송" /> -->
+      <!-- </form> -->
+
+  </body>

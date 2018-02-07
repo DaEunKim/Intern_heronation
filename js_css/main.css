@@ -1,0 +1,479 @@
+/* body{
+    min-width:auto;
+    margin:0;
+    display: block;
+}
+*/
+
+
+body{
+    position:fixed;
+    width:100%;
+    height: 100%;
+    margin:0;
+    /* display: block; */
+    cursor:default;
+}
+
+.zeyo_mainLeftDiv{
+    order:1;
+    width: 30%;
+    max-width:300px;
+    height:100%;
+    background: rgba(82,3,12,0.9);
+}
+
+.zeyo_mainRightDiv{
+    order:2;
+    height:100%;
+}
+#zeyo_mainLeftTable{
+    position:relative;
+    top:50%;
+    transform: translateY(-50%);
+    color:rgba(255,255,255,0.6);
+    width:80%;
+    text-align: left;
+    margin: 0 auto;
+}
+#zeyo_LogoDiv{
+    max-width:200px;
+}
+#zeyo_LogoDiv img{
+    width:100%;
+}
+
+
+.zeyo_mainDiv{
+    display:inline-flex;
+    flex-wrap: wrap;
+    /* flex-direction:column; */
+    /* flex-direction: row-reverse; */
+    /* position: relative;
+    top:20px;
+    width:1004px;
+    height: 900px;
+    margin:auto; */
+    width:100%;
+    height: 100%;
+    padding:0;
+    overflow: hidden;
+
+}
+.zeyo_mainDivBg{
+    position:absolute;
+    width:100%;
+    height:100%;
+    z-index: -1;
+    background-image: url(../img/bg_img.jpg);
+    background-size: contain;
+
+    filter: gray;
+    -webkit-filter: grayscale(0.7);
+}
+
+.zeyo_mainDivBg img{
+    width: 100%;
+    height: 100%;
+}
+
+.zeyo_head{
+    position: absolute;
+    right:3%;
+    top:3%;
+    float:right;
+}
+.zeyo_head div{
+    letter-spacing: -1px;
+    /* color:#52030c; */
+    color:#FFFFFF;
+    font-size: 90%;
+    /* font-weight: bold; */
+    float:left;
+    margin-left:5px;
+    margin-right:5px;
+}
+
+.zeyo_tail{
+    position: absolute;
+    right:3%;
+    bottom:3%;
+    float:right;
+}
+.zeyo_tail div{
+    font-size: 80%;
+    color:#FFFFFF;
+    float:left;
+    margin-left:10px;
+    margin-right:10px;
+}
+
+
+/*-------------zeyo_mainLeftDiv--------------*/
+
+#zeyo_startButton{
+    color:#52030c;
+    font-weight: bold;
+    width:40%;
+    min-width: 80px;
+    border : 1px solid rgba(0,0,0,0.4);
+
+    background: -webkit-linear-gradient(rgba(255,255,255,1) 0%, rgba(255,255,255,1) 50%, rgba(255,255,255,0.7) 51%, rgba(255,255,255,0.7) 100%);
+    background: -o-linear-gradient(rgba(255,255,255,1) 0%, rgba(255,255,255,1) 50%, rgba(255,255,255,0.7) 51%, rgba(255,255,255,0.7) 100%);
+    background: linear-gradient(rgba(255,255,255,1) 0%, rgba(255,255,255,1) 50%, rgba(255,255,255,0.7) 51%, rgba(255,255,255,0.7) 100%);
+}
+
+/*-------------zeyo_mainRightDiv--------------*/
+.zeyo_rightBody{
+    height: 100%;
+    width:100%;
+    background: rgba(100,100,100,0.6);
+}
+#zeyo_right_mainTable{
+    position: relative;
+    top:50%;
+    transform: translateY(-50%);
+    color:white;
+    width:60%;
+    min-width: 365px;
+    max-width: 400px;
+    height:60%;
+    min-height: 400px;
+    max-height: 450px;
+    margin:0 auto;
+    /*margin-top:30%;*/
+    text-align: center;
+    vertical-align: middle;
+    border-collapse: collapse;
+}
+#zeyo_right_mainTable tr > td{
+    /*border:1px solid;*/
+}
+#zeyo_right_mainTable tr > td > div{
+
+    /*width:75%;*/
+    /*border:2px solid;*/
+}
+.rightTable_upperTr{
+    background: rgba(190,190,190,0.8);
+}
+.rightTable_middleTr{
+    font-size: 80%;
+    background: rgba(190,190,190,0.8);
+}
+.rightTable_lowerTr{
+    background: rgba(50,50,50,0.7);
+}
+.zeyo_selectUserDiv{
+    display:flex;
+    width:80%;
+}
+.zeyo_findInfoDiv{
+    margin:auto;
+    width:80%;
+    display:flex;
+}
+.zeyo_findInfoDiv div{
+    margin:auto;
+}
+
+.zeyo_findInfoDiv input{
+    margin-top:0;
+}
+.zeyo_selectUserDiv div:first-child{
+
+    margin-top:2%;
+    padding-left: 10%;
+    flex:1;
+}
+.zeyo_selectUserDiv div:last-child{
+    flex:2;
+    letter-spacing: -1px;
+}
+
+.login_inputDiv{
+    margin:auto;
+    background: white;
+    width:75%;
+    height:100%;
+}
+.login_inputDiv input{
+    background:none;
+    font-size: 100%;
+    text-align: center;
+    width:100%;
+    height:95%;
+    border:none;
+    background: none;
+}
+.login_Button{
+    margin:auto;
+    background: black;
+    width:75%;
+    height:100%;
+}
+.login_Button button{
+    color:inherit;
+    background:none;
+    font-size: 100%;
+    width:100%;
+    height:100%;
+    border:none;
+}
+.login_alertDiv{
+    margin:auto;
+    width:75%;
+    font-size: 90%;
+    letter-spacing: -1.5px;
+    text-align: left;
+}
+.login_alertDiv b{
+    color:#5cff82;
+    text-decoration: underline;
+}
+.rightTable_lowerTr_button{
+    width:50%;
+    height:70%;
+    border-radius: 100%;
+    background: white;
+    margin: auto;
+}
+.rightTable_lowerTr_buttonText{
+    position: relative;
+    top:50%;
+    transform: translateY(-50%);
+    color:black;
+}
+
+/*-----------------regist.html----------------*/
+#zeyo_regist_mainTable{
+    position: relative;
+    top:20%;
+    color:white;
+    width:60%;
+    height:60%;
+    margin:0 auto;
+    /*margin-top:30%;*/
+    text-align: center;
+    vertical-align: middle;
+    border-collapse: collapse;
+}
+
+
+#zeyo_regist_mainTable input:not(.InputBox_threeNum){
+    float:left;
+    width:100%;
+    height:70%;
+}
+
+.InputBox_threeNum{
+    width:100%;
+    height:70%;
+}
+
+#zeyo_regist_mainTable tr td:last-child{
+    padding-right: 5%;
+}
+
+.regirstFirstTd{
+    width:10%;
+    /* padding-left: 5%; */
+}
+.regirstSecondtTd{
+    letter-spacing: -1px;
+    width:28%;
+    text-align: left;
+}
+#zeyo_tryRegist{
+    color:#52030c;
+    font-weight: bold;
+    height:25px;
+    width:100%;
+    border : 1px solid rgba(0,0,0,0.4);
+
+    background: -webkit-linear-gradient(rgba(255,255,255,1) 0%, rgba(255,255,255,1) 50%, rgba(255,255,255,0.7) 51%, rgba(255,255,255,0.7) 100%);
+    background: -o-linear-gradient(rgba(255,255,255,1) 0%, rgba(255,255,255,1) 50%, rgba(255,255,255,0.7) 51%, rgba(255,255,255,0.7) 100%);
+    background: linear-gradient(rgba(255,255,255,1) 0%, rgba(255,255,255,1) 50%, rgba(255,255,255,0.7) 51%, rgba(255,255,255,0.7) 100%);
+}
+
+
+.zeyo_termOfUseHead{
+    position: relative;
+    top:10%;
+
+    color:white;
+    width:85%;
+    height: auto;
+    margin:0 auto;
+}
+.zeyo_termOfUseHead div:not(:last-child){
+    float: left;
+}
+.zeyo_termOfUseHead div:first-child{
+    padding-top: 2px;
+    padding-right: 1%;
+}
+.zeyo_termOfUseHead div:last-child{
+    color:#52030c;
+    float:right;
+    padding-top: 2px;
+}
+
+.zeyo_termOfUseText{
+    clear: both;
+    position: relative;
+    top:12%;
+    color:white;
+    width:85%;
+    height: 75%;
+    margin:0 auto;
+    background: rgba(190,190,190,0.8);
+
+    overflow: auto;
+}
+.zeyo_termOfUseText div{
+    margin-left:1%;
+    width:98%;
+    float: left;
+    font-size: 90%;
+    text-align: left;
+}
+
+.zeyo_contactUsHead{
+    position: relative;
+    top:10%;
+
+    color:white;
+    width:85%;
+    height: auto;
+    margin:0 auto;
+}
+.zeyo_contactUsHead div:not(:last-child){
+    float: left;
+}
+.zeyo_contactUsHead div:first-child{
+    padding-top: 2px;
+    padding-right: 1%;
+}
+.zeyo_contactUsHead div:last-child{
+    color:#52030c;
+    float:right;
+    padding-top: 2px;
+}
+
+
+.zeyo_contactUsBody{
+    clear: both;
+    position: relative;
+    top:20%;
+    color:white;
+    width:85%;
+    height: 30%;
+    margin:0 auto;
+    background: rgba(190,190,190,0.8);
+
+    overflow: auto;
+}
+.zeyo_contactUsTail{
+    position: relative;
+    top:30%;
+    color:white;
+    width:85%;
+    height: auto;
+    margin:0 auto;
+}
+
+
+/* 데스크탑 */
+@media screen and (max-width:1199px){
+    .zeyo_mainLeftDiv{
+        order:1;
+        width: 30%;
+        max-width:300px;
+        height:100%;
+        background: rgba(82,3,12,0.9);
+    }
+
+    .zeyo_mainRightDiv{
+        order:2;
+        height:100%;
+    }
+    #zeyo_mainLeftTable{
+        position:relative;
+        top:50%;
+        transform: translateY(-50%);
+        color:rgba(255,255,255,0.6);
+        width:80%;
+        text-align: left;
+        margin: 0 auto;
+    }
+    #zeyo_LogoDiv{
+        max-width:200px;
+    }
+    #zeyo_LogoDiv img{
+        width:100%;
+    }
+}
+
+
+/* 모바일 가로 */
+@media screen and (max-width:767px){
+    .zeyo_mainLeftDiv{
+        order:1;
+        width: 100%;
+        max-width:100%;
+        height: 10%;
+        background: rgba(82,3,12,0.9);
+        overflow: hidden;
+    }
+
+    .zeyo_mainRightDiv{
+        order:2;
+        width:100%;
+        height: 90%;
+    }
+    #zeyo_mainLeftTable{
+        /* position:relative;
+        left:1%; */
+        /* left: 0; */
+        color:rgba(255,255,255,0.6);
+        /* width:20%; */
+        margin:0;
+        margin-left:3%;
+    }
+    #zeyo_LogoDiv{
+        min-width:100px;
+    }
+    #zeyo_LogoDiv img{
+        width:50%;
+    }
+}
+
+/* 모바일 세로 */
+@media screen and (max-width:575px){
+    /* .zeyo_mainLeftDiv{
+        order:1;
+        width: 100%;
+        height: 10%;
+        background: rgba(82,3,12,0.9);
+        overflow: hidden;
+    }
+
+    .zeyo_mainRightDiv{
+        order:2;
+        width:100%;
+        height: 90%;
+    }
+    #zeyo_mainLeftTable{
+        position:absolute;
+        left:3%;
+        color:rgba(255,255,255,0.6);
+        width:20%;
+    }
+    #zeyo_LogoDiv{
+        min-width:100px;
+    }
+    #zeyo_LogoDiv img{
+        width:80%;
+    } */
+}

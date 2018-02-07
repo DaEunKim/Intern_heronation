@@ -1,0 +1,1484 @@
+/**{
+    box-sizing: border-box;
+}*/
+
+body{
+    width:100%;
+    height:auto;
+    min-height: 1450px;
+    cursor:default;
+}
+
+
+/*---------------header.html---------------*/
+#sizeInfoTitle{
+    position: relative;
+    width:800px;
+    margin:0 auto;
+    font-size: 30pt;
+}
+
+
+/*---------------searchmain.html---------------*/
+#sizeInfoSearchList{
+    width:800px;
+    margin:20px auto;
+}
+
+#sizeInfoSearchList{
+    width:100%;
+    height: 40px;
+    color : white;
+    background: #52030c;
+    border-color:#52030c;
+}
+#sizeInfoSearch{
+    width:100%;
+    color:white;
+}
+#sizeInfoSearch div{
+    float:left;
+    margin-right: 20px;
+    height: 40px;
+    line-height: 40px;
+    padding-left: 2%;
+}
+#sizeInfoSearch button{
+    margin-top:1%;
+}
+#sizeInfoSearch_name input{
+    width:100px;
+}
+#sizeInfoSearch_date input{
+    width:100px;
+}
+#sizeInfoSearch select{
+    height:23px;
+}
+
+#sizeInfoList{
+    clear:both;
+}
+
+#sizeInfoList_delSelectedItem{
+    margin-top:20px;
+    float:left;
+}
+#sizeInfoList_instSizeInfo{
+    margin-top:20px;
+    float:right;
+}
+
+#sizeInfoList_table{
+    width:100%;
+    height:100%;
+    color:black;
+    font-size: 11pt;
+    border-collapse: collapse;
+    margin-top:5%;
+
+}
+#sizeInfoList_table tr td{
+    border:1px solid #d7d7d7;
+    text-align: center;
+}
+
+
+/*
+#sizeInfoList_table{
+    position: relative;
+    top:10px;
+    width:100%;
+    border-collapse: collapse;
+}
+*/
+
+
+
+
+/*---------------insertsizeinfo.html---------------*/
+.mainDiv{
+    position: relative;
+    top:20px;
+    width:1004px;
+    height: 100%;
+    /*height:100%;*/
+
+    margin:0 auto;
+}
+.mainTable{
+    width: 100%;
+    height: 100%;
+}
+
+.mainLeft{
+    width: 15%;
+    height:100%;
+
+}
+.mainRight{
+    width:85%;
+    height:100%;
+    padding-left: 10px;
+}
+#insertSizeInfo_left{
+    height: 1000px;
+}
+
+#sizeInfo_description{
+    float:left;
+    width:100%;
+    margin-left:40%;
+    margin-bottom:1%;
+    margin-right:1%;
+    text-align: right;
+    vertical-align: text-top;
+    overflow: hidden;
+}
+
+#sizeInfo_description div{
+    float:left;
+    font-size: 80%;
+}
+.description3{
+    background:#f4f4f4;
+    border:1px solid #d5d5d5;
+    /*text-align: center;*/
+
+    width:15%;
+    height:80%;
+}
+
+
+#sizeInfo_name_category{
+    clear:both;
+    text-align: center;
+    width:100%;
+    height: 40px;
+    color : white;
+    background: #52030c;
+}
+#sizeInfo_name_category div{
+    float:left;
+    position: relative;
+    left:15%;
+    width: 35%;
+    padding-top: 5px;
+}
+
+#sizeInfo_name_category select{
+    height: 30px;
+    font-size: 90%;
+    margin:0;
+    padding: 0;
+    border: 0;
+}
+
+#sizeInfo_name_category input{
+    height: 30px;
+    width:230px;
+    font-size: 90%;
+    margin:0;
+    padding: 0;
+    border: 0;
+}
+
+#sizeInformation_includeCategory{
+    border-color: inherit;
+    width:100%;
+}
+
+#sizeInformation_wrap{
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: inline-flex;
+
+    /* flex-grow: 1; */
+    flex-direction: column;
+
+    -ms-flex-wrap: wrap;
+    flex-wrap: wrap;
+
+    width:100%;
+}
+
+#sizeInformation_meterial{
+    order:1;
+    /* clear:both; */
+    /* float:left; */
+
+    width:49%;
+    height:350px;
+
+    border-width: 2px;
+    border-style:solid;
+    border-color:inherit;
+
+    overflow: auto;
+}
+#sizeInformation_image{
+    order:1;
+    /* float:left; */
+    width:49%;
+    height:350px;
+
+    /* position: relative;
+    left:1%; */
+
+    border-width: 2px;
+    border-style:solid;
+    border-color:inherit;
+
+    overflow: auto;
+}
+#sizeInformation_sizeInfo{
+    order:3;
+    /* clear:both; */
+    /* float:left; */
+    margin-top:10px;
+
+    width:100%;
+    height:250px;
+
+    border-width: 2px;
+    border-style:solid;
+    border-color:inherit;
+
+    overflow: auto;
+}
+#sizeInformation_laundry{
+    order:5;
+    /* clear:both; */
+    /* float:left; */
+    margin-top:10px;
+
+    width:100%;
+    height:300px;
+
+    border-width: 2px;
+    border-style:solid;
+    border-color:inherit;
+
+    overflow: hidden;
+}
+#sizeInformation_guide{
+    order:4;
+    /* clear:both; */
+    /* float:left; */
+    margin-top:10px;
+
+    width:100%;
+    height:300px;
+
+    border-width: 2px;
+    border-style:solid;
+    border-color:inherit;
+
+    overflow: hidden;
+}
+#sizeInformation_additional{
+    order:6;
+    /* clear:both; */
+    /* float:left; */
+    margin-top:10px;
+
+    width:100%;
+    height:230px;
+
+    border-width: 2px;
+    border-style:solid;
+    border-color:inherit;
+
+    overflow: auto;
+}
+#sizeInformation_preview{
+    /*clear:both;*/
+    float:right;
+    margin-top:10px;
+}
+#sizeInformation_preview input{
+    height:32px;
+    background: #52030c;
+    border:none;
+    color:white;
+    font-weight: bold;
+}
+
+
+/*#sizeInformation_updateButtons{
+
+}*/
+
+#sizeInformation_updateButtons input:not(:last-child){
+    width:10%;
+    height:32px;
+    background: #52030c;
+    border:none;
+    color:white;
+    font-weight: bold;
+}
+
+#sizeInformation_updateButtons input:last-child{
+    width:15%;
+    height:32px;
+    background: #52030c;
+    border:none;
+    color:white;
+    font-weight: bold;
+}
+
+#update_cancel{
+    clear:both;
+    float:left;
+    margin-top:10px;
+}
+
+#sizeInformation_updateButtons input:not(#update_cancel){
+    float:right;
+    margin-top:10px;
+    margin-left:10px;
+}
+.excludFromPreviewHr{
+    z-index: 0;
+    width:95%;
+    margin-top:35%;
+    border:1px solid #afafaf;
+}
+.excludFromPreview{
+    position: relative;
+    z-index: 1;
+    color:white;
+    font-weight: bold;
+    text-align: center;
+    margin-top:-5%;
+}
+.excludFromPreviewHr2{
+    z-index: 0;
+    width:95%;
+    border:1px solid #afafaf;
+}
+
+.excludFromPreview2{
+    position: relative;
+    z-index: 1;
+    color:white;
+    font-weight: bold;
+    text-align: center;
+    margin-top:-2.3%;
+}
+
+
+
+/*---------------materialinformation.html---------------*/
+#detail_title{
+    height:10%;
+    width:95%;
+    border-bottom:1px solid #afafaf;
+    margin: auto;
+    font-size: 100%;
+}
+#detail_titleText{
+    position:relative;
+    top:20%;
+    left: 5px;
+    float:left;
+    /*color:#52030c;*/
+    font-weight: bold;
+}
+#detail_titleDecription{
+    position:relative;
+    top:47%;
+    left: 20px;
+    float: left;
+    font-size: 50%;
+    color:#afafaf;
+}
+
+#sizeInfo_checkBox {
+    position:relative;
+    top:25%;
+    float:left;
+}
+#detail_title div:nth-child(2){
+    position:relative;
+    top:25%;
+    float:left;
+}
+
+
+#materialInfo_table {
+    clear:both;
+    margin-top:1%;
+    margin-left:20px;
+}
+#materialInfo_table tr td{
+    font-weight: bold;
+    padding-top: 1%;
+    height:30px;
+    letter-spacing: -1px;
+}
+#materialInfo_table tr > td:not(:first-child){
+    padding-left: 3px;
+}
+#materialInfo_table input{
+    padding:2px;
+    height:20px;
+    border:2px solid #afafaf;
+    background: none;
+}
+#materialInfo_table button{
+    text-align: center;
+    width: 25px;
+    height: 25px;
+    border:none;
+    border-radius: 25px;
+    background: #2a2a2a;
+    color:white;
+    font-weight: bold;
+    font-size:large;
+}
+.materialNameInputBox{
+    width:120px;
+
+}
+.materialRatioInputBox{
+    width:60px;
+}
+
+#materialInfo_table2 {
+    width:85%;
+    margin-top:1%;
+    margin-left:20px;
+    letter-spacing: -1px;
+    background: none;
+}
+#materialInfo_table2 tr td{
+    font-weight: bold;
+    padding-top: 1%;
+    height:20px;
+}
+#materialInfo_table2 tr > td:not(:first-child){
+    padding-left: 10px;
+}
+#materialInfo_table2 tr:first-child > td:first-child{
+    width:34%;
+}
+#materialInfo_table2 tr:first-child > td:nth-child(2){
+    width:59%;
+}
+/*#materialInfo_table2 input{
+    padding:2px;
+    height:20px;
+    width:95.5%;
+    border:2px solid #afafaf;
+    background: none;
+}*/
+#materialInfo_table2 input:not(#productionDate):not([type="checkbox"]){
+    padding:2px;
+    height:20px;
+    width:95.5%;
+    border:2px solid #afafaf;
+    background: none;
+}
+#productionDate{
+    padding:2px;
+    height:20px;
+    width:83.8%;
+    border:2px solid #afafaf;
+    background: none;
+}
+.datePickerTd img{
+    float:right;
+    padding-top: 1.5%;
+    /*padding-right:2%;*/
+    height: 100%;
+}
+
+#materialInfo_table2 select{
+    height:28px;
+    width:99.8%;
+    border:2px solid #afafaf;
+    background: none;
+}
+.calenderImgDiv{
+    padding-top: 5px;
+}
+
+#disabledMaterialTable1{
+    clear:both;
+    margin-top:-36%;
+    margin-left:20px;
+}
+
+#disabledMaterialTable1 tr td{
+    font-weight: bold;
+    padding-top: 1%;
+    height:30px;
+    letter-spacing: -1px;
+}
+#disabledMaterialTable1 tr > td:not(:first-child){
+    padding-left: 3px;
+}
+#disabledMaterialTable1 input{
+    padding:2px;
+    height:20px;
+    border:2px solid #afafaf;
+    background: none;
+}
+#disabledMaterialTable1 button{
+    text-align: center;
+    width: 25px;
+    height: 25px;
+    border:none;
+    border-radius: 25px;
+    background: #52030c;
+    color:white;
+    font-weight: bold;
+    font-size:large;
+}
+
+#disabledMaterialTable2 {
+    z-index: -1;
+    width:80%;
+    margin-top:1%;
+    margin-left:20px;
+    letter-spacing: -1px;
+    background: none;
+}
+#disabledMaterialTable2 tr td{
+    font-weight: bold;
+    padding-top: 1%;
+    height:20px;
+}
+
+#disabledMaterialTable2 tr > td:not(:first-child){
+    padding-left: 10px;
+}
+#disabledMaterialTable2 input{
+    padding:2px;
+    height:20px;
+    width:95%;
+    border:2px solid #afafaf;
+    background: none;
+}
+
+/*---------------productimageinformation.html---------------*/
+#imageInfo_table {
+    clear:both;
+    width:95%;
+    height: 88%;
+    margin:auto;
+    /*margin-top:10px;*/
+    border-collapse: collapse;
+}
+
+#imageInfo_table tr:first-child td:first-child > div{
+    width:100px;
+    height: 200px;
+    overflow: auto;
+    margin: auto;
+}
+
+#imageInfo_table tr.imageDescription > td{
+    height:5%;
+    text-align: center;
+    margin: auto;
+    color:#747474;
+}
+
+#imageInfo_table tr:not(:first-child) > td > div:first-child{
+    /*float:left;*/
+    margin:auto;
+    font-size: 80%;
+}
+
+.imageInfo_category_td{
+    width:40%;
+    height: 85%;
+}
+.imageInfo_image_td{
+    width:60%;
+    height: 85%;
+}
+.imageInfo_imageDiv{
+    /*margin:0;*/
+    width:235px;
+    height:235px;
+    border: 1px solid #d5d5d5;
+}
+.imageInfo_imageDiv img{
+    width:inherit;
+    height: inherit;
+}
+#imageInfo_insertImage{
+    background:#f4f4f4;
+    border:1px solid #d5d5d5;
+    text-align: center;
+
+    font-size: 90%;
+    width:28%;
+    height:60%;
+
+    position:relative;
+    top:20%;
+    float:right;
+}
+#imageInfo_CategoryListTable tr td{
+    text-align: center;
+    border-radius: 100%;
+    width:60px;
+    height:60px;
+    font-size: 80%;
+    /*background: #bbbbbb;*/
+}
+
+#disabledImageTable{
+    clear:both;
+    width:95%;
+    height: 95%;
+    margin:auto;
+    margin-top:-36%;
+    /*margin-top:10px;*/
+    border-collapse: collapse;
+}
+
+/*#disabledImageTable img{
+    height:100%;
+}*/
+
+#disabledImageTable tr.imageDescription > td{
+    height:5%;
+    text-align: center;
+    margin: auto;
+    color:#747474;
+}
+#disabledImageTable tr:not(:first-child) > td > div:first-child{
+    /*float:left;*/
+    margin:auto;
+    font-size: 80%;
+}
+/*---------------productsizeinformation.html---------------*/
+#productSizeInfo_table {
+    /*clear:both;*/
+
+    width:93%;
+    text-align: center;
+    border-collapse: collapse;
+    margin:auto;
+    margin-top:10px;
+}
+#productSizeInfo_table tr td{
+    height:40px;
+}
+
+#productSizeInfo_table tr:first-child > td > div{
+    width:80%;
+    height: 30px;
+    border:2px solid #afafaf;
+    margin:auto;
+}
+
+#productSizeInfo_table tr:first-child > td > div > div{
+    margin-top:5px;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+#productSizeInfo_detail button{
+    width:25px;
+    height: 25px;
+    border: none;
+    border-radius: 25px;
+    background: #2a2a2a;
+    color:white;
+    font-weight:  bold;
+    font-size:  large;
+    margin-left: 5px;
+}
+#productSizeInfo_detail input{
+    width:80%;
+    height: 30px;
+    border:2px solid #afafaf;
+    text-align: center;
+    background: none;
+}
+
+
+/*---------------laundryinformation.html---------------*/
+.sizeInfo_checkBoxImg{
+    position:relative;
+    top:25%;
+    float:left;
+}
+
+
+#laundryInfo_title {
+    position:relative;
+    left: 10px;
+    float:left;
+}
+#laundryInfo_title2 {
+    position:relative;
+    top: 2px;
+    left: 30px;
+    float:left;
+    /*font-size: 10pt;*/
+}
+#laundryInfo_wrap{
+    clear:both;
+    width:95%;
+    height:80%;
+
+    border-width: 2px;
+    border-style:solid;
+    border-color:inherit;
+
+    margin:auto;
+    margin-top:15px;
+    /*font-size: 110%;*/
+    border-collapse: collapse;
+
+    /*padding-bottom: 0px;*/
+}
+
+#laundryInfo_checkView{
+    float:left;
+    width:40px;
+    height: 100%;
+    border-collapse: collapse;
+    text-align: center;
+}
+#laundryInfo_checkView tr td{
+    border-bottom: 2px solid #52030c;
+    height:30px;
+}
+
+#laundryInfo_checkView tr:last-child td{
+    border-bottom: none;
+}
+
+#laundryInfo_table{
+    float:left;
+    width:15%;
+    height: 100%;
+    border-collapse: collapse;
+    /*margin:0 auto;*/
+    color:#949494;
+    font-weight: bold;
+}
+
+#laundryInfo_table tr td{
+    /*border-width: 2px;*/
+    /*border-style:solid;*/
+    border-bottom: 2px solid ;
+    border-right: 2px solid ;
+    border-color:inherit;
+    height:30px;
+}
+
+#laundryInfo_table tr:last-child td{
+    border-bottom: none;
+}
+
+#icon_preview{
+    float:right;
+    width:20%;
+    height: 90%;
+    border:1px solid #d7d7d7;
+    margin: auto;
+    margin-top: 10px;
+    margin-right: 10px;
+}
+
+.icon_previewTable{
+    font-size: 90%;
+    height: 90%;
+    width: 100%;
+    /*margin: 5px auto;*/
+    text-align: center;
+}
+
+.icon_previewTable tr:first-child{
+    width:100%;
+    /*height: 10%;*/
+    text-align: center;
+}
+
+.icon_previewTable tr.previewIconTr{
+    height: 70%;
+}
+.icon_previewTable tr:last-child{
+    width:100%;
+    /*height: 10%;*/
+    text-align: center;
+}
+#icon_preview svg{
+    width:130px;
+    height:130px;
+
+}
+
+.dryingTapDiv{
+    width:100%;
+    text-align: center;
+}
+
+.dryingTap_table{
+    width:100%;
+    margin:0 auto;
+    border-collapse: collapse;
+}
+.dryingTap_table tr td{
+    width:33.3%;
+    font-size:75%;
+    border:1px solid #d5d5d5;
+    /*background: #f4f4f4;*/
+}
+
+
+/*---------------laundryinformation.html---------------*/
+/*----------------------washing------------------------*/
+
+#washing{
+    float:left;
+    width: 57%;
+    height: 85%;
+    margin-top:20px;
+    margin-left:10px;
+}
+#washing_detailTable{
+    width:100%;
+    height: 100%;
+    font-size: 90%;
+
+    border-collapse: collapse;
+}
+
+#washing_detailTable tr td{
+    /*border:1px solid black;*/
+}
+
+.optionBar{
+    width:5%;
+    font-weight: bold;
+    font-size: large;
+    color:#52030c;
+    text-align: center;
+}
+.washingOptionName{
+    width:15%;
+    text-align: left;
+}
+.optionValue{
+    text-align: left;
+}
+
+.optionValue input{
+    margin-left: 8px;
+    background: none;
+    border: 1px solid #afafaf;
+}
+#waterTemperature{
+    width:100px;
+    text-align: center;
+}
+.washing_detergentDiv{
+    float:left;
+}
+
+/*---------------laundryinformation.html---------------*/
+/*----------------------dryCleaning--------------------*/
+#dryCleaning{
+    float:left;
+    width: 55%;
+    height: 85%;
+    margin-top:20px;
+    margin-left:10px;
+}
+#dryCleaning_detailTable{
+    width:100%;
+    height: 100%;
+    font-size: 90%;
+
+    border-collapse: collapse;
+}
+.dryCleaningOptionName{
+    width:25%;
+    text-align: left;
+}
+.dryCleaning_detergentDiv{
+    float:left;
+}
+
+/*#dryCleaning_detailTable tr:nth-child(1),
+#dryCleaning_detailTable tr:nth-child(2){
+    height: 40px;
+    vertical-align: top;
+}*/
+
+/*---------------laundryinformation.html---------------*/
+/*----------------------ironing-----------------------*/
+#ironing{
+    float:left;
+    width: 55%;
+    height: 85%;
+    margin-top:20px;
+    margin-left:10px;
+}
+#ironing_detailTable{
+    width:100%;
+    height: 100%;
+    font-size: 90%;
+
+    border-collapse: collapse;
+}
+.ironingOptionName{
+    width:33%;
+    text-align: left;
+}
+
+#minTemperature,
+#maxTemperature{
+    text-align: center;
+    width:80px;
+}
+
+/*---------------laundryinformation.html---------------*/
+/*----------------------drying-----------------------*/
+#drying{
+    float:left;
+    width: 55%;
+    height: 85%;
+    margin-top:20px;
+    margin-left:10px;
+}
+#drying_detailTable{
+    width:100%;
+    height: 100%;
+    font-size: 90%;
+
+    border-collapse: collapse;
+}
+.dryingOptionName{
+    width:15%;
+    text-align: left;
+}
+
+
+/*---------------laundryinformation.html---------------*/
+/*----------------------bleach-----------------------*/
+#bleach{
+    float:left;
+    width: 55%;
+    height: 85%;
+    margin-top:20px;
+    margin-left:10px;
+}
+#bleach_detailTable{
+    width:100%;
+    height: 100%;
+    font-size: 90%;
+
+    border-collapse: collapse;
+}
+.bleachOptionName{
+    width:25%;
+    text-align: left;
+}
+
+
+/*---------------meansureguide.html---------------*/
+#guide_table{
+    height:90%;
+    width:95%;
+    padding-bottom: 1%;
+    margin : auto;
+}
+
+#guide_table img{
+    height:250px;
+}
+#guide_table tr td{
+    /* border : 1px solid; */
+}
+
+.guide_imgTd{
+    width:20%;
+    height: 100%;
+}
+
+#guide_descriptionTable{
+    border-collapse: collapse;
+    /* border : none; */
+    width: 95%;
+    height: 80%;
+    margin:auto;
+
+}
+
+#guide_descriptionTable tr td:first-child{
+    text-align: center;
+    border-right : 1px solid #d7d7d7;
+    font-weight: bold;
+    width:25%;
+    padding-left : 5%;
+}
+
+#guide_descriptionTable tr td:last-child{
+    padding-left : 3%;
+}
+
+
+/*----------------previewsizeinfo.html----------------*/
+#preview_wrap{
+    clear:both;
+    position: relative;
+    top: 20px;
+    width:715px;
+    height:100%;
+    margin:0 auto;
+    font-size: 90%;
+    /*border: 2px solid black;*/
+}
+#preview_header{
+    margin-bottom: 30px;
+}
+.preview_headerTable{
+    width:100%;
+    border-bottom: 1px solid #747474;
+}
+
+.preview_headerTable tr > td:nth-child(1) > div{
+    height:40px;
+}
+.preview_headerTable svg{
+    position: relative;
+    bottom: 80%;
+}
+
+.preview_headerTable tr > td:nth-child(2){
+    width:25%;
+}
+.preview_headerTable tr > td:nth-child(3){
+    width:60%;
+    color:#9d9d9d;
+}
+
+#preview_body{
+    display:flex;
+    flex-flow:column;
+    border-color:red;
+}
+
+
+
+
+#preview_materialAndImage{
+    display:flex;
+
+    clear: both;
+    margin-top:10px;
+
+    width:100%;
+    height:350px;
+
+    background: url("../img/zeyo_page_watermark.png") no-repeat center;
+}
+#preview_materialInfo{
+    float:left;
+    width:50%;
+    height:350px;
+    /*border: 1px solid aqua;*/
+    letter-spacing: -1px;
+}
+#preview_imageInfo{
+    float:left;
+    width:49.3%;
+    height:350px;
+    /*border: 1px solid aqua;*/
+}
+#preview_productSizeInfo{
+    clear: both;
+    margin-top:10px;
+
+    width:99.3%;
+    min-height: 110px;
+    border-color:inherit;
+
+    background: url("../img/zeyo_page_watermark.png") no-repeat center;
+
+}
+#preview_laundryInfo{
+    clear: both;
+    margin-top:10px;
+
+    width:99%;
+    height:200px;
+    border:1px solid;
+    border-color:inherit;
+
+    background: url("../img/zeyo_page_watermark.png") no-repeat center;
+}
+#preview_guide{
+    clear: both;
+    margin-top:10px;
+
+    width:99%;
+    height:280px;
+    border:1px solid;
+    border-color:inherit;
+
+    background: url("../img/zeyo_page_watermark.png") no-repeat center;
+}
+#preview_additional{
+    clear: both;
+    margin-top:10px;
+
+    width:99%;
+    height:200px;
+    border:1px solid;
+    border-color:inherit;
+
+    background: url("../img/zeyo_page_watermark.png") no-repeat center;
+}
+
+
+#preview_button{
+    position:relative;
+    top:30px;
+    width:710px;
+    margin:0 auto;
+}
+/* #preview_button input:not(:last-child){
+    width:10%;
+    height:32px;
+    background: #52030c;
+    border:none;
+    color:white;
+    font-weight: bold;
+} */
+#preview_back{
+    width:10%;
+    height:32px;
+    background: #52030c;
+    border:none;
+    color:white;
+    font-weight: bold;
+}
+#preview_save{
+    width:10%;
+    height:32px;
+    background: #52030c;
+    border:none;
+    color:white;
+    font-weight: bold;
+}
+#preview_newProduct{
+    float:right;
+    width:20%;
+    height:32px;
+    background: #52030c;
+    border:none;
+    color:white;
+    font-weight: bold;
+    margin-right: 1%;
+}
+
+#preview_save{
+    float:right;
+}
+
+/*------------meterialinfo----------------*/
+
+#preview_materialInfo_table{
+    width:85%;
+    height:70%;
+
+    margin-top:5%;
+    /*margin:auto;*/
+    margin-left:5%;
+}
+#preview_materialInfo_table tr th{
+    width:45%;
+    text-align: left;
+}
+
+/*------------imageinfo----------------*/
+#preview_imageInfo_table{
+    width:100%;
+    height: 100%;
+    border-collapse: collapse;
+}
+#preview_imageInfo_table tr td{
+    margin:0;
+    padding:0;
+}
+.preview_productImgDiv{
+    width:350px;
+    height:350px;
+
+    text-align: center;
+
+    border:1px solid;
+    border-color:inherit;
+}
+
+/*------------productSizeInfo----------------*/
+#preview_productSizeInfo_table{
+    width:100%;
+    /*height:85%;*/
+    border-collapse: collapse;
+    text-align: center;
+
+    border:1px solid;
+    border-color:inherit;
+}
+/*#preview_productSizeInfo_table th{
+    background: #ededed;
+}*/
+#preview_productSizeInfo_table tr{
+    height:34px;
+    /*border:1px solid #d7d7d7;*/
+}
+#preview_productSizeInfo_table tr:first-child{
+    font-weight: bold;
+    background: #f4f4f4;
+}
+#preview_productSizeInfo_table td{
+    width:50px;
+    /*border:1px solid #d7d7d7;*/
+}
+.productSizeinfo_description{
+    font-size:80%;
+    color:#9d9d9d;
+}
+.productSizeInfo_table_headText{
+    letter-spacing: -1px;
+}
+
+/*------------laundryInfo----------------*/
+#preview_laundryInfo_title{
+    font-weight: bold;
+    color:inherit;
+
+    padding-top:1%;
+    text-align: center;
+}
+#preview_laundryInfo_table{
+    width:95%;
+    height: 80%;
+    text-align: center;
+    border-collapse: collapse;
+    margin:auto;
+    margin-top:1%;
+}
+#preview_laundryInfo_table tr > td{
+    padding:0;
+    /*border: 1px solid black;*/
+    max-width: 1px;
+}
+.preview_iconDiv svg{
+
+    height:100px;
+}
+.preview_iconDescription{
+    font-size: 90%;
+    letter-spacing: -1px;
+}
+/*------------guideInfo----------------*/
+#preview_guide_title{
+    font-weight: bold;
+    color:inherit;
+
+    padding-top:1%;
+    text-align: center;
+}
+
+
+
+#preview_guide_table{
+    height:90%;
+    width:95%;
+    padding-bottom: 1%;
+    margin : auto;
+    /* background-color: inherit; */
+}
+
+#preview_guide_table img{
+    height:230px;
+}
+
+.preview_guide_imgTd{
+    width:20%;
+    height: 100%;
+}
+
+#preview_guide_descriptionTable{
+    border-collapse: collapse;
+    /* border : none; */
+    width: 95%;
+    height: 80%;
+    margin:auto;
+
+}
+
+#preview_guide_descriptionTable tr td:first-child{
+    text-align: center;
+    /* border-right : 1px solid #d7d7d7; */
+    font-weight: bold;
+    width:25%;
+    /* background-color: inherit; */
+}
+
+#preview_guide_descriptionTable tr td:last-child{
+    padding-left : 3%;
+}
+
+/*------------additionalInfo----------------*/
+#preview_additional_title{
+    font-weight: bold;
+    color:inherit;
+
+    padding-top:1%;
+    text-align: center;
+}
+#preview_additional_table{
+    width:95%;
+    height:80%;
+
+    margin:auto;
+    margin-top:1%;
+    /*margin-left:5%;*/
+}
+#preview_additional_table tr th{
+    width:15%;
+    text-align: center;
+}
+#preview_additional_table tr td{
+    width:35%;
+    text-align: left;
+}
+
+
+/*------------additionalInfo----------------*/
+#additionalInfo_table {
+    width:70%;
+    clear:both;
+    margin-top:1%;
+    margin-left:20px;
+}
+#additionalInfo_table tr th{
+    text-align: left;
+    letter-spacing: -1px;
+}
+#additionalInfo_table tr td{
+    height:30px;
+    letter-spacing: -1px;
+}
+#additionalInfo_table tr td:first-child{
+    font-weight: bold;
+    padding-top: 1%;
+
+}
+#additionalInfo_table tr > td:not(:first-child){
+    padding-left: 3px;
+}
+#additionalInfo_table input{
+    padding:2px;
+    height:20px;
+    border:2px solid #afafaf;
+    background: none;
+}
+
+#additionalInfo_table select{
+    height:28px;
+    width:45%;
+    border:2px solid #afafaf;
+    background: none;
+}
+
+.news_layer{
+    display:none;
+    position: absolute;
+    top:0;
+    left:0;
+    width:100%;
+    height: 100%;
+
+    margin:auto;
+
+    /*z-index: 100;*/
+}
+
+.news_bg{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height: 100%;
+    background: #000;
+    opacity:0.1;
+}
+
+.news_fadeIn_layer{
+
+    clear:both;
+    position:absolute;
+    top:10%;
+    left:36.3%;
+    width:400px;
+    height: 200px;
+
+    background-color: rgba(150,150,150,1);
+}
+.myNewsTable{
+    letter-spacing: -1px;
+    width:100%;
+    height:100%;
+    color:white;
+}
+.myNewsTable tr:first-child{
+    height:20%;
+}
+.myNewsTable tr:last-child{
+    height:20%;
+}
+
+.myNewsTable tr > td:first-child{
+    padding-left: 3%;
+    padding-top: 1.2%;
+    width:8%;
+    text-align: center;
+}
+.myNewsTable tr > td:nth-child(2){
+    /*width:25%;*/
+    text-align: left;
+}
+
+.myNewsTable button{
+    margin-right:3%;
+
+    width:25%;
+    height: 75%;
+    float: right;
+    color:#52030c;
+    font-weight: bold;
+
+    background: -webkit-linear-gradient(rgba(255,255,255,1) 0%, rgba(255,255,255,1) 50%, rgba(255,255,255,0.5) 51%, rgba(255,255,255,0.5) 100%);
+    background: -o-linear-gradient(rgba(255,255,255,1) 0%, rgba(255,255,255,1) 50%, rgba(255,255,255,0.5) 51%, rgba(255,255,255,0.5) 100%);
+    background: linear-gradient(rgba(255,255,255,1) 0%, rgba(255,255,255,1) 50%, rgba(255,255,255,0.5) 51%, rgba(255,255,255,0.5) 100%);
+
+    border : 1px solid rgba(0,0,0,0.4);
+
+}
+.alertImgDiv{
+    color:black;
+    text-align: center;
+    font-weight: bold;
+    font-size:38pt;
+
+    width:70px;
+    height:70px;
+    background: white;
+    border: none;
+    border-radius: 100%;
+}
