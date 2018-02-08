@@ -1,0 +1,65 @@
+<?
+  header('Access-Control-Allow-Origin:*'); //CORS 관련 이슈 해결. 근본적인 해결은 아니나 사용하는데 문제는 없다.
+  if(isset($_POST['CompanyID']) && isset($_POST['ProductKey']) && isset($_POST['UserPKey'])){
+    $CompanyID = $_POST['CompanyID'];
+    $ProductKey = $_POST['ProductKey'];
+    $UserPKey = $_POST['UserPKey'];
+  }
+?>
+<!DOCTYPE html>
+<html>
+<head>
+  <script type="text/javascript" src="//code.jquery.com/jquery-3.1.1.min.js"></script>
+  <meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width, height=device-height" />
+  <!-- 가로 너비는 장치 너비를 지정하였으며 사용자에 의해 확대/축소가 되지 않도록 설정하고
+  초기 스케일은 1.0 즉 확대/축소 없는, 본 크기 그대로를 지정하였다 -->
+  <link rel="stylesheet" href="http://heronation.net/sizeax/mobile/asset/sizeax.css">
+  <!-- <link rel="stylesheet" href="http://heronation.net/sizeax/mobile/LYH/lyhmo.css"> -->
+  <link rel="stylesheet" href="http://heronation.net/sizeax/mobile/wooseok/asset/ws.css">
+</head>
+<body>
+
+<div class="dialogMaskMain"></div>
+  <div id="mobileContainer">
+    <div id="mainMask" class="dialogMask" style="border-radius:0"></div>
+    <div class="header">
+      <div id="loginButton">
+        <img class="loginIcon" src="http://heronation.net/sizeax/mobile/icon/loginbutton.png" width=30px; height=30px;>
+        <img class="userIcon" src="http://heronation.net/sizeax/images/usericon.svg" width=30px; height=30px; style="display:none;">
+      </div>
+      <div id="backButton" tag = 0>이전</div>
+      <!-- tag 0 : compare.html -> measureRegister.html, login etc
+           tag 1 : measureRegister -> measureInput-->
+      <!-- <div id="detailSaveButton" onclick="saveFunction()">완료</div> -->
+      <div id="cancelButton">취소</div>
+      <div class="title"><img src="http://heronation.net/sizeax/images/logo.svg" width=100%; height=100%;></div>
+      <div class="exitButton"><img src="http://heronation.net/sizeax/mobile/icon/exitbutton.png" width=25px; height=25px;></div>
+    </div>
+    <div class="content"></div>
+  </div>
+
+ <!-- 커스텀 다이얼로그 -->
+  <div id="customDialog">
+    <div id="customText" class="customDialogBody"></div>
+    <div class="customdialogFooter">
+      <div id="yesButton" class="dialogBtn"></div>
+      <div id="noButton" class="dialogBtn"></div>
+    </div>
+  </div>
+
+
+</body>
+<script type="text/javascript">
+  var CompanyID = <? echo json_encode($CompanyID) ?>,
+      ProductKey = <? echo json_encode($ProductKey) ?>,
+      UserPKey = <? echo json_encode($UserPKey) ?>;
+  var itemflag = 0;
+
+  console.log("UserID : " + localStorage.getItem("UserID"));
+  console.log("storageUserPKey : " + localStorage.getItem("UserPKey"));
+  console.log("jsUserPKey : " + UserPKey);
+</script>
+<script type="text/javascript" src="http://heronation.net/sizeax/mobile/asset/sizeax.js"></script>
+<script type="text/javascript" src="http://heronation.net/sizeax/mobile/wooseok/asset/ws.js"></script>
+
+</html>

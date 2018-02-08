@@ -1,0 +1,110 @@
+<?
+include "sizeinfophp/connectdb.php";
+$server_root = $_SERVER['HTTP_HOST'];
+$server_root_path = "http://".$server_root."/sizeinfo/";
+
+$isUpdate = 0;    // update flag
+$DEFAULT_CATEGORY = 1;
+
+// GET productPKey가 존재할 경우(update)
+if(isset($_GET["productPKey"]) && !isset($_GET['categoryID'])){
+    $productPKey = $_GET["productPKey"];
+
+    // 수정 페이지에서 카테고리를 변경할 경우 isUpdate=0
+    $isUpdate = 1;
+
+    $productDetailTable = mysqli_query($conn,'SELECT ProductSpecViewList.IsHide as IsHide,
+    Product.Name as ProductName, Product.CategoryID as ProductCategoryID,
+    ProductSpecViewList.Name as ViewListName,
+    ProductSpecViewList.Description as ViewListDescription
+    from Product
+    left join ProductSpecViewList on ProductSpecViewList.ProductID = Product.PKey
+    where Product.PKey = '.$productPKey.';');
+    $numOfProductDetail = mysqli_num_rows($productDetailTable);
+    while($numOfProductDetail--){
+        $productDetailRow = mysqli_fetch_array($productDetailTable);
+        $isShowArray[] = ($productDetailRow["IsHide"]==1 || $productDetailRow["IsHide"]=='1') ? 0 : 1;
+        $viewListNameArr[] = $productDetailRow["ViewListName"];
+        $viewListDescArr[] = $productDetailRow["ViewListDescription"];
+    }
+
+    $categoryID = $productDetailRow['ProductCategoryID'];
+}
+
+// 신규 등록
+else{
+    $categoryID = $DEFAULT_CATEGORY;
+
+    // GET categoryID가 존재할 경우(해당 카테고리로 변경 신규 등록)
+    if(isset($_GET['categoryID'])){
+        $categoryID = $_GET['categoryID'];
+    }
+
+    $productDetailTable = mysqli_query($conn,
+    'SELECT SpecViewList.Name as ViewListName,
+    SpecViewList.Description as ViewListDescription
+    from SpecViewList
+    left join CategorySpecViewList on CategorySpecViewList.SpecViewListID = SpecViewList.PKey
+    where CategoryID='.$categoryID.';' );
+
+    $numOfProductDetail = mysqli_num_rows($productDetailTable);
+    while($numOfProductDetail--){
+        $productDetailRow = mysqli_fetch_array($productDetailTable);
+        $viewListNameArr[] = $productDetailRow["ViewListName"];
+        $viewListDescArr[] = $productDetailRow["ViewListDescription"];
+    }
+
+    $productInfoTable = mysqli_query($conn,
+        'SELECT *
+        from CustomizedSpecInfo
+        where CustomizedSpecInfo.CategoryID = '.$categoryID.';');
+
+    $productInfoRow = mysqli_fetch_array($productInfoTable);
+    $productThumbnailRow = $productInfoRow;
+    $meansureGuideRow = $productInfoRow;
+    $washingMethodRow = $productInfoRow;
+}
+
+include "sizeinfophp/getadditionalspecinfo.php";
+
+?>
+<script src="<?=$server_root_path?>js_css/datepicker.js"></script>
+
+<input id="hIsCategoryReload" class="hChanged" type="hidden" value=0>
+
+<div id="sizeInformation_wrap">
+    <div id="sizeInformation_meterial">
+        <? include 'materialinformation.html';?>
+    </div>
+    <div id="sizeInformation_image">
+        <? include 'productimageinformation.html';?>
+        <input id="hIamgeChanged" class="hChanged" type="hidden" value=0>
+    </div>
+    <div id="sizeInformation_sizeInfo">
+        <? include 'productsizeinformation.html';?>
+    </div>
+    <div id="sizeInformation_laundry">
+        <? include 'laundryinformation.html';?>
+    </div>
+    <div id="sizeInformation_guide">
+        <? include 'meansureguide.html';?>
+        <input id="hGuideChanged" class="hChanged" type="hidden" value=0>
+    </div>
+</div>
+<?
+if(isset($numOfAdditional) && $numOfAdditional){
+?>
+<div id="sizeInformation_additional">
+    <? include 'additionalinfo.html';?>
+    <input id="hAdditionalChanged" class="hChanged" type="hidden" value=0>
+</div>
+<?
+}
+?>
+<div id="sizeInformation_preview"><input id="previewButton" type="submit" value="미리보기"></div>
+<div id="sizeInformation_updateButtons" style="display:none">
+    <input id="update_cancel" type="button" value="취소">
+    <input id="previewButton" type="button" value="미리보기">
+    <input id="update_save" type="button" value="저장">
+    <input id="update_newProduct" class="update_newProduct" type="button" value="새 상품으로 저장">
+</div>

@@ -1,0 +1,95 @@
+<script type="text/javascript" src="//code.jquery.com/jquery-3.1.1.min.js"></script>
+<link rel="stylesheet" href="http://heronation.net/sizeax/JYD/signup.css">
+        <div class="signupContainer">
+
+            <div class="signupTitle">
+                <div class="titleMessage">SIZEAX 회원가입하기</div>
+                <div class="subTitleMessage">한번 가입으로 다양한 사이트에서 SIZEAX를 이용하세요</div>
+
+            </div>
+
+            <div id = "permissionInfoBox">
+              <div id = "permissionInfoBoxTitle">약관정보 제목</div>
+              <div id = "permissionInfoBoxItem">어쩌구저쩌구</div>
+              <div id = "permissionInfoBoxClose">
+                <div id ="permissionInfoBoxCloseBtn">확인
+                </div>
+              </div>
+            </div>
+
+            <div class="signupContent">
+
+              <div class="border"></div>
+              <div class="emailTextBox" id = "emaildiv" style="top: 38px; left: 40px">
+                  <div class="textBox" style="height: 100%;">
+                      <div class="textInputBoxLeft" style="float:left; line-height: 50px;">
+                          이메일
+                      </div>
+                      <input type="text" class="textInputBoxRight" id="emailBox" style="display:inline-block;" name="userId" >
+                  </div>
+              </div>
+
+              <div class="signupEmailCheckMessage" id="checkEmail"></div>
+
+                <div class="textBox" id= "checkPW" style="top: 10px; left: 395px;">
+                    <div class="textInputBoxLeft" style="float:left; line-height: 40px;">
+                        비밀번호
+                    </div>
+                    <input type="password" class="textInputBoxRight" id="pw" style="display:inline-block;" name="userId">
+                </div>
+
+                <div class="textBox" id= "checkPW2" style="top: 57px; left: 395px;">
+                    <div class="textInputBoxLeft" style="float:left; line-height: 40px;">
+                    비밀번호 확인
+                    </div>
+                <input type="password" class="textInputBoxRight" id="pw2" style="display:inline-block;" name="userId">
+                </div>
+
+              <div class="passwordCheckMessage" id="pwCheckMessage">비밀번호는 8~20자, 영문/숫자를 조합해야합니다.</div>
+
+              <div class="borderEnd"></div>
+            </div>
+
+            <div class="signupPermission">
+              <div class = "signupPermissionAll">
+                <input type="checkbox"  id="allPermission" value="0"></input>
+                <div id = "signUpItemAll"> 아래의 약관에 모두 동의합니다.</div>
+              </div>
+
+              <div class = "signupPermissionUse">
+                <input type="checkbox" class = "permissionCheckbox" id="permissionCheck1" value="1"></input>
+                <div id = "signUpItemUse" class = "permissionTextBox" value="1">SIZEAX 이용약관 동의 (필수)</div>
+              </div>
+
+              <div class = "signupPermissionPersonalInfo">
+                <input type="checkbox" class = "permissionCheckbox" id="permissionCheck2" value="2"></input>
+                <div id = "signUpItemPersonalInfo" class = "permissionTextBox" value="2">SIZEAX 개인정보 이용 동의 (필수)</div>
+              </div>
+
+              <div class = "signupPermissionLocation">
+                <input type="checkbox" class = "permissionCheckbox" id="permissionCheck3" value="3"></input>
+                <div id = "signUpItemLocation" class = "permissionTextBox" value="3">SIZEAX 위치정보 이용 동의 (필수)</div>
+              </div>
+
+              <div class = "signupPermissionMail">
+                <input type="checkbox" class = "permissionCheckbox" id="permissionCheck4" value="4"></input>
+                <div id = "signUpItemMail" class = "permissionTextBox" value="4">SIZEAX 메일수신 동의 (선택)</div>
+              </div>
+
+            </div>
+
+            <div class="signupFooter">
+              <!-- <div class="permissionText">이벤트 및 특가 프로모션 알림 메일 수신(선택)</div>
+
+              <div class="checkboxBox" style="top:10px; left: 500px;">
+                <input type="checkbox" id="eventPermission" value="3"></input>
+              </div> -->
+
+                <div class="signupCancelButton" onclick="joinCancel();">취소</div>
+                <div class="signupButton">가입</div>
+            </div>
+        </div>
+    </body>
+</html>
+
+<script type="text/javascript" src="http://heronation.net/sizeax/JYD/signup.js"></script>

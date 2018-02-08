@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script type="text/javascript" src="http://code.jquery.com/jquery-2.1.0.min.js" ></script>
+</head>
+<body>
+<script>
+(function(){
+	NS = {
+		HTML: 'http://www.w3.org/1999/xhtml',
+        MATH: 'http://www.w3.org/1998/Math/MathML',
+        SE: 'http://svg-edit.googlecode.com',
+        SVG: 'http://www.w3.org/2000/svg',
+        XLINK: 'http://www.w3.org/1999/xlink',
+        XML: 'http://www.w3.org/XML/1998/namespace',
+        XMLNS: 'http://www.w3.org/2000/xmlns/' // see http://www.w3.org/TR/REC-xml-names/#xmlReserved
+	};
+
+	SVG = document.createElementNS(NS.SVG, "svg");
+
+	browser = {
+		isOpera : function(){
+			return !!window.opera;
+		},
+		supportsSelectors: function(){
+			return !!SVG.querySelector;
+		},
+		supportsXpath: function(){
+			return !!document.evaluate;
+		}
+	};
+
+	if(browser.supportsSelectors()){
+		getElem = function(id){
+			return SVG.querySelector("#" + id);
+		};
+	} else if (browser.supportsXpath()){
+		getElem = function (id) {
+            // xpath lookup
+            return domdoc_.evaluate(
+                'svg:svg[@id="svgroot"]//svg:*[@id="' + id + '"]',
+                domcontainer_,
+                function () { return WPod.svgedit.NS.SVG; },
+                9,
+                null).singleNodeValue;
+        };
+	} else {
+		getElem = function(id){
+			return $(SVG).find('[id=' + id + ']')[0];
+		};
+	};
+
+	assignAttributes = function(node, attrs, suspendLength){
+		if(!suspendLength){
+			suspendLength = 0;
+		}
+
+		var handle = null;
+
+		if(!browser.isOpera()){
+			SVG.suspendRedraw(suspendLength);
+		}
+
+		var i;
+		for(i in attrs){
+			var ns = (i.substr(0,4) === 'xml:' ? NS.XML :
+				i.substr(0,6) === 'xlink:' ? NS.XLINK : null);
+
+			if(ns){
+				node.setAttributeNS(ns, i, attrs[i]);
+			} else {
+				node.setAttribute(i, attrs[i]);
+			}
+		}
+
+		if(browser.isOpera()) {
+			SVG.unsuspendRedraw(handle);
+		}
+	}
+
+	addSvgElementFromJson = function(data){
+		var shape = getElem(data.attr.id);
+
+		if(shape && data.element != shape.tagName){
+			shape = null;
+		}
+
+		if(!shape){
+			shape = document.createElementNS(NS.SVG, data.element);
+		}
+		assignAttributes(shape, data.attr, 100);
+		return shape;
+	}
+
+
+	var svg = addSvgElementFromJson({
+		"element":"svg",
+		"attr":{
+        	"x":0,
+          "y":0,
+			"width": 400,
+			"height": 440,
+      "viewBox": "0 0 800 880",
+			"border": "solid 1px #000000"
+		}
+	});
+  var comparesizediv = document.getElementById("comparesizediv");
+	comparesizediv.appendChild(svg);
+
+  const basicRate = 7;
+  var inputWaist = 32;
+  var inputHip = 41;
+  var inputLength = 44;
+
+  var halfWaist = (inputWaist / 2) * basicRate;
+  var length = inputLength * basicRate;
+
+  var defaultLeft = 400;
+  var defaultTop = 250;
+
+  var curveWaistX = halfWaist * 0.40542;
+  var curveWaistY = halfWaist * 0.07018;
+
+  var curveLengthX = length * 0.14318;
+  var curveLengthY = length * 0.53776;
+
+  var bottomLength = halfWaist + curveLengthX;
+
+  var curveBottomX = bottomLength * 0.17885;
+  var curveBottomY = bottomLength * 0.08604;
+
+  var outLength = (length * 0.98885);
+
+  var border =
+    "M" + defaultLeft + ", " + defaultTop + "\n" +
+    "c" + curveWaistX + ",0 " + halfWaist + ", " + curveWaistY + " " + halfWaist + ", " + curveWaistY + "\n" +
+    "s" + curveLengthX + "," + curveLengthY + " " +  curveLengthX + "," + outLength + "\n" +
+    "c" + "0,0 " +  -curveBottomX + "," + curveBottomY + " " + (-bottomLength) + "," + curveBottomY + "\n" +
+
+    "M" + defaultLeft + ", " + defaultTop + "\n" +
+    "c" + -curveWaistX + ",0 " + (-halfWaist) + ", " + curveWaistY + " " + -halfWaist + ", " + curveWaistY + "\n" +
+    "s" + -curveLengthX + "," + curveLengthY + " " +  -curveLengthX + "," + outLength + "\n" +
+    "c" + "0,0 " +  curveBottomX + "," + curveBottomY + " " + (bottomLength) + "," + curveBottomY + "\n";
+
+  var defaultDetailTop = (defaultTop + curveWaistY + curveBottomY) + outLength - length;
+
+  var curveTopX = (halfWaist * 0.78195);
+  var curveTopY = (halfWaist * 0.007518);
+  var desTopY = (bottomLength * 0.08604) - (length - outLength);
+
+
+  var defaultInnerTop = (defaultDetailTop + (halfWaist * 0.219488));
+
+  var curveInnerTopX = (halfWaist * 0.74619);
+  var curveInnerTopY = (halfWaist * 0.007639);
+
+  var desInnerTopX = (halfWaist * 1.04676);
+  var desInnerTopY = (halfWaist * 0.124);
+
+  var wrinkleX = (halfWaist * 0.36842);
+  var wrinkleY = (defaultDetailTop * 0.992779);
+
+  var curveWrinkleY = (curveLengthY * 1.01397);
+  var desWrinkleY = (length * 0.99628);
+
+  var detail =
+    //중앙선
+    "M" + defaultLeft + "," + (defaultDetailTop + length) + "\n" +
+    "l" + "0," + -length + "\n" +
+
+    //바깥선
+    "M" + defaultLeft + "," + defaultDetailTop + "\n" +
+    "c" + "0,0 " + curveTopX + ", " + -curveTopY + " " + halfWaist + "," + -desTopY + "\n" +
+
+    //안쪽선
+    "M" + defaultLeft + "," + defaultInnerTop + "\n" +
+    "c" + "0,0 " + curveInnerTopX + "," + curveInnerTopY + " " + desInnerTopX + "," + -desInnerTopY + "\n" +
+
+    //주름선
+    "M" + (defaultLeft + wrinkleX) + "," + wrinkleY + "\n" +
+    "c" + "0,0 " + curveLengthX + "," + curveWrinkleY + " " + curveLengthX + "," + desWrinkleY + "\n" +
+
+
+    "M" + defaultLeft + "," + defaultDetailTop + "\n" +
+    "c" + "0,0 " + -curveTopX + ", " + -curveTopY + " " + -halfWaist + "," + -desTopY + "\n" +
+
+    "M" + defaultLeft + "," + defaultInnerTop + "\n" +
+    "c" + "0,0 " + -curveInnerTopX + "," + curveInnerTopY + " " + -desInnerTopX + "," + -desInnerTopY + "\n" +
+
+    "M" + (defaultLeft - wrinkleX) + "," + wrinkleY + "\n" +
+    "c" + "0,0 " + -curveLengthX + "," + curveWrinkleY + " " + -curveLengthX + "," + desWrinkleY;
+
+  var sizeBar =
+
+    //기장
+    "M" + (defaultLeft + halfWaist + curveLengthX + 30) + "," + (defaultTop + curveWaistY) + "\n" +
+    "l" + "0," + length + "\n" +
+
+    //기장 표시 끝부분
+    "M" + (defaultLeft + halfWaist + curveLengthX + 10) + "," + (defaultTop + curveWaistY) + "\n" +
+    "l" + "40," + "0" + "\n" +
+
+    "M" + (defaultLeft + halfWaist + curveLengthX + 10) + "," + (defaultTop + curveWaistY + length) + "\n" +
+    "l" + "40," + "0" + "\n" +
+
+
+    //허리
+    "M" + defaultLeft + "," + (defaultTop - 30) + "\n" +
+    "l" + halfWaist + ",0" + "\n" +
+    "M" + defaultLeft + "," + (defaultTop - 30) + "\n" +
+    "l" + -halfWaist + ",0" + "\n" +
+
+    //허리 표시 끝부분
+    "M" + (defaultLeft + halfWaist) + "," + (defaultTop - 50) + "\n" +
+    "l" + "0" + ",40" + "\n" +
+
+    "M" + (defaultLeft - halfWaist) + "," + (defaultTop - 50) + "\n" +
+    "l" + "0" + ",40" + "\n" +
+
+    //엉덩이
+    "M" + defaultLeft + "," + (defaultTop + (halfWaist)) + "\n" +
+    "l" + (halfWaist * 1.1) + "," + "0" + "\n" +
+    "M" + defaultLeft + "," + (defaultTop + (halfWaist)) + "\n" +
+    "l" + -(halfWaist * 1.1) + "," + "0" + "\n";
+
+	var path_border = addSvgElementFromJson({
+		"element": "path",
+		"attr": {
+			"id": "svg_border",
+			"fill": "none",
+			"stroke": "#000000",
+      "d":border,
+			"stroke-width" : "2"
+    }
+  });
+
+  var path_detail = addSvgElementFromJson({
+    "element": "path",
+    "attr": {
+      "id": "svg_detail",
+      "fill": "none",
+      "stroke": "#000000",
+      "d":detail,
+      "stroke-miterlimit" : "10"
+    }
+  });
+
+  var path_length = addSvgElementFromJson({
+    "element": "path",
+    "attr": {
+      "id": "svg_length",
+      "fill": "none",
+      "stroke": "skyblue",
+      "d":sizeBar,
+      "stroke-width" : "3"
+    }
+  });
+
+  var rect_waist = addSvgElementFromJson({
+		"element": "rect",
+		"attr": {
+			"id": "rect_waist",
+			"fill": "skyblue",
+			"style" : "width:80; height:40; opacity:0.7;",
+			"x" : defaultLeft - 40,
+			"y" : defaultTop - 30 - 10 - 40
+		}
+	});
+
+  var text_waist = addSvgElementFromJson({
+    "element": "text",
+    "attr": {
+      "id": "svg_text_waist",
+      "fill": "white",
+      "font-size":"40",
+      "x" : defaultLeft - 40 + 20,
+      "y" : defaultTop - 30 - 10 - 40 + 35
+    }
+  });
+
+  var rect_hip = addSvgElementFromJson({
+    "element": "rect",
+    "attr": {
+      "id": "rect_hip",
+      "fill": "skyblue",
+      "style" : "width:80; height:40; opacity:0.7;",
+      "x" : defaultLeft - 40,
+      "y" : defaultTop + halfWaist - 10 - 40
+    }
+  });
+
+  var text_hip = addSvgElementFromJson({
+    "element": "text",
+    "attr": {
+      "id": "svg_text_hip",
+      "fill": "white",
+      "font-size":"40",
+      "x" : defaultLeft - 40 + 20,
+      "y" : defaultTop + halfWaist - 10 - 40 + 35
+    }
+  });
+
+  var rect_length = addSvgElementFromJson({
+    "element": "rect",
+    "attr": {
+      "id": "rect_length",
+      "fill": "skyblue",
+      "style" : "width:80; height:40; opacity:0.7;",
+      "x" : (defaultLeft + halfWaist + curveLengthX + 30) + 10,
+      "y" : ((defaultTop + curveWaistY) + length/3) -40
+    }
+  });
+
+  var text_length = addSvgElementFromJson({
+    "element": "text",
+    "attr": {
+      "id": "svg_text_length",
+      "fill": "white",
+      "font-size":"40",
+      "x" : (defaultLeft + halfWaist + curveLengthX + 30) + 20 + 10,
+      "y" : ((defaultTop + curveWaistY) + length/3) -40 + 35
+    }
+  });
+
+	svg.appendChild(path_border);
+  svg.appendChild(path_detail);
+  svg.appendChild(path_length);
+
+  svg.appendChild(rect_waist);
+  svg.appendChild(text_waist);
+  $("#svg_text_waist").html(inputWaist);
+
+  svg.appendChild(rect_hip);
+  svg.appendChild(text_hip);
+  $("#svg_text_hip").html(inputHip);
+
+  svg.appendChild(rect_length);
+  svg.appendChild(text_length);
+  $("#svg_text_length").html(inputLength);
+	// $("#svg_text_arm_length").html(inputArmLength);
+
+})();
+
+</script>
+</body>
+</html>

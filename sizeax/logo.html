@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+    body {
+        background-image: url('background.PNG');
+        height: 1000px;
+    }
+    </style>
+</head>
+
+<body>
+    <script type="text/javascript" src="//code.jquery.com/jquery-3.1.1.min.js"></script>
+
+    <script type="text/javascript">
+
+    (function($) {
+        $(document).ready(function() {
+            $("#herofit_logo").load("//heronation.net/sizeax/controller.html", {
+                //티셔츠
+                // CompanyID: 17,
+                // ProductKey: 'obbangstyle_16'
+
+                //바지
+                // CompanyID: 21,
+                // ProductKey: 'dahong_20'
+
+                // 셔츠
+                // CompanyID: 18,
+                // ProductKey: 'gentlelife_35'
+
+                // 원피스
+                // CompanyID: 21,
+                // ProductKey: 'dahong_14'
+
+                //블라우스
+                CompanyID: 24,
+                ProductKey: '100'
+
+                //스웨터
+                // CompanyID: 18,
+                // ProductKey: 'gentlelife_39'
+
+                //자켓
+                // CompanyID: 18,
+                // ProductKey: 'gentlelife_33'
+
+                // 치마
+                // CompanyID: 1,
+                // ProductKey: 'jake1002'
+
+                //점퍼
+                // CompanyID: 17,
+                // ProductKey: 'obbangstyle_17'
+
+            });
+        });
+    })(jQuery);
+    </script>
+    <div id="herofit_logo" style="z-index:9999; position:absolute;top:50px; left:100px; width:140px; height:35px; cursor: pointer;"></div>
+    <div id="herofit_main" style="display:none; z-index:9999; position:fixed;top:0; left:0; right:0; width:100%; height:100%; opacity:0;"></div>
+</body>
+
+</html>

@@ -1,0 +1,530 @@
+<?
+
+if($isUpdate){
+    $washingMethodTable = mysqli_query($conn,'SELECT *,
+    WashingMethod.WashingMethod as BinaryWahsingMethod,
+    WashingMethod.Iron as BinaryIron,
+    WashingMethod.DryCondition as BinaryDryCondition,
+    WashingMethod.IsHide as IsWashingMethodHide,
+    WashingMethod.IsDelete as IsWashingMethodDelete,
+    ProductSpecViewList.Name as ViewListName,
+    ProductSpecViewList.Description as ViewListDescription
+    from Product
+    left join ProductSpecViewList on ProductSpecViewList.ProductID = Product.PKey
+    inner join WashingMethod on WashingMethod.ProductSpecID = ProductSpecViewList.PKey
+    where Product.PKey = '.$productPKey.';');
+    $numOfWashingMethod = mysqli_num_rows($washingMethodTable);
+
+    $washingMethodRow = mysqli_fetch_array($washingMethodTable);
+    $washingMethod = $washingMethodRow["BinaryWahsingMethod"];
+    $ironMethod = $washingMethodRow["BinaryIron"];
+    $dryCondition = $washingMethodRow["BinaryDryCondition"];
+
+    $places = 1;
+
+    $washingMethodArr[0] = $washingMethod & $places;
+    $washingMethodArr[1] = ($washingMethod = $washingMethod >> $places) & $places;
+    $washingMethodArr[2] = ($washingMethod = $washingMethod >> $places) & $places;
+    $washingMethodArr[3] = ($washingMethod = $washingMethod >> $places) & $places;
+    $washingMethodArr[4] = ($washingMethod = $washingMethod >> $places) & $places;
+    $washingMethodArr[5] = ($washingMethod = $washingMethod >> $places) & $places;
+
+    $ironMethodArr[0] = $ironMethod & $places;
+    $ironMethodArr[1] = ($ironMethod = $ironMethod >> $places) & $places;
+
+    $dryConditionArr[0] = $dryCondition & $places;
+    $dryConditionArr[1] = ($dryCondition = $dryCondition >> $places) & $places;
+
+    // 업데이트일 경우 WashingMethod의 IsDelete 참고
+    $isWashingMethodDelete = sprintf("%05b", $washingMethodRow["IsWashingMethodDelete"]);
+}
+else{
+    /* insertsizeinfo.html로 이동
+    $washingMethodTable = mysqli_query($conn,
+        'SELECT Name as ViewListName, Description as ViewListDescription, WashingMethodName, WashingMethodDesc, DryCleaningName, DryCleaningDesc, IronName,
+        IronDesc, DryMethodName, DryMethodDesc, BleachName, BleachDesc, IsWashingMethodHide,  IsWashingMethodDelete
+        from CustomizedSpecInfo
+        left join CategorySpecViewList on
+        (CategorySpecViewList.CategoryID = CustomizedSpecInfo.CategoryID
+        and CategorySpecViewList.SpecViewListID = 4)
+        left join SpecViewList on SpecViewList.PKey = CategorySpecViewList.SpecViewListID
+        where CustomizedSpecInfo.CategoryID = '.$categoryID.';');
+    $washingMethodRow = mysqli_fetch_array($washingMethodTable);
+    */
+
+    // 신규 등록(카테고리 변경)일 경우 CustomizedSpecInfo의 IsWashingMethodDelete, IsWashingMethodHide 참고
+    $isWashingMethodDelete = sprintf("%05b", $washingMethodRow["IsWashingMethodDelete"]) | sprintf("%05b", $washingMethodRow["IsWashingMethodHide"]);
+}
+
+$isWashingMethodHide =  sprintf("%05b", $washingMethodRow["IsWashingMethodHide"]);
+
+/*
+echo $isWashingMethodDelete[0];    // 표백제 사용법
+echo $isWashingMethodDelete[1];    // 건조방법
+echo $isWashingMethodDelete[2];    // 다림질
+echo $isWashingMethodDelete[3];    // 드라이클리닝
+echo $isWashingMethodDelete[4];    // 세탁방법
+
+echo "\n".$isWashingMethodHide[0];    // 표백제 사용법
+echo $isWashingMethodHide[1];        // 건조방법
+echo $isWashingMethodHide[2];        // 다림질
+echo $isWashingMethodHide[3];        // 드라이클리닝
+echo $isWashingMethodHide[4];        // 세탁방법
+*/
+
+/*
+// WashingMethod 속성들의 앞 바이트가 0일때 원하는 자리수 만큼 0을 채워주는 함수
+function zeroToStr($str, $length){
+    $strLength = strlen($str);
+    while($strLength < $length){
+        $str = '0'.$str;
+        $strLength = strlen($str);
+    }
+    return $str;
+}
+*/
+?>
+
+<div id="detail_title" style="border:none;">
+    <!-- <div id="sizeInfo_checkBox"> -->
+    <div id="sizeInfo_checkBox" style="display:none;">
+        <input type="checkbox" id="laundryInfo_isShowCheckBox" name="laundryInfo_isShowCheckBox" <?
+        if(!($isUpdate && !$isShowArray[3])) echo 'checked';?>>
+    </div>
+    <div id="laundryInfo_checkBox" class="sizeInfo_checkBoxImg"></div>
+    <div id="detail_titleText" class="themeColorText"><?=$viewListNameArr[3]?></div>
+    <div id="detail_titleDecription"><?=$viewListDescArr[3]?></div>
+</div>
+
+<div class="disabledView" style="display:none;">
+    <hr class="excludFromPreviewHr2">
+    <div class="excludFromPreview2">미리보기에서 제외됩니다.</div>
+</div>
+
+<div id="laundryInfo_wrap">
+    <table id="laundryInfo_checkView">
+    <?
+    if(!$isWashingMethodDelete[4]){
+    ?>
+        <tr>
+            <td>
+                <input style="display:none;" type="checkbox" id="washingCheckBox" <?
+            if(!($isUpdate && $isWashingMethodHide[4])) echo 'checked';?>>
+                <div id="washing_checkBox" class="laundryInfo_checkBoxImg"></div>
+            </td>
+        </tr>
+    <?
+    }
+    if(!$isWashingMethodDelete[3]){
+    ?>
+        <tr>
+            <td>
+                <input style="display:none;" type="checkbox" id="dryCleaningCheckBox" <?
+            if(!($isUpdate && $isWashingMethodHide[3])) echo 'checked';?>>
+                <div id="dryCleaning_checkBox" class="laundryInfo_checkBoxImg"></div>
+            </td>
+        </tr>
+    <?
+    }
+    if(!$isWashingMethodDelete[2]){
+    ?>
+        <tr>
+            <td>
+                <input style="display:none;" type="checkbox" id="ironingCheckBox" <?
+            if(!($isUpdate && $isWashingMethodHide[2])) echo 'checked';?>>
+                <div id="ironing_checkBox" class="laundryInfo_checkBoxImg"></div>
+            </td>
+        </tr>
+    <?
+    }
+    if(!$isWashingMethodDelete[1]){
+    ?>
+        <tr>
+            <td>
+                <input style="display:none;" type="checkbox" id="dryingCheckBox" <?
+            if(!($isUpdate && $isWashingMethodHide[1])) echo 'checked';?>>
+                <div id="dry_checkBox" class="laundryInfo_checkBoxImg"></div>
+            </td>
+        </tr>
+    <?
+    }
+    if(!$isWashingMethodDelete[0]){
+    ?>
+        <tr>
+            <td>
+                <input style="display:none;" type="checkbox" id="bleachCheckBox" <?
+            if(!($isUpdate && $isWashingMethodHide[0])) echo 'checked';?>>
+                <div id="detergent_checkBox" class="laundryInfo_checkBoxImg"></div>
+            </td>
+        </tr>
+    <?
+    }
+    ?>
+    </table>
+    <table id="laundryInfo_table">
+    <?
+    if(!$isWashingMethodDelete[4]){
+    ?>
+        <tr>
+            <td id="loadWashing"><?=$washingMethodRow["WashingMethodName"]?></td>
+        </tr>
+    <?
+    }
+    if(!$isWashingMethodDelete[3]){
+    ?>
+        <tr>
+            <td id="loadDryCleaning"><?=$washingMethodRow["DryCleaningName"]?></td>
+        </tr>
+    <?
+    }
+    if(!$isWashingMethodDelete[2]){
+    ?>
+        <tr>
+            <td id="loadIroning"><?=$washingMethodRow["IronName"]?></td>
+        </tr>
+    <?
+    }
+    if(!$isWashingMethodDelete[1]){
+    ?>
+        <tr>
+            <td id="loadDrying"><?=$washingMethodRow["DryMethodName"]?></td>
+        </tr>
+    <?
+    }
+    if(!$isWashingMethodDelete[0]){
+    ?>
+        <tr>
+            <td id="loadBleach" style="border-bottom:none"><?=$washingMethodRow["BleachName"]?></td>
+        </tr>
+    <?
+    }
+    ?>
+    </table>
+    <?
+    if(!$isWashingMethodDelete[4]){
+    ?>
+    <div id="washing" style="display:none" class="laundryDetailDiv">
+        <table id="washing_detailTable">
+            <tr>
+                <td class="optionBar">-</td>
+                <td class="washingOptionName">물세탁</td>
+                <td class="optionValue">
+                    <div>
+                        <input type="radio" name="waterWashing_chk" value=1 checked>가능
+                        <input type="radio" name="waterWashing_chk" value=0 <?
+                        if($isUpdate && ($washingMethodArr[0])== 0) echo 'checked';?>>불가
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="optionBar">-</td>
+                <td class="washingOptionName">기계세탁</td>
+                <td class="optionValue">
+                    <div>
+                        <input type="radio" name="machineWashing_chk" value=1  checked>가능
+                        <input type="radio" name="machineWashing_chk" value=0 <?
+                        if($isUpdate && ($washingMethodArr[1])== 0) echo 'checked';?>>불가
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="optionBar">-</td>
+                <td class="washingOptionName">손세탁</td>
+                <td class="optionValue">
+                    <div>
+                        <input type="radio" name="handWashing_chk" value=1 checked>가능
+                        <input type="radio" name="handWashing_chk" value=0 <?
+                        if($isUpdate && ($washingMethodArr[2])== 0) echo 'checked';?>>불가
+                    </div>
+                </td>
+            </tr>
+            <tr id="waterTemperatureRow">
+                <td class="optionBar">-</td>
+                <td class="washingOptionName">물 온도</td>
+                <td class="optionValue">
+                    <div>
+                        <input type="text" id="waterTemperature" placeholder="숫자입력" value=<?
+                            if($isUpdate) echo $washingMethodRow["WaterTemperature"];
+                            else echo '30';
+                            ?>> &#176;C
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="optionBar">-</td>
+                <td class="washingOptionName">세탁강도</td>
+                <td class="optionValue">
+                    <div>
+                        <input type="checkbox" id="washingStrength" <?
+                        if($isUpdate==0 || ($isUpdate && $washingMethodArr[5])) echo 'checked';?>>약하게
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="optionBar">-</td>
+                <td class="washingOptionName">세제종류</td>
+                <td class="optionValue">
+            <?
+            $detergentWaterTable = mysqli_query($conn,'SELECT * from Detergent where parentID=1;');
+            $detergentWaterRow = mysqli_fetch_array($detergentWaterTable);
+            echo '<div class="washing_detergentDiv"><input type="radio" name="washing_detergentType" value='.$detergentWaterRow['PKey'].' checked>'.$detergentWaterRow['Name'].'</div>';
+            while($detergentWaterRow = mysqli_fetch_array($detergentWaterTable)){
+                if($isUpdate&&($washingMethodRow['DetergentWaterID'] == $detergentWaterRow['PKey'])){
+                    echo
+                    '<div class="washing_detergentDiv"><input type="radio" name="washing_detergentType" value='.$detergentWaterRow['PKey'].' checked>'.$detergentWaterRow['Name'].'</div>';
+                }
+                else{
+                    echo
+                    '<div class="washing_detergentDiv"><input type="radio" name="washing_detergentType" value='.$detergentWaterRow['PKey'].'>'.$detergentWaterRow['Name'].'</div>';
+                }
+
+            }
+            ?>
+                </td>
+            </tr>
+        </table>
+    </div> <!-- washing End-->
+    <?
+    }
+    if(!$isWashingMethodDelete[3]){
+    ?>
+
+    <div id="dryCleaning" style="display:none" class="laundryDetailDiv">
+        <table id="dryCleaning_detailTable">
+            <tr>
+                <td class="optionBar">-</td>
+                <td class="dryCleaningOptionName">드라이클리닝</td>
+                <td class="optionValue">
+                    <div>
+                        <input type="radio" name="dryCleaning_chk" value=1 checked>가능
+                        <input type="radio" name="dryCleaning_chk" value=0 <?
+                        if($isUpdate && ($washingMethodArr[3])== 0) echo 'checked';?>>불가
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="optionBar">-</td>
+                <td class="dryCleaningOptionName">전문점 취급여부</td>
+                <td class="optionValue">
+                    <div>
+                        <input type="radio" name="specialtyStore_chk" value=1 checked>필수
+                        <input type="radio" name="specialtyStore_chk" value=0 <?
+                        if($isUpdate && ($washingMethodArr[4])== 0) echo 'checked';?>>무관
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="optionBar">-</td>
+                <td class="dryCleaningOptionName">세제종류</td>
+                <td class="optionValue">
+            <?
+            $detergentDryTable = mysqli_query($conn,'SELECT * from Detergent where parentID=2;');
+            $detergentDryRow = mysqli_fetch_array($detergentDryTable);
+            echo '<div class="dryCleaning_detergentDiv"><input type="radio" name="dryCleaning_detergentType" value='.$detergentDryRow['PKey'].' checked>'.$detergentDryRow['Name'].'</div>';
+
+            while($detergentDryRow = mysqli_fetch_array($detergentDryTable)){
+                if($isUpdate && ($washingMethodRow['DetergentDryID'] == $detergentDryRow['PKey'])){
+                    echo
+                    '<div class="dryCleaning_detergentDiv"><input type="radio" name="dryCleaning_detergentType" value='.$detergentDryRow['PKey'].' checked>'.$detergentDryRow['Name'].'</div>';
+                }
+                else{
+                    echo
+                    '<div class="dryCleaning_detergentDiv"><input type="radio" name="dryCleaning_detergentType" value='.$detergentDryRow['PKey'].'>'.$detergentDryRow['Name'].'</div>';
+                }
+            }
+            ?></td>
+            </tr>
+        </table>
+    </div>
+    <?
+    }
+    if(!$isWashingMethodDelete[2]){
+    ?>
+
+    <div id="ironing" style="display:none" class="laundryDetailDiv">
+        <table id="ironing_detailTable">
+            <tr>
+                <td class="optionBar">-</td>
+                <td class="ironingOptionName">다림질</td>
+                <td class="optionValue">
+                    <div>
+                        <input type="radio" name="ironing_chk" value=1 checked>가능
+                        <input type="radio" name="ironing_chk" value=0 <?
+                        if($isUpdate && ($ironMethodArr[0])== 0) echo 'checked';?>>불가
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="optionBar">-</td>
+                <td class="ironingOptionName">원단보호천 필요여부</td>
+                <td class="optionValue">
+                    <div>
+                        <input type="radio" name="protectiveCloth_chk" value=1 checked>필수
+                        <input type="radio" name="protectiveCloth_chk" value=0 <?
+                        if($isUpdate && ($ironMethodArr[1])== 0) echo 'checked';?>>무관
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="optionBar">-</td>
+                <td class="ironingOptionName">온도</td>
+                <td class="optionValue">
+                    <!-- <div style="text-align:center;"> -->
+                    <div>
+                        <input type="text" id="minTemperature" placeholder="숫자입력" value=<?
+                            if($isUpdate) echo $washingMethodRow["IronTemperatureMin"];
+                            else echo '180';
+                            ?>> ~
+                        <input type="text" id="maxTemperature" placeholder="숫자입력" style="margin-left:0;" value=<?
+                            if($isUpdate) echo $washingMethodRow["IronTemperatureMax"];
+                            else echo '210';
+                            ?>> &#176;C
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <?
+    }
+    if(!$isWashingMethodDelete[1]){
+    ?>
+
+    <div id="drying" style="display:none" class="laundryDetailDiv">
+        <table id="drying_detailTable">
+            <tr>
+                <td class="optionBar">-</td>
+                <td class="dryingOptionName">기계건조</td>
+                <td class="optionValue">
+                    <div>
+                        <input type="radio" name="machineDrying_chk" value=1 checked>가능
+                        <input type="radio" name="machineDrying_chk" value=0 <?
+                        if($isUpdate && ($dryConditionArr[0])== 0) echo 'checked';?>>불가
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="optionBar">-</td>
+                <td class="dryingOptionName">자연건조</td>
+                <td class="optionValue">
+                    <div>
+                        <input type="radio" name="naturalDrying_chk" value=1 checked>햇빛에 건조
+                        <input type="radio" name="naturalDrying_chk" value=0 <?
+                        if($isUpdate && ($dryConditionArr[1])== 0) echo 'checked';?>>그늘에 건조
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="optionBar">-</td>
+                <td class="dryingOptionName">건조방식</td>
+                <td class="optionValue">
+                    <div>
+                        <input type="radio" name="dryingMethod_chk" value=0 checked>제한없음
+                        <input type="radio" name="dryingMethod_chk" value=1 <?
+                        if($isUpdate && ($washingMethodRow["DryMethod"]== 1)) echo 'checked';?>>옷걸이 이용
+                        <input type="radio" name="dryingMethod_chk" value=2 <?
+                        if($isUpdate && ($washingMethodRow["DryMethod"]== 2)) echo 'checked';?>>바닥에 뉘어서
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td class="optionBar">-</td>
+                <td class="dryingOptionName">손탈수</td>
+                <td class="optionValue">
+                    <div>
+                        <input type="radio" name="handDrying_chk" value=0 checked>제한없음
+                        <input type="radio" name="handDrying_chk" value=1 <?
+                        if($isUpdate && ($washingMethodRow["HandDryCondition"]== 1)) echo 'checked';?>>약하게
+                        <input type="radio" name="handDrying_chk" value=2 <?
+                        if($isUpdate && ($washingMethodRow["HandDryCondition"]== 2)) echo 'checked';?>>강하게
+                        <input type="radio" name="handDrying_chk" value=3 <?
+                        if($isUpdate && ($washingMethodRow["HandDryCondition"]== 3)) echo 'checked';?>>손탈수 금지
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <?
+    }
+    if(!$isWashingMethodDelete[0]){
+    ?>
+
+    <div id="bleach" style="display:none" class="laundryDetailDiv">
+        <table id="bleach_detailTable">
+            <tr>
+                <td class="optionBar">-</td>
+                <td class="bleachOptionName">염소계 표백제</td>
+                <td class="optionValue">
+            <?
+            $detergentChlorineTable = mysqli_query($conn,'SELECT * from Detergent where parentID=3;');
+            $detergentChlorineRow = mysqli_fetch_array($detergentChlorineTable);
+            echo '<input type="radio" name="chlorineBleach_chk" value='.$detergentChlorineRow['PKey'].' checked>'.$detergentChlorineRow['Name'].'';
+            while($detergentChlorineRow = mysqli_fetch_array($detergentChlorineTable)){
+                if($isUpdate && ($washingMethodRow['DetergentChlorineID'] == $detergentChlorineRow['PKey'])){
+                    echo
+                    '<input type="radio" name="chlorineBleach_chk" value='.$detergentChlorineRow['PKey'].' checked>'.$detergentChlorineRow['Name'].'';
+                }
+                else{
+                    echo
+                    '<input type="radio" name="chlorineBleach_chk" value='.$detergentChlorineRow['PKey'].'>'.$detergentChlorineRow['Name'].'';
+                }
+            }
+            ?>
+                </td>
+            </tr>
+            <tr>
+                <td class="optionBar">-</td>
+                <td class="dryingOptionName">산소계 표백제</td>
+                <td class="optionValue">
+            <?
+            $detergentOxygenTable = mysqli_query($conn,'SELECT * from Detergent where parentID=4;');
+            $detergentOxygenRow = mysqli_fetch_array($detergentOxygenTable);
+            echo '<input type="radio" name="oxygenBleach_chk" value='.$detergentOxygenRow['PKey'].' checked>'.$detergentOxygenRow['Name'].'';
+            while($detergentOxygenRow = mysqli_fetch_array($detergentOxygenTable)){
+                if($isUpdate && ($washingMethodRow['DetergentOxygenID'] == $detergentOxygenRow['PKey'])){
+                    echo
+                    '<input type="radio" name="oxygenBleach_chk" value='.$detergentOxygenRow['PKey'].' checked>'.$detergentOxygenRow['Name'].'';
+                }
+                else{
+                    echo
+                    '<input type="radio" name="oxygenBleach_chk" value='.$detergentOxygenRow['PKey'].'>'.$detergentOxygenRow['Name'].'';
+                }
+            }
+            ?>
+                </td>
+            </tr>
+        </table>
+    </div>
+    <?
+    }
+    ?>
+
+    <div id="icon_preview">
+        <table class="icon_previewTable">
+            <tr>
+                <td colspan="3">
+                    <div class="icon_previewHeader">
+                        <div><b style="font-size:large;">-</b> 기호 미리보기</div>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <div class="dryingTapDiv"></div>
+                </td>
+            </tr>
+            <tr class="previewIconTr">
+                <td colspan="3">
+                    <div class="previewIconDiv">
+                        <!-- <img class="previewIconSvg" src="img/machineWashing_icon.svg" alt="non_imgfile"> -->
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td colspan="3">
+                    <div class="previewIconDescriptionDiv" style="font-size:80%; letter-spacing: -1px;"></div>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+<input id="hLaundryChanged" class="hChanged" type="hidden" value=0>

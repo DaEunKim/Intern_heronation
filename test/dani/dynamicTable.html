@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html"; charset="utf-8">
+
+    <title>Dani World~</title>
+    <link rel="stylesheet" type="text/css" href="./dynamic.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script>
+    function add() {
+      $.ajax({
+        url: "/test/dani/dynamicTable.php",
+        type: "GET",
+        datatype:"JSON",
+        data: {
+          Product_PKey:$('input[name=Product_PKey]').val()
+        },
+        success : function(data){
+          var jsonData = JSON.parse(data);
+          makeTable(jsonData);
+        },
+        error : function(){
+          alert('통신실패!!');
+        }
+      });
+    }
+
+    function makeTable(jsonData) {
+      $('#print_text').empty();
+      var row = jsonData.length;
+      var size;
+      for(var i = 0;i<row;i++){
+        if(i==row-1){
+          break;
+        }
+        if(jsonData[i]['ProductSizeList'] != jsonData[i+1]['ProductSizeList']){
+          size = i+1;
+          break;
+        }
+        else{
+          size = row;
+        }
+      }
+
+      var strTable;
+      strTable += "<tr>";
+      strTable += "<td>"+jsonData[0]['Product'] + " "+jsonData[0]['Category']+"</td>";
+
+      var tmp;
+      if(row==size){
+        tmp = size;
+      }else{
+        tmp = row/size;
+      }
+      for(var i=0; i<tmp; i++){
+        strTable += "<td>"+ jsonData[i]['SizeType']+ "</td>";
+      }
+      strTable += "</tr>";
+
+      for(var i = 0;i<row/size;i++){
+        strTable += "<tr>";
+        strTable += "<td>"+jsonData[i*size]['ProductSizeList']+ "</td>"
+        for(var j=i*size; j<i*size+size; j++){
+          strTable += "<td>"+ jsonData[j]['Size']+ "</td>";
+        }
+        strTable += "</tr>";
+      }
+
+      $("#print_text").append(strTable);
+ }
+  </script>
+  </head>
+
+  <body>
+    <div id='container' action="/test/dani/dynamicTable.php" method="GET" >
+      <div id='box-center'>
+        Product 테이블의 PKey값<br>
+        <input id="inputCss" type="text" name="Product_PKey" value=" ">
+        <button type="button" onclick="add()" value="submit"> submit </button>
+      </div>
+    </div>
+
+    <table id="print_text" border = '1px'>
+
+    </table>
+
+
+  </body>
+</html>

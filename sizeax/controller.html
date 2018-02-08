@@ -1,0 +1,114 @@
+<?
+    header('Access-Control-Allow-Origin:*');
+    if(isset($_POST['CompanyID']) && isset($_POST['ProductKey'])){
+        $getCompanyID=$_POST['CompanyID'];
+        $getProductKey=$_POST['ProductKey'];
+    }else{
+      echo "<script>alert('잘못된 접근입니다.');history.back();</script>";
+    }
+?>
+    <!-- sizeax logo -->
+    <div style="position:absolute; right:0; font-size:18pt">sizeAX</div>
+    <div style="position:absolute; left:0;">
+        <svg width="60px" height="35px" viewBox="0 15 60 35" xml:space="preserve">
+            <path fill="#000000" d="M36.115,28.551c-2.587,2.589-8.528,4.263-15.136,4.266c-4.279,0.002-8.319-0.683-11.376-1.928 C6.229,29.514,4.37,27.562,4.37,25.39c0-1.115,0.506-2.212,1.466-3.173c2.587-2.589,8.529-4.263,15.137-4.267 c9.467-0.003,16.607,3.189,16.609,7.427 C37.582,26.492,37.075,27.59,36.115,28.551z M7.413,23.792 c-0.54,0.541-0.814,1.079-0.813,1.597c0,1.17,1.438,2.453,3.845,3.434c2.796,1.139,6.537,1.766,10.534,1.764 c5.955-0.002,11.404-1.454,13.561-3.612c0.541-0.542,0.814-1.079,0.814-1.598c-0.001-2.456-6.151-5.201-14.379-5.198 C15.02,20.182,9.569,21.634,7.413,23.792z" />
+            <path fill="#000000" d="M20.984,47.76c-9.466,0.004-16.607-3.188-16.609-7.426 L4.37,25.39 l2.229,0 l0.005,14.943 c0.002,2.456,6.152,5.201,14.38,5.198L20.984,47.76z" />
+            <rect x="35.354" y="25.377" fill="#000000" width="2.229" height="6.095" />
+            <path fill="#000000" d="M27.417,27.108c-1.155,1.157-3.624,1.877-6.439,1.879c-3.586,0-7.217-1.235-7.218-3.601 c0-0.434,0.134-1.086,0.775-1.728c1.156-1.157,3.624-1.877,6.439-1.878c1.771-0.001,3.453,0.287,4.736,0.809 c2.159,0.88,2.482,2.126,2.481,2.792C28.192,25.815,28.058,26.467,27.417,27.108z M16.112,25.234 c-0.089,0.089-0.121,0.15-0.125,0.167c0.106,0.352,1.8,1.358,4.989,1.357c2.39-0.001,4.257-0.618,4.864-1.226 c0.089-0.089,0.12-0.15,0.125-0.166c-0.106-0.353-1.8-1.358-4.99-1.356 C18.585,24.011,16.719,24.626,16.112,25.234z" />
+            <polygon fill="#000000" points="58.191,47.744 20.984,47.76 20.984,45.531 55.961,45.517 55.956,32.803 20.979,32.816 20.978,30.587 58.185,30.573" />
+            <rect x="12.123" y="42.929" fill="#000000" width="2.229" height="2.872" />
+            <rect x="18.244" y="40.055" fill="#000000" width="2.229" height="5.744" />
+            <rect x="24.366" y="42.924" fill="#000000" width="2.229" height="2.872" />
+            <rect x="30.487" y="40.049" fill="#000000" width="2.229" height="5.744" />
+            <rect x="36.609" y="42.919" fill="#000000" width="2.229" height="2.871" />
+            <rect x="42.73" y="40.044" fill="#000000" width="2.229" height="5.745" />
+            <rect x="48.853" y="42.915" fill="#000000" width="2.229" height="2.872" /> </svg>
+    </div>
+
+    <script>
+    //cafe24에서 jquery 버전이 낮아 '$(function(){ ... });' 방식을 그대로 사용하지 못함. 지금 방식 '(function($){ ... })(jQuery);' 을 사용하면 caf24에서도 사용가능
+    (function($) {
+        $(function() {
+          var CompanyID = <? echo json_encode($getCompanyID) ?>;
+          var ProductKey = <? echo json_encode($getProductKey) ?>;
+          var UserPKey = 0;
+          var isMobile = false; //initiate as false
+          // device detection
+          if (
+            /(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|ipad|iris|kindle|Android|Silk|lge |maemo|midp|mmp|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows (ce|phone)|xda|xiino/i
+            .test(navigator.userAgent) ||
+            /1207|6310|6590|3gso|4thp|50[1-6]i|770s|802s|a wa|abac|ac(er|oo|s\-)|ai(ko|rn)|al(av|ca|co)|amoi|an(ex|ny|yw)|aptu|ar(ch|go)|as(te|us)|attw|au(di|\-m|r |s )|avan|be(ck|ll|nq)|bi(lb|rd)|bl(ac|az)|br(e|v)w|bumb|bw\-(n|u)|c55\/|capi|ccwa|cdm\-|cell|chtm|cldc|cmd\-|co(mp|nd)|craw|da(it|ll|ng)|dbte|dc\-s|devi|dica|dmob|do(c|p)o|ds(12|\-d)|el(49|ai)|em(l2|ul)|er(ic|k0)|esl8|ez([4-7]0|os|wa|ze)|fetc|fly(\-|_)|g1 u|g560|gene|gf\-5|g\-mo|go(\.w|od)|gr(ad|un)|haie|hcit|hd\-(m|p|t)|hei\-|hi(pt|ta)|hp( i|ip)|hs\-c|ht(c(\-| |_|a|g|p|s|t)|tp)|hu(aw|tc)|i\-(20|go|ma)|i230|iac( |\-|\/)|ibro|idea|ig01|ikom|im1k|inno|ipaq|iris|ja(t|v)a|jbro|jemu|jigs|kddi|keji|kgt( |\/)|klon|kpt |kwc\-|kyo(c|k)|le(no|xi)|lg( g|\/(k|l|u)|50|54|\-[a-w])|libw|lynx|m1\-w|m3ga|m50\/|ma(te|ui|xo)|mc(01|21|ca)|m\-cr|me(rc|ri)|mi(o8|oa|ts)|mmef|mo(01|02|bi|de|do|t(\-| |o|v)|zz)|mt(50|p1|v )|mwbp|mywa|n10[0-2]|n20[2-3]|n30(0|2)|n50(0|2|5)|n7(0(0|1)|10)|ne((c|m)\-|on|tf|wf|wg|wt)|nok(6|i)|nzph|o2im|op(ti|wv)|oran|owg1|p800|pan(a|d|t)|pdxg|pg(13|\-([1-8]|c))|phil|pire|pl(ay|uc)|pn\-2|po(ck|rt|se)|prox|psio|pt\-g|qa\-a|qc(07|12|21|32|60|\-[2-7]|i\-)|qtek|r380|r600|raks|rim9|ro(ve|zo)|s55\/|sa(ge|ma|mm|ms|ny|va)|sc(01|h\-|oo|p\-)|sdk\/|se(c(\-|0|1)|47|mc|nd|ri)|sgh\-|shar|sie(\-|m)|sk\-0|sl(45|id)|sm(al|ar|b3|it|t5)|so(ft|ny)|sp(01|h\-|v\-|v )|sy(01|mb)|t2(18|50)|t6(00|10|18)|ta(gt|lk)|tcl\-|tdg\-|tel(i|m)|tim\-|t\-mo|to(pl|sh)|ts(70|m\-|m3|m5)|tx\-9|up(\.b|g1|si)|utst|v400|v750|veri|vi(rg|te)|vk(40|5[0-3]|\-v)|vm40|voda|vulc|vx(52|53|60|61|70|80|81|83|85|98)|w3c(\-| )|webc|whit|wi(g |nc|nw)|wmlb|wonu|x700|yas\-|your|zeto|zte\-/i
+            .test(navigator.userAgent.substr(0, 4))
+          ) isMobile = true;
+
+          function startSizeax() {
+            $("#herofit_main").load("http://heronation.net/sizeax/main.html", {
+                CompanyID: CompanyID,
+                ProductKey: ProductKey,
+                UserPKey: UserPKey
+            }).show().animate({
+                opacity: 1
+            });
+          }
+          function startSizeaxMobile() {
+            $("#herofit_main").load("http://heronation.net/sizeax/mobile/main.html", {
+                CompanyID: CompanyID,
+                ProductKey: ProductKey,
+                UserPKey: UserPKey
+            }).show().animate({
+                opacity: 1
+            });
+          }
+          $("#herofit_logo").click(function() {
+            if (typeof(Storage) !== "undefined") {
+              // localStorage.setItem("lastname", "Smith");
+              if(localStorage.getItem("UserPKey")){
+                //storage있음
+                console.log(localStorage.getItem("UserPKey")+localStorage.getItem("UserID")+localStorage.getItem("UserPassword"));
+                UserPKey = localStorage.getItem("UserPKey");
+                if(localStorage.getItem("UserID") && localStorage.getItem("UserPassword")){
+                  var UserID = localStorage.getItem("UserID");
+                  var UserPassword = localStorage.getItem("UserPassword");
+                  var checkPassword =
+                    $.post("http://heronation.net/sizeax/checkpassword.php", {
+                      UserID: UserID,
+                      UserPassword: UserPassword
+                    });
+                  checkPassword.done(function(response){
+                    if(response!='collect'){
+                      //비밀번호 불일치, 각종 에러
+                      UserPKey=0;
+                      // localStorage
+                      localStorage.clear();
+                      if(isMobile) startSizeaxMobile();
+                      else startSizeax();
+                    }else{
+                      if(isMobile) startSizeaxMobile();
+                      else startSizeax();
+                    }
+                  });
+                  checkPassword.fail(function(response) {
+                      //비동기 실패시 코드.
+                      if(isMobile) startSizeaxMobile();
+                      else startSizeax();
+                  });
+                }else{
+                    //임시 회원가입 후 로그인
+                  if(isMobile) startSizeaxMobile();
+                  else startSizeax();
+                }
+              }else{
+                //storage없음
+                if(isMobile) startSizeaxMobile();
+                else startSizeax();
+              }
+            } else {
+              //browser storage 지원 안함
+                alert("Sorry, your browser does not support Web Storage...");
+                if(isMobile) startSizeaxMobile();
+                else startSizeax();
+            }
+          });
+        });
+    })(jQuery);
+    </script>

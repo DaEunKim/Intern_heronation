@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>회원가입 페이지</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script>
+    function Join() {
+      $.ajax({
+        url: "/test/dani/join.php",
+        type: "GET",
+        data: {
+          ID:$('input[name=ID]').val(),
+          PW:$('input[name=PW]').val(),
+          PW_Check :$('input[name=PW_Check]').val(),
+        },
+        success : function(data){
+          alert(data);
+        },
+        error : function(){
+          alert('통신실패!!');
+        }
+      });
+    }
+    function returnLogin() {
+      $("#box-right").load("/test/dani/login.html");
+    }
+    </script>
+    <style></style>
+  </head>
+  <body>
+    <div id='container' action="/test/dani/join.php" method="GET" >
+      <div id='box-right'>
+        ID : <input type="text" name="ID" value=""><br>
+        PW : <input type="password" name="PW" value=""><br>
+        PW 확인 : <input type="password" name="PW_Check" value=""><br>
+        <br>
+        <button id="cancel" onclick="returnLogin()" type="button"> 로그인하러 돌아가기 </button>
+        <button type="button" onclick="Join()" value="join"> 회원가입하기 </button>
+      </div>
+    </div>
+  </body>
+</html>

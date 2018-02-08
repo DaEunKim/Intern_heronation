@@ -1,0 +1,90 @@
+<?
+
+?>
+<div id="detail_title"  style="border:none;">
+    <!-- <div id="sizeInfo_checkBox"> -->
+    <div id="sizeInfo_checkBox" style="display:none;">
+        <input type="checkbox" id="additionalInfo_isShowCheckBox" name="additionalInfo_isShowCheckBox" <?
+        if(!($isUpdate && !$isShowArray[5])) echo 'checked';?>>
+    </div>
+    <div id="additionalInfo_checkBox" class="sizeInfo_checkBoxImg"></div>
+    <div id="detail_titleText" class="themeColorText"><?=$viewListNameArr[5]?></div>
+    <div id="detail_titleDecription"><?=$viewListDescArr[5]?></div>
+</div>
+
+<div class="disabledView" style="display:none;">
+    <hr class="excludFromPreviewHr2">
+    <div class="excludFromPreview2">미리보기에서 제외됩니다.</div>
+</div>
+
+<table id="additionalInfo_table">
+
+<?
+for($iter=0; $iter<$numOfAdditional; $iter++){
+    echo '<tr><th>'.$additionalName[$iter].'</th>';
+    switch($additionalInputID[$iter]){
+        case 1:{    // text
+            echo
+            '<td>
+                <div>
+                    <input class="additionalInfo_additionalInput" type="text" placeholder='.$additionalDescription[$iter].' value="'.$itemValue[$iter][0].'">
+                </div>
+            </td>';
+        }
+            break;
+        case 2:{    // checkbox
+            echo '<td>';
+            for($itemIter=0; $itemIter < count($itemName[$iter]); $itemIter++){
+                // ProductAdditionalItem만 IsChecked 존재
+                if(isset($itemIsChecked[$iter][$itemIter]) && $itemIsChecked[$iter][$itemIter]==1){
+                    echo
+                    '<div style="float:left;"><input class="additionalInfo_additionalInput" type="checkbox" value="'.$itemValue[$iter][$itemIter].'" checked>'.$itemName[$iter][$itemIter].' </div>';
+                }
+                else{
+                    echo
+                    '<div style="float:left;"><input class="additionalInfo_additionalInput" type="checkbox" value="'.$itemValue[$iter][$itemIter].'">'.$itemName[$iter][$itemIter].' </div>';
+                }
+            }
+            echo '</td>';
+        }
+            break;
+        case 3:{    // radio (동일한 name을 줘야함)
+            echo '<td>';
+            for($itemIter=0; $itemIter < count($itemName[$iter]); $itemIter++){
+                if(isset($itemIsChecked[$iter][$itemIter]) && $itemIsChecked[$iter][$itemIter]==1){
+                    echo
+                    '<div style="float:left;"><input class="additionalInfo_additionalInput" type="radio"
+                    value="'.$itemValue[$iter][$itemIter].'" name="additionalRadioInput'.$iter.'" checked>'.$itemName[$iter][$itemIter].' </div>';
+                }
+                else{
+                    echo
+                    '<div style="float:left;"><input class="additionalInfo_additionalInput" type="radio"
+                    value="'.$itemValue[$iter][$itemIter].'" name="additionalRadioInput'.$iter.'" >'.$itemName[$iter][$itemIter].' </div>';
+                }
+            }
+            echo '</td>';
+        }
+            break;
+        case 4:{    // select
+            echo
+            '<td><div>
+                <select>';
+            for($itemIter=0; $itemIter < count($itemName[$iter]); $itemIter++){
+                if(isset($itemIsChecked[$iter][$itemIter]) && $itemIsChecked[$iter][$itemIter]==1){
+                    echo
+                    '<option class="additionalInfo_additionalInput" value="'.$itemValue[$iter][$itemIter].'" selected>'.$itemName[$iter][$itemIter].'</option>';
+                }
+                else{
+                    echo
+                    '<option class="additionalInfo_additionalInput" value="'.$itemValue[$iter][$itemIter].'">'.$itemName[$iter][$itemIter].'</option>';
+                }
+            }
+            echo '</select>
+            </div></td>';
+        }
+            break;
+    }
+    echo '</tr>';
+}
+?>
+</table>

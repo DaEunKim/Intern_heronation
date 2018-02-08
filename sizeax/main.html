@@ -1,0 +1,82 @@
+<?
+  header('Access-Control-Allow-Origin:*'); //CORS 관련 이슈 해결. 근본적인 해결은 아니나 사용하는데 문제는 없다.
+  if(isset($_POST['CompanyID']) && isset($_POST['ProductKey']) && isset($_POST['UserPKey'])){
+    $CompanyID = $_POST['CompanyID'];
+    $ProductKey = $_POST['ProductKey'];
+    $UserPKey = $_POST['UserPKey'];
+  }
+?>
+
+<!DOCTYPE html>
+<html>
+<head>
+  <script type="text/javascript" src="//code.jquery.com/jquery-3.1.1.min.js"></script>
+  <link rel="stylesheet" href="http://heronation.net/sizeax/asset/sizeax.css">
+  <link rel="stylesheet" href="http://heronation.net/sizeax/wooseok/asset/wooseok.css">
+  <link rel="stylesheet" href="http://heronation.net/sizeax/LYH/lyh.css">
+  <link rel="stylesheet" href="http://heronation.net/sizeax/JYD/signup.css">
+  <!-- <link rel="stylesheet" type="text/css" href="http://heronation.net/sizeax/JYD/backpage.css" /> -->
+
+</head>
+<body>
+
+    <div id="heroBackground"></div>
+    <div id="heroContainer" class="notosanskr">
+      <div class="container">
+          <div class="joinContainer"></div>
+          <div class="header">
+              <div class="headerTitle">
+                <div class="title"><img src="http://heronation.net/sizeax/images/logo.svg"></div>
+              </div>
+          </div>
+          <div class="loginbutton" id="loginButton" onclick="loginView();">LOGIN</div>
+          <div class="exitbutton"><img src="http://heronation.net/sizeax/images/xButton.svg" style="width:70%; height:70%;"></div>
+          <div class="content"></div>
+          <!--뒤로가기 버튼 : 0이면 메인, 1이면 옷장관리  -->
+          <div class="backButton" name = "0"><img src="http://heronation.net/sizeax/images/backButton.svg" style="width:80%; height:80%;"></div>
+
+
+      </div>
+
+    </div>
+    <div id="printdiv" style="display:none; position : fixed; z-index : 102933; background-color : yellow; overflow : scroll; width : 200px; height : 500px; botton : 0; right : 0;">
+        <input type="button" id="printremove" onclick="removePrintData()" value="삭제" style="position : fixed; ">
+        <br>
+        <div id="consolediv"></div>
+    </div>
+
+    <!-- 아이디 비번 틀릴 시 모달 창 -->
+    <div class="modalContainer" id="findContainer" style="display: none;">
+        <div style="margin-top: 28px; margin-bottom: 20px; text-align: center;">
+            아이디 또는 비밀번호를 확인해주세요.
+        </div>
+        <div class="modalDiv">
+            <div class="findDiv" style="float:left;" onclick="opacityRemove();">예</div>
+            <div class="findDiv" id="findPassword" style="display:inline-block;" onclick="findPassword()">비밀번호 찾기</div>
+        </div>
+    </div>
+
+    <!-- 로그아웃 클릭 시 모달 창 -->
+    <div class="modalContainer" id="logoutContainer" style="display: none; height: 60px;">
+        <div class="modalDiv">
+            <div style="margin-top: 10px">
+                <div class="findDiv" style="float:left;" onclick="logout();">로그아웃</div>
+                <div class="findDiv" id="findPassword" style="display:inline-block;" onclick="myPage()">비밀번호 수정</div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+<script type="text/javascript">
+    var CompanyID = <? echo json_encode($CompanyID) ?>,
+        ProductKey = <? echo json_encode($ProductKey) ?>,
+        UserPKey = <? echo json_encode($UserPKey) ?>;
+    var backgroundFlag = true;
+    var compareCommunicationFlag = 0;
+    var triggerCompareCommunicationFlag = 0;
+    var switchCompareCommunicationFlag = 0;
+
+</script>
+<script type="text/javascript" src="http://heronation.net/sizeax/asset/sizeax.js"></script>
+<script type="text/javascript" src="wooseok/asset/wooseok.js"></script>

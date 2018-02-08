@@ -1,0 +1,714 @@
+<?
+  include_once("../header.php");
+  $conn = $classDB->getConn();
+
+
+  if($conn) {
+    if(isset($_POST['CompanyID']) && isset($_POST['ProductKey']) && isset($_POST['UserPKey'])){
+      $CompanyID=$_POST['CompanyID'];
+      $ProductKey=$_POST['ProductKey'];
+      $UserPKey = $_POST['UserPKey'];
+    // echo "connected";
+      $recommendsize = 'M';
+    //$CompanyID= 18;
+    //$ProductKey='gentlelife_35';
+    //$UserPKey=1966;
+
+      // 상품 데이터 (카테고리/이름/사진/PKey)
+      //$select_product_query = "SELECT MainCategory.NameKR as MainCategoryNameKR, SubCategory.NameKR as SubCategoryNameKR,
+                  //Product.Name as ProductName, Product.ProductKey as ProductProductKey,
+                  //Product.Picture as ProductPicture, Product.CategoryID as CategoryID
+                  //from Product
+                  //inner join Category SubCategory on Product.CategoryID = SubCategory.PKey
+                  //inner join Category MainCategory on SubCategory.ParentID = MainCategory.PKey
+                  //where Product.CompanyID =$CompanyID and Product.ProductKey = '$ProductKey'";
+      $select_product_query = "SELECT Product.Name as ProductName, Product.ProductKey as ProductProductKey,
+                Product.Picture as ProductPicture, Product.CategoryID as CategoryID
+                from Product
+                where Product.CompanyID =$CompanyID and Product.ProductKey = '$ProductKey'";
+
+      $result_product = mysqli_query($conn, $select_product_query);
+      $product_row = mysqli_fetch_array($result_product);
+
+      $CategoryID = $product_row['CategoryID'];
+      //$Category_Name = $product_row['SubCategoryNameKR'];
+
+      $findSizeType_query =
+        "select SizeTypeList.CategoryID CID, SizeType.PKey SPKey, SizeType.NameKR SName
+        from SizeTypeList, SizeType
+        where SizeTypeList.SizeTypeID = SizeType.PKey
+        and CategoryID = $CategoryID";
+
+      $findSizeType_sql = mysqli_query($conn, $findSizeType_query);
+      $findSizeType_result = array();
+      $count2 = 0;
+      while($row2 = mysqli_fetch_array($findSizeType_sql)){
+        $findSizeType_result[$count2] = array(
+          $row2["CID"],
+          $row2["SPKey"],
+          $row2["SName"]
+        );
+        $count2++;
+      }
+
+
+
+      // 사이즈 데이터
+      $select_product = "select ProductSize.ProductSizeListID as ProductSizeListPKey,
+                        ProductSize.SizeTypeID as SizeTypePKey, ProductSize.Size as Size,
+                        SizeType.NameKR as SizeTypeName, ProductSizeList.Name as ProductSizeListName,
+                        Product.Name as ProductName, Product.CategoryID as CategoryID
+                        from ProductSize
+                        inner join SizeType on ProductSize.SizeTypeID = SizeType.PKey
+                        inner join ProductSizeList on ProductSize.ProductSizeListID = ProductSizeList.PKey
+                        inner join Product on Product.PKey = ProductSizeList.ProductID
+                        where Product.CompanyID =$CompanyID and Product.ProductKey = '$ProductKey'
+                        order by ProductSizeListPKey ,SizeTypePKey";
+
+      if($result_product = mysqli_query($conn, $select_product)){
+           $count_product=0;
+           $count_product_size=0;
+           $product_size=array();
+           $product_size[$count_product]=array();
+           while($row_product = mysqli_fetch_array($result_product)){
+              if($count_product_size>0){
+                if($product_size[$count_product][$count_product_size-1][0]!=$row_product['ProductSizeListPKey']){
+                  $count_product++;
+                  $count_product_size=0;
+                }
+              }
+              $product_size[$count_product][$count_product_size] = array(
+                  $row_product['ProductSizeListPKey'],
+                  $row_product['ProductSizeListName'],
+                  $row_product['SizeTypePKey'],
+                  $row_product['SizeTypeName'],
+                  $row_product['Size']
+              );
+              $product_typeAndSize[$count_product][$count_product_size] = array(
+                $row_product['SizeTypePKey'],
+                $row_product['Size']
+              );
+
+              $count_product_size++;
+           }
+           $count_product++;
+      }
+
+      // 유저 데이터
+      if($UserPKey!=0){
+        $usersize_query = "select UserSize.UserSizeListID as UserSizeListID, UserSize.SizeTypeID as SizeTypeID,
+                          UserSize.Size as Size, UserSizeList.Name as UserSizeListName, SizeType.NameKR as SizeTypeName,
+                          UserSizeList.Priority as UserPriority, UserSizeList.Status, UserSizeList.CategoryID as CategoryID
+                          from UserSize
+                          inner join UserSizeList on UserSize.UserSizeListID = UserSizeList.PKey
+                          inner join SizeType on UserSize.SizeTypeID = SizeType.PKey
+                          where UserSizeList.UserID = $UserPKey and UserSizeList.Status!=0 and UserSize.Size!=0 and UserSizeList.CategoryID=$CategoryID
+                          order by UserSizeList.Priority, UserSizeList.UpdatedDate desc, UserSize.SizeTypeID";
+        $usersize_result = mysqli_query($conn, $usersize_query);
+        $user_count=0;
+        $usersize_count=0;
+        $usersize=array();
+        $usersize[$user_count]=array();
+
+        while($usersize_row = mysqli_fetch_array($usersize_result)){
+          if($usersize_count>0){
+            if($usersize[$user_count][$usersize_count-1][0]!=$usersize_row['UserSizeListID']){
+                $user_count++;
+                $usersize_count=0;
+            }
+          }
+          $usersize[$user_count][$usersize_count] = array(
+              $usersize_row['UserSizeListID'],
+              $usersize_row['SizeTypeID'],
+              $usersize_row['SizeTypeName'],
+              $usersize_row['UserSizeListName'],
+              $usersize_row['Size'],
+              $usersize_row['UserPriority'],
+              $usersize_row['CategoryID']
+          );
+          $usersize_count++;
+        }
+        $user_count++;
+        if($usersize_count==0){
+          $usersize = [];
+          $user_count = 0;
+        }
+      } else {
+        $usersize = [];
+        $user_count = 0;
+      }
+    }
+  }
+?>
+
+
+
+<!DOCTYPE html>
+<html>
+  <body>
+    <div Class="loadContent">
+      <div Class="subContent1">
+        <div class="dialogMask"></div>
+        <img src="http://<? echo $product_row['ProductPicture'] ?>" class="productImg"/>
+        <div Class="productDetail">
+          <div Class="title" id = "productNameTitle"><? echo $product_row['ProductName'] ?></div>
+          <div id="productSizebutton" Class="sizeButton" align=center> </div>
+          <div id="addClosetbutton">옷장<br>담기</div>
+        </div>
+      </div>
+      <div class="subContent2">
+        <div class="dialogMask"></div>
+        <div class="compareImg">
+          <div id = "productsizediv"></div>
+          <div id = "usersizediv"></div>
+        </div>
+
+        <div class="recommmendsizediv" align=center> 추천사이즈 : <? echo $recommendsize; ?> </div>
+        <div class="compareDiv" align=center >
+          <div class="slidertext">상품치수</div>
+          <div style="width:20%; float:left;">
+            <label class="switch">
+              <input type="checkbox" id="ClothViewCheck">
+              <div class="slider round"></div>
+            </label>
+          </div>
+          <div class="slidertext">비교하기</div>
+        </div>
+      </div>
+      <div Class="subContent3">
+        <div class="dialogMask_bottom"></div>
+        <img src="http://heronation.net/sizeax/images/shirt.svg" class="productImg" id = "productImg_svg"/>
+        <div class="userDetail">
+          <div class="userItemlist" id="itemList"></div>
+            <div id="userItemlistDetail">
+              <div class="dialogBody" id="userItem"> </div>
+            </div>
+          <div class="setting" id="settingButton">
+            <img src="http://heronation.net/sizeax/mobile/icon/setting.png">
+            <div>셋팅</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div id="settingDialog">
+      <div class="dialogNavigation">
+        <div id="useritemName"></div>
+        <div id="closeButton">닫기 X</div>
+      </div>
+      <div class="dialogBody" align=center>
+        <div class="menu" id="updateItem" style="color: #90e8c6;">
+          <img src="http://heronation.net/sizeax/mobile/icon/editIcon.png">
+          <div>수정</div>
+        </div>
+        <div class="menu" id="deleteItem" style="color: #fad680;">
+          <img src="http://heronation.net/sizeax/mobile/icon/deleteIcon.png">
+          <div>삭제</div>
+        </div>
+        <div class="menu" id="addItem" style="color: #ffa0ca;">
+          <img src="http://heronation.net/sizeax/mobile/icon/addIcon.png">
+          <div>추가</div>
+        </div>
+        <div class="menu" id="myCloth" style="color: #80d4ff;">
+          <img src="http://heronation.net/sizeax/mobile/icon/myclothIcon.png">
+          <div>내옷장</div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
+<script type="text/javascript">
+
+  // 상품 정보 출력
+  var ProductSizearr = <? echo json_encode($product_size) ?>;
+  var sizeList = <? echo json_encode($count_product) ?>;
+  var count_product_size = <? echo $count_product_size?>;
+  console.log("ProductSizearr");
+  console.log(ProductSizearr);
+  var selectProductIndex = 0;
+
+  var count_category_SizeType = <?echo $count2?>;
+  var category_SizeType = <?echo json_encode($findSizeType_result)?>;
+  var findCategoryID = <?echo $CategoryID?>;
+  var findCategoryName = <?echo json_encode($Category_Name, JSON_UNESCAPED_UNICODE)?>;
+var viewflag = true;
+var RecommendFlag;
+var RecommendCNT;
+
+ // DB의 제품 사이즈 정보 읽어와서 1차적으로 sizetypeID - productsize 저장하는 배열 생성
+ // 옷장 담기 기능때문에 사용
+ // 물론 DB에 입력 안되는 경우가 있으므로, 배열의 길이는 유동적이다.
+  var sizetypeAndSize_before = new Array();
+  for (var i = 0; i < count_product_size ; i++) {
+    var arr_sub = new Array();
+    // arr_sub.push(findSizeType_result[i][1]);
+    arr_sub.push(ProductSizearr[0][i][2]);
+    arr_sub.push("");
+    sizetypeAndSize_before.push(arr_sub);
+  }
+
+
+// User의 사이즈 정보를 압력하거나, 보여줄때 사용할 배열
+// sizetypeAndSize_before와 선택한 제품의 카테고리ID를 이용해서
+// sizetypeAndSize_before에서 입력되지 않은 칸은 ""로 저장하게 한다.
+// 배열의 길이는 항상 카테고리 ID에 따른 sizeType의 수.
+var sizetypeAndSize = new Array();
+  for (var i = 0; i < count_category_SizeType ; i++) {
+    var arr_sub = new Array();
+    // arr_sub.push(findSizeType_result[i][1]);
+    arr_sub.push(category_SizeType[i][1]);
+    arr_sub.push("");
+    sizetypeAndSize.push(arr_sub);
+  }
+  for(var i = 0; i < sizetypeAndSize.length ; i++){
+      for(var j = 0; j < sizetypeAndSize_before.length ; j++){ // null point 체크
+        if(sizetypeAndSize[i][0] == sizetypeAndSize_before[j][1]){ // 사이즈 정보 들어있을때
+          sizetypeAndSize[i][1] = sizetypeAndSize_before[j][1];
+          break;
+        }else{
+          sizetypeAndSize[i][1] = "";
+        }
+      }
+    }
+
+  console.log(sizetypeAndSize);
+
+var selectedproductSize = new Array();
+selectedproductSize = new Array();
+for (var i = 0; i < count_category_SizeType ; i++) {
+  var arr_sub = new Array();
+  arr_sub.push(category_SizeType[i][1]);
+  arr_sub.push("");
+  selectedproductSize.push(arr_sub);
+}
+for(var i = 0 ; i < selectedproductSize.length ; i++){
+  for(var j = 0; j < ProductSizearr[0].length ; j++){
+    if(selectedproductSize[i][0] == ProductSizearr[0][j][2]){
+      selectedproductSize[i][1] = ProductSizearr[0][j][4];
+      break;
+    }else{
+      selectedproductSize[i][1] = "";
+    }
+  }
+}
+console.log("selectedproductSize");
+console.log(selectedproductSize);
+
+// DB에서 불러온 사이즈 정보들(S,M,L,FREE 등...)을 동적으로 뿌려주는 for문
+  for(var i=0; i<sizeList; i++){
+     $("<div class='btn'>"+ProductSizearr[i][0][1]+"</div>").appendTo("#productSizebutton");
+  }
+
+  $(".btn").off().on("click",function(){
+         $(".btn").css({
+           'color': '#bfbfbf',
+           'border-color': '#bfbfbf'
+         });
+         $(this).css({
+           'color': '#6a71b7',
+           'border-color': '#6a71b7'
+         });
+         selectProductIndex = $(this).index();
+         console.log($("#productSizebutton").children().eq(selectProductIndex).text());
+
+         // 제품아이콘 클릭시 제품의 사이즈타입별 길이 정보를 저장하는 배열 //
+         // 비어있는 id는 ""로 저장//
+         selectedproductSize = new Array();
+         for (var i = 0; i < count_category_SizeType ; i++) {
+           var arr_sub = new Array();
+           arr_sub.push(category_SizeType[i][1]);
+           arr_sub.push("");
+           selectedproductSize.push(arr_sub);
+         }
+         for(var i = 0 ; i < selectedproductSize.length ; i++){
+           for(var j = 0; j < ProductSizearr[selectProductIndex].length ; j++){
+             if(selectedproductSize[i][0] == ProductSizearr[selectProductIndex][j][2]){
+               selectedproductSize[i][1] = ProductSizearr[selectProductIndex][j][4];
+               break;
+             }else{
+               selectedproductSize[i][1] = "";
+             }
+           }
+         }
+         console.log("selectedproductSize");
+         console.log(selectedproductSize);
+
+
+         if(viewflag){ // 치수보기 상태
+           // // SVG 플래그 : 1-> 치수보기 + 상품정보 2-> 비교하기 + 상품정보 3-> 비교하기 + 유저정보
+             $("#productsizediv").load('http://heronation.net/sizeax/JYD/svg/'+findSvgLoadImage(findCategoryID),{
+               Flag : 1,
+               ProductSizeTypeAndSize : selectedproductSize,
+               UserSizeTypeAndSize : [[0]]
+
+             },function(){
+             console.log("1번");
+             });
+         }
+         else{ // 비교하기 상태에서 제품 사이즈 클릭
+           $("#productsizediv").load('http://heronation.net/sizeax/JYD/svg/'+findSvgLoadImage(findCategoryID),{
+               Flag : 2 , // 비교하기 + 상품정보
+                   ProductSizeTypeAndSize : selectedproductSize,
+                   UserSizeTypeAndSize : selectUsersize
+             },function(){
+             console.log("4번");
+             });
+         }
+  });
+
+  // 유저 사이즈 출력
+  var UserSizearr = <? echo json_encode($usersize) ?>;
+  var UsersizeList = <? echo json_encode($user_count) ?>;
+  var findUserSizeList = UserSizearr[0];
+  var findUserSizeList2 = new Array();
+
+  // findUserSizeList : UserSize 결과들 중 선택된 정보를 저장하게하는 배열
+  // 처음에는 0번째 원소값을 저장하고, userItembtn을 클릭할때마다 해당하는 결과를 저장
+  // 단!!! user의 size가 0이거나 ""인 것은 가져오지 않는다.
+  // 위의 문제를 해결하기 위해서 findUserSizeList2를 선언
+  // 아래의 for문은 findUserSizeList2를 siztypeid - usersize를 초기화해준다.
+  // 원소값들은 세부사항입력.html에서 저장됨.
+  for (var i = 0; i < count_category_SizeType ; i++) {
+    var arr_sub = new Array();
+    arr_sub.push(category_SizeType[i][1]);
+    arr_sub.push("");
+    findUserSizeList2.push(arr_sub);
+  }
+
+/* 배열 정보 총정리
+ 1. sizetypeAndSize_before
+  옷장담기가 주 목적. 선택한 제품의 기본 사이즈들을 가지며, sizetypeAndSize에 저장하도록 한다.
+ 2. sizetypeAndSize
+  usersize를 insert, update하기 위해 필수적으로 필요한 배열
+  배열의 초기화는 항상 categoryId에 따른 sizetypeID와 ""로 된다.
+  수정하기로 들어가서 입력된 usersize나 produtsize를 보여줄때도 이걸 거쳐서 간다.
+  즉 View단에서 보이는 값은 항상 sizetypeAndSize배열
+ 3. findUserSizeList
+  select로 불려진 초기 usersize정보를 저장하는 배열
+  필수값을 제외한 입력되지 않은 값들은 저장되지 않는다.
+  추후 null point exception이 터지기 때문에 findUserSizeList2를 이용
+  4. findUserSizeList2
+  findUserSizeList에 존재하지 않는 값들도 ""로 저장한다.
+*/
+
+  var tmp = -30;
+ var selectUsersize = new Array();
+  for(var i=0; i<UsersizeList; i++){
+    if(i==0) {
+      $("#useritemName").text(UserSizearr[0][0][3]);
+      $('#recommmendsizediv').hide();
+    }
+
+    // $("#userItem").append("<div class='userItembtn' style='bottom:"+tmp+"px;'>"+UserSizearr[i][0][3]+"</div>");
+    $("<div class='userItembtn' style='bottom:"+tmp+"px;'>"+UserSizearr[i][0][3]+"</div>").appendTo("#userItem");
+
+
+
+    $("#itemList").text(findUserSizeList[0][3]);
+    tmp += 33;
+}
+
+    $(".userItembtn").off().on("click", function(){
+
+        $("#itemList").text($(this).text());
+        $("#useritemName").text($(this).text());
+        $('#userItemlistDetail').toggle();
+        $('.dialogMask').css('display', 'none');
+        findUserSizeList = UserSizearr[$(this).index()];
+        console.log("findUserSizeList");
+        console.log(findUserSizeList);
+        itemflag = 0;
+
+        clickUpdate(findUserSizeList);
+
+        compareSizeData($(this).index());
+        if (viewflag) {
+
+            $('#ClothViewCheck').trigger('click');
+            $("#ClothViewCheck").prop('checked', true) ;
+            // viewflag = true;
+        }
+
+        selectUsersize = new Array();
+        for (var i = 0; i < count_category_SizeType ; i++) {
+            var arr_sub = new Array();
+            arr_sub.push(category_SizeType[i][1]);
+            arr_sub.push("");
+            selectUsersize.push(arr_sub);
+        }
+        for(var i = 0 ; i < selectUsersize.length ; i++){
+            for(var j = 0; j < findUserSizeList.length ; j++){
+                if(selectUsersize[i][0] == findUserSizeList[j][1]){
+                    selectUsersize[i][1] = findUserSizeList[j][4];
+                    break;
+                }else{
+                    selectUsersize[i][1] = "";
+                }
+            }
+        }
+        console.log("순서:1");
+        $("#productsizediv").load('http://heronation.net/sizeax/JYD/svg/'+findSvgLoadImage(findCategoryID),{
+            Flag : 2 , // 비교하기 + 상품정보
+            ProductSizeTypeAndSize : selectedproductSize,
+            UserSizeTypeAndSize : selectUsersize
+        },function(){
+            console.log("순서:2");
+            console.log("4번");
+            $("#usersizediv").load('http://heronation.net/sizeax/JYD/svg/'+findSvgLoadImage(findCategoryID),{
+                Flag : 3, // 비교하기 + 유저정보
+                ProductSizeTypeAndSize : selectedproductSize,
+                UserSizeTypeAndSize : selectUsersize
+            },function(){
+                console.log("순서:3");
+                console.log("3번");
+                console.log(selectUsersize);
+            });
+        });
+    });
+    $('#userItemlistDetail').toggle();
+    $('.userItembtn').eq(0).trigger('click');
+
+
+
+  if(UsersizeList==0){
+    console.log("UsersizeList");
+    console.log(UsersizeList);
+    $(".btn").eq(0).trigger('click');
+
+    }else{
+      compareSizeData(0)
+        // $('#ClothViewCheck').trigger('click');
+        console.log(viewflag);
+        viewflag = false;
+        $(".slidertext").css({
+          color: '#959593'
+        });
+        $(".slidertext:last-child").css({
+          color: '#1FA2E6'
+        });
+        $('.recommmendsizediv').show();
+
+        console.log("RecommendCNT " + RecommendCNT);
+        // console.log($(".boxlist_product").eq(0).text());
+         $(".btn").eq(RecommendCNT).trigger('click');
+
+         if(!compareSizeData(0)){
+           console.log("else문아 걸려라");
+           $(".btn").eq(0).trigger('click');
+         }
+
+  }
+
+  // // 다이얼로그 온오프
+  //
+  // console.log("itemflag : "+ itemflag);
+  // $(document).on("click", ".userItembtn", function(){
+  //   console.log("itemflag" + itemflag);
+  //
+  //
+  // });
+
+
+
+  $('#itemList').click(function() {
+    console.log("itemflag" + itemflag);
+    if(itemflag == 0) {
+      $('#userItemlistDetail').toggle();
+      $('.dialogMask').css('display', 'block');
+      itemflag = 1;
+    } else {
+      $('#userItemlistDetail').toggle();
+      $('.dialogMask').css('display', 'none');
+      itemflag = 0;
+    }
+  });
+
+  $('#settingButton').click(function() {
+    $('#settingDialog').css('display', 'block');
+    $('.dialogMask').css('display', 'block');
+    if(itemflag == 1) {
+      $('#userItemlistDetail').toggle();
+      itemflag = 0;
+    }
+  });
+
+  $('#closeButton').click(function() {
+    $('#settingDialog').css('display', 'none');
+    $('.dialogMask').css('display', 'none');
+  });
+
+  $('.dialogMask').click(function() {
+    $('#settingDialog').css('display', 'none');
+    $('.dialogMask').css('display', 'none');
+    if(itemflag==1) {
+      $('#userItemlistDetail').toggle();
+      itemflag = 0;
+    }
+  });
+
+
+    // 스위치
+  if (UsersizeList == 0){
+    $("#ClothViewCheck").attr("onclick",'return false');
+
+  }else{
+
+
+    // $(document).on("click", "#ClothViewCheck", function() {
+$("#ClothViewCheck").off().on("click", function(){
+      console.log(viewflag);
+      if (viewflag) {
+        viewflag = false;
+        $(".slidertext").css({
+          color: '#bfbfbf'
+        });
+        $(".slidertext:last-child").css({
+          color: '#6a71b7'
+        });
+        if(RecommendFlag){
+          $('.recommmendsizediv').show();
+        }else{
+          $('.recommmendsizediv').hide();
+        }
+        $("#usersizediv").show();
+
+          if(selectedproductSize.length!=0){
+            $("#productsizediv").load('http://heronation.net/sizeax/JYD/svg/'+findSvgLoadImage(findCategoryID),{
+                Flag : 2 , // 비교하기 + 상품정보
+                    ProductSizeTypeAndSize : selectedproductSize,
+                    UserSizeTypeAndSize : selectUsersize
+              },function(){
+              console.log("4번");
+              });
+          }
+
+      } else {
+        viewflag = true;
+        $(".slidertext").css({
+          color: '#6a71b7'
+        });
+        $(".slidertext:last-child").css({
+          color: '#bfbfbf'
+        });
+        $('.recommmendsizediv').hide();
+
+        $("#usersizediv").hide();
+        $("#productsizediv").load('http://heronation.net/sizeax/JYD/svg/'+findSvgLoadImage(findCategoryID),{
+                Flag : 1, // 치수보기 + 상품정보
+                ProductSizeTypeAndSize : selectedproductSize,
+                UserSizeTypeAndSize : [[0]]
+          },function(){
+          console.log("5번");
+          });
+
+      }
+
+    });
+  }
+
+
+  function clickUpdate(findUserSizeList) {
+    console.log(findUserSizeList[0][0]);
+    $.ajax({
+      type: "POST",
+      url: "http://heronation.net/sizeax/CHS/php/clickupdate.php",
+      data: {
+        UserSizeListID: findUserSizeList[0][0]
+      },
+      success: function(response) {
+        if (response == "update_success") {
+          console.log(response);
+        } else {
+          console.log(response);
+        }
+      }
+    });
+  }
+
+  function compareSizeData(cnt){
+    // 비교질 시작! 순서대로 비교하자. //
+    for (var i = 0; i < ProductSizearr.length; i++) { // for문은 product를 토대로why? : 선택된 UserSize가 기준
+      // sizetypeID일치여부 확인
+      if(ProductSizearr[i][0][2] == UserSizearr[cnt][0][1]){// 추후 선택된 유저사이즈로 교체, 지금은 무조건 처음값
+        var size_diff = Number(UserSizearr[cnt][0][4]) - Number(ProductSizearr[i][0][4]);
+        console.log(size_diff);
+        if(size_diff > 0 ){ // 유저의 필수값 길이가 제품의 필수값 길이보다 더 크다. -> 추천 X
+          RecommendFlag = false;
+          $('.recommmendsizediv').hide();
+          // break;
+        }else if(size_diff <= 0 && size_diff >= -3){ // 유저의 필수값 길이가 정상 범위 -> 추천
+          // printData("추천 사이즈"+ProductSizearr[i][0][1]);
+          console.log("추천 사이즈"+ProductSizearr[i][0][1]);
+          RecommendCNT = i;
+
+
+          RecommendFlag = true;
+          $('.recommmendsizediv').text("추천 사이즈 : "+ProductSizearr[i][0][1]);
+
+          if(!viewflag){
+          $('.recommmendsizediv').show();
+        }else{
+          $('.recommmendsizediv').hide();
+        }
+
+
+          return true; // true : 추천 사이즈 있음 false : 없음
+          break ; // 추천  사이즈 찾았으니까 무의미한 비교 방지
+        }else{
+          // break;
+          RecommendFlag = false;
+          $('.recommmendsizediv').hide();
+        }
+      }else{
+        console.log("Error");
+      }
+    }
+  }
+
+  function findSvgLoadImage(CategoryID){
+    // 카테고리별로 svg 종류 결정
+    var svg_Icon = ""
+    switch (Number(CategoryID)) {
+      // 임시는 현재 draw 함수가 없는것
+          case 4:
+          case 10:
+              svg_Icon = "tshirts.html";
+              break;
+          case 5:
+              svg_Icon = "shirts.html";
+              break;
+          case 6:
+          case 12:
+              svg_Icon = "sweater.html";
+              break;
+          case 7:
+          case 13:
+              svg_Icon = "jacket.html";
+              break;
+          case 8:
+          case 14:
+              svg_Icon = "jumper.html";
+              break;
+          case 9:
+          case 16:
+              svg_Icon = "pants.html";
+              break;
+          case 11:
+              svg_Icon = "blouse.html";
+              break;
+          case 15:
+              svg_Icon = "onepiece.html";
+              break;
+          case 17:
+              svg_Icon = "skirts.html";
+              break;
+
+    }
+    console.log("finish load finding");
+    return svg_Icon;
+  }
+
+
+  /// svg icon 변경 ////
+  $('#productImg_svg').attr("src","http://heronation.net/sizeax/images/"+findSvgImage(findCategoryID));
+
+</script>

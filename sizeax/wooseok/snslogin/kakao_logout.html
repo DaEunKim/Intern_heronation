@@ -1,0 +1,11 @@
+<script src='https://developers.kakao.com/sdk/js/kakao.min.js'></script>
+<script>
+Kakao.init('4d91f511bed69b5308059c41c0df43ca'); //카카오에서 제공 myceo.co.kr 수정
+Kakao.Auth.logout(
+function(obj) {
+if(obj==true){}else{}
+    alert("로그아웃이 완료되었습니다.");
+    self.close();
+ }
+);
+</script>

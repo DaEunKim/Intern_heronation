@@ -1,0 +1,120 @@
+<!doctype html>
+
+<!--XML namespace 추가-->
+<html xmlns:fb="http://heronation.net/">
+<html>
+<meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
+<meta name="viewport" content="user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, width=device-width"/>
+    <body>
+        <div id="fb-root"></div>
+        <script type="text/javascript" src="https://static.nid.naver.com/js/naverLogin_implicit-1.0.2.js" charset="utf-8"></script>
+        <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+        <script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
+        <script>
+          window.fbAsyncInit = function() {
+            FB.init({
+              appId      : '735912283241410', // 앱 ID
+              status     : true,          // 로그인 상태를 확인
+              cookie     : true,          // 쿠키허용
+              xfbml      : true           // parse XFBML
+            });
+
+            FB.getLoginStatus(function(response) {
+                if (response.status === 'connected') {
+
+                    FB.api('/me', function(user) {
+                        if (user) {
+                            var image = document.getElementById('image');
+                            image.src = 'http://graph.facebook.com/' + user.id + '/picture';
+                            var name = document.getElementById('name');
+                            name.innerHTML = user.name
+                            var id = document.getElementById('id');
+                            id.innerHTML = user.id
+                        }
+                    });
+
+                } else if (response.status === 'not_authorized') {
+
+                } else {
+
+                }
+            });
+
+            FB.Event.subscribe('auth.login', function(response) {
+                document.location.reload();
+            });
+          };
+
+          // Load the SDK Asynchronously
+          (function(d){
+             var js, id = 'facebook-jssdk', ref = d.getElementsByTagName('script')[0];
+             if (d.getElementById(id)) {return;}
+             js = d.createElement('script'); js.id = id; js.async = true;
+             js.src = "//connect.facebook.net/ko_KR/all.js";
+             ref.parentNode.insertBefore(js, ref);
+           }(document));
+        </script>
+
+        <p>로그인 버튼 추가</p>
+        <fb:login-button show-faces="false" width="200" max-rows="1"></fb:login-button>
+        <a href="#" onclick="FB.logout();">[logout]</a><br>
+        <p>사용자정보 출력</p>
+        <div align="left">
+            <img id="image"/>
+            <div id="name"></div>
+            <div id="id"></div>
+        </div>
+        <br><br><br>
+
+
+
+        <div id="naver_id_login" style="float:left;"></div>
+        <div style="float:left;"><a href="https://nid.naver.com/oauth2.0/token?grant_type=delete&client_id=jyvqXeaVOVmV&client_secret=527300A0_COq1_XV33cf&access_token=c8ceMEJisO4Se7uGCEYKK1p52L93bHXLnaoETis9YzjfnorlQwEisqemfpKHUq2gY&service_provider=NAVER"><img style="width:116px;" src="/img/naver_logout.PNG"></a></div>
+        <br><br><br><br><br><br>
+
+
+        <a id="kakao-login-btn"></a>
+        <a href="http://developers.kakao.com/logout"></a>
+        <a href="./snslogin/kakao_logout.html" target="_blank">[logout]</a><br>
+
+        <script type='text/javascript'>
+          //<![CDATA[
+            // 사용할 앱의 JavaScript 키를 설정해 주세요.
+            Kakao.init('4d91f511bed69b5308059c41c0df43ca');
+            // 카카오 로그인 버튼을 생성합니다.
+            Kakao.Auth.createLoginButton({
+              container: '#kakao-login-btn',
+              success: function(authObj) {
+                alert(JSON.stringify(authObj)+"성공");
+                location.href="./kakao_result.html?name="+authObj.properties.nickname;
+              },
+              fail: function(err) {
+                 alert(JSON.stringify(err)+"실패");
+              }
+            });
+          //]]>
+            function kakaologout() {
+                KaKao.Auth.logout(function (){
+                    setTimeout(function() {
+                        location.href="http://heronation.net/test/wooseok/sns/kakao_result.html"
+                    }, 1000);
+                });
+            }
+        </script>
+
+
+
+        <script type="text/javascript">
+            var naver_id_login = new naver_id_login("Ec32AXdnypaBwF9iWGlh", "http://heronation.net/naver_login.html");
+            var state = naver_id_login.getUniqState();
+            naver_id_login.setButton("white", 2,40);
+            naver_id_login.setDomain("http://heronation.net/");
+            naver_id_login.setState(state);
+            naver_id_login.setPopup();
+            naver_id_login.init_naver_id_login();
+        </script>
+        <!-- //네이버아디디로로그인 초기화 Script -->
+
+    </body>
+</html>

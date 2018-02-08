@@ -1,0 +1,44 @@
+<div class="backgroundOpacity" onclick="opacityRemove()">
+    <div class="mainContainer" id="mainContainer">
+        <div class="loginContainer">
+            <div class="loginDiv">
+                <div class="loginIconContainer">
+                    <div class="loginIconImage">Icon</div>
+
+                    <!-- <img src="" class="loginIconImage" /> -->
+                </div>
+                <form id="loginForm">
+                    <div class="textInputBox">
+                        <div class="textInputBoxLeft" style="float:left;">
+                            아이디
+                        </div>
+                        <input type="text" class="textInputBoxRight" style="display:inline-block;" name="UserId">
+                    </div>
+                    <div class="textInputBox">
+                        <div class="textInputBoxLeft" style="float:left;">
+                            비밀번호
+                        </div>
+                        <input type="password" class="textInputBoxRight" style="display:inline-block;" name="UserPassword">
+                    </div>
+                    <div class="loginButton" style="margin-bottom: 20px;" name="loginButton" onclick="nullCheck()">
+                        <!-- <button type="submit">로그인</button> -->
+                        로그인
+                    </div>
+                </form>
+                <div class="joinButton" style="margin-bottom: 20px; background-color: #FFB41A;">회원가입</div>
+                <div><center>비밀번호를 잃어버리셨나요?</center></div>
+            </div>
+            <div class="snsLoginContainer">
+                <img src="http://heronation.net/sizeax/loginbg.jpg"/>
+            </div>
+                <div class="snsDiv">카톡</div>
+                <div class="snsDiv">페북</div>
+                <div class="snsDiv">네버</div>
+
+            <div class="loginBackingContainer" onclick="loginBacking();">
+                <div class="loginBackingHead"></div>
+                <div class="loginBackingTail" style="color: white;">로그인화면으로 돌아가기</div>
+            </div>
+        </div>
+    </div>
+</div>

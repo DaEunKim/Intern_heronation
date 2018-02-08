@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Final</title>
+  <script src="http://code.jquery.com/jquery-latest.js"></script>
+  <style>
+    table {
+      border: 1px solid black;
+      width: 50%;
+      margin: auto;
+      text-align: center;
+    }
+    th, td{
+      border: 1px solid black;
+    }
+
+  </style>
+</head>
+
+<body>
+  <p> Enter the product number</p>
+  <br>
+  <label for="number"> Enter number: </label>
+  <input type="number" id="number">
+  <button id="search"> SEARCH </button>
+  <br><br><br>
+
+  <script type="text/javascript">
+    var resultArr = new Array();
+    $(document).ready(function() {
+      $('#search').click(function() {
+        $.ajax({
+          type: "POST",
+          url: "./table_data.php",
+          datatype: "JSON",
+          data: {
+            number: $('#number').val()
+          },
+          success: function(data) {
+            var resultArr = JSON.parse(data);
+            printTable(resultArr);
+          },
+          error: function() {
+            alert("fail");
+          }
+        });
+      });
+    });
+
+    function tableLength(resultArr){
+      var rowCount = 1;
+      var colCount = 1;
+      for(var i=0; i<resultArr.length-1; i++){
+        if(resultArr[i]['sizeName'] == resultArr[i+1]['sizeName']){
+          if(resultArr[i]['sizeType'] != resultArr[i+1]['sizeType']){
+            colCount++;
+          }
+          continue;
+        }
+        else{
+          colCount = 1;
+          rowCount++;
+        }
+      }
+      return [rowCount, colCount];
+
+    }
+
+
+
+    function printTable(resultArr){
+      var tstart = "<table>";
+      var tcaption = "<caption>"+resultArr[0]['productName']+"</caption>";
+      var contents = "";
+      var tend = "</table>";
+      var limit = tableLength(resultArr);
+      var rowLimit = limit[0];
+      var colLimit = limit[1];
+      var k = 0;
+      var l = 0;
+
+
+      for(var row=0; row<rowLimit+1; row++){
+        contents += "<tr>";
+        if(row==0){
+          for(var col=0; col<colLimit; col++){
+            if(col==0){
+              contents += "<th>"+"사이즈"+"</th>";
+            }
+            contents += "<th>" + resultArr[col]['sizeType'] + "</th>";
+          }
+        }
+        else{
+          for(var col=0; col<colLimit+1; col++){
+            if(col==0){
+              contents += "<th>" + resultArr[k]['sizeName'] + "</th>";
+              k += 3;
+            }
+            else{
+              contents += "<td>" + resultArr[l]['size'] + "</td>";
+              l++;
+            }
+
+          }
+
+        }
+
+        contents += "</tr>";
+      }
+
+      $("#div").html(tstart+tcaption+contents+tend);
+    }
+
+  </script>
+
+  <div id = "div">
+
+  </div>
+
+  <!-- <table id = "table">
+    <caption id = "producName"> 원피스 </caption>
+    <thread>
+      <tr>
+        <th>사이즈</th>
+        <th>어깨</th>
+        <th>가슴</th>
+        <th>원피스총기장</th>
+      </tr>
+    </thread>
+    <tbody>
+      <tr>
+        <th>S</th>
+        <td>data2</td>
+        <td>data3</td>
+        <td>data8</td>
+      </tr>
+      <tr>
+        <th>M</th>
+        <td>data9</td>
+        <td>data10</td>
+        <td>data11</td>
+      </tr>
+      <tr>
+        <th>L</th>
+        <td>data90</td>
+        <td>data102</td>
+        <td>data111</td>
+      </tr>
+    </tbody>
+  </table> -->
+
+</body>
+
+</html>

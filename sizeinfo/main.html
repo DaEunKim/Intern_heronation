@@ -1,0 +1,72 @@
+<?
+$server_root = $_SERVER['HTTP_HOST'];
+$server_root_path = "http://".$server_root."/sizeinfo/";
+?>
+<!DOCTYPE html>
+<html lang="ko">
+
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width">
+    <title></title>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+    <script src="<?=$server_root_path?>js_css/main.js"></script>
+    <link href="<?=$server_root_path?>js_css/main.css?ver=1" rel="stylesheet" type="text/css" />
+</head>
+<body>
+    <div class="zeyo_mainDivBg"><img src="img/bg_img.jpg" alt="xx"></div>
+    <div class="zeyo_mainDiv">
+
+        <div class="zeyo_mainLeftDiv">
+            <table id="zeyo_mainLeftTable">
+                <tr>
+                    <td>
+                        <div id="zeyo_LogoDiv">
+                            <img src="<?=$server_root_path?>img/zeyo_logo.svg" alt="Zeyo">
+                        </div>
+                    </td>
+                </tr>
+                <!-- <tr>
+                    <td>의류사이즈표<br>자동생성서비스</td>
+                </tr>
+                <tr>
+                </tr>
+                <tr>
+                    <td><button id="zeyo_startButton" class="zeyo_nonMember" type="button">시작하기</td>
+                </tr> -->
+            </table>
+        </div>
+        <div class="zeyo_mainRightDiv">
+            <? include "login.html"; ?>
+        </div>
+        <div class="zeyo_head">
+            <div class="zeyo_homeButton">HOME</div>
+            <div>|</div>
+            <div class="zeyo_contactUs">CONTACT US</div>
+            <div>|</div>
+            <div class="zeyo_head_loginButton">LOGIN</div>
+        </div>
+        <div class="zeyo_tail">
+            <div class="zeyo_termsOfUse">이용약관</div>
+            <div>|</div>
+            <div class="zeyo_personalInfo">개인정보수집정책</div>
+        </div>
+    </div>
+</body>
+<script>
+    $(window).resize(function () {
+        var leftWidth = $('.zeyo_mainLeftDiv').innerWidth();
+        var mainWidth = $('.zeyo_mainDiv').innerWidth();
+        if(mainWidth > 765){
+            $('.zeyo_mainRightDiv').css('left', leftWidth);
+            $('.zeyo_mainRightDiv').css('width', mainWidth-leftWidth);
+        }
+        else{
+            $('.zeyo_mainRightDiv').css('width', "100%");
+            // $('.zeyo_mainLeftDiv').css('width', "100%");
+        }
+    });
+</script>
+
+</html>

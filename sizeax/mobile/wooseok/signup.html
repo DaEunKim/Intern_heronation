@@ -1,0 +1,99 @@
+
+<div class="signupContainer">
+    <div class="signupTitle">
+        SIZEAX 회원가입하기
+    </div>
+
+    <div class="boxDiv">
+        <div class="textInputBox">
+            <div class="textInputBoxLeft" id="checkEmail" style="float:left; font-size: 15px;">
+                이메일
+            </div>
+            <input class="textInputBoxRight" style="display:inline-block;" id="emailBox"  type="email">
+        </div>
+    </div>
+    <div class="boxDiv">
+        <div class="textInputBox">
+            <div class="textInputBoxLeft" style="float:left; font-size: 15px;">
+                비밀번호
+            </div>
+            <input type="password" class="textInputBoxRight" style="display:inline-block;" id="password">
+        </div>
+    </div>
+    <div class="boxDiv">
+        <div class="textInputBox">
+            <div class="textInputBoxLeft" style="float:left; position: absolute; font-size: 15px;">
+                비밀번호 확인
+            </div>
+            <input type="password" class="textInputBoxRight" style="display:inline-block;" id="passwordCheck">
+        </div>
+    </div>
+
+    <!-- 이용약관 -->
+    <div id="allPermissionContainer" class="permissionDiv">
+        <div style="display:inline-block;">
+            <input type="checkbox" id="allPermission" onclick="permissionCheck();">
+        </div>
+        <div class="agreeText">
+            이용약관 개인정보 수집 및 이용, 메일수신에 모두 동의합니다
+        </div>
+    </div>
+
+    <div class="permissionDiv">
+        <div class="agreeCheckbox">
+        <input class="permissionCheckbox" type="checkbox" id="permission1">
+        </div>
+        <div class="agreeText" style="height: 7.3%">
+            SIZEAX 이용약관 동의(필수)
+        </div>
+    </div>
+
+    <div class="permissionDiv">
+        <div class="agreeCheckbox">
+            <input class="permissionCheckbox" type="checkbox" id="permission2">
+        </div>
+        <div class="agreeText" style="height: 7.3%">
+            SIZEAX 개인정보 이용 동의(필수)
+        </div>
+    </div>
+
+    <div class="permissionDiv">
+        <div class="agreeCheckbox">
+            <input class="permissionCheckbox" type="checkbox" id="permission3">
+        </div>
+        <div class="agreeText" style="height: 7.3%">
+            SIZEAX 위치정보 이용 동의(필수)
+        </div>
+    </div>
+
+    <div class="permissionDiv">
+        <div class="agreeCheckbox">
+            <input class="permissionCheckbox" type="checkbox" id="permission4">
+        </div>
+        <div class="agreeText" style="height: 7.3%">
+            SIZEAX 메일수신 동의(선택)
+        </div>
+    </div>
+
+    <!-- 취소/가입 버튼 -->
+    <div class="boxDiv">
+        <div class="cancelButton" style="display:inline-block;" onclick="joinCancel();">
+            <div class="divInText">
+                취소
+            </div>
+        </div>
+
+        <div class="signupButton" style="float:left;" onclick="join();">
+            <div class="divInText">
+                저장
+            </div>
+        </div>
+    </div>
+
+</div>
+</div>
+</div>
+
+</body>
+
+</html>

@@ -1,0 +1,50 @@
+<?
+if(isset($_COOKIE["id"])){
+  echo "<script type='text/javascript'>alert('쿠키 성공');</script>";
+}
+else{
+  echo "<script type='text/javascript'>alert('쿠키 실패');</script>";
+}
+?>
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Dani World~</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+    <script>
+    function Login() {
+      $.ajax({
+        url: "/test/dani/login.php",
+        type: "GET",
+        data: {
+          ID:$('input[name=ID]').val(),
+          PW:$('input[name=PW]').val()
+        },
+        success : function(data){
+          alert(data);
+        },
+        error : function(){
+          alert('통신실패!!');
+        }
+      });
+    }
+    function Join() {
+      $("#box-right").load("/test/dani/join.html");
+    }
+  </script>
+  <style></style>
+</head>
+<body>
+    <div id='container' action="/test/dani/login.php" method="GET" >
+      <div id='box-right'>
+        로그인 <br>
+        ID : <input type="text" name="ID" placeholder="ID"><br>
+        PW : <input type="password" name="PW" placeholder="PW"> <br><br>
+        <button type="button" onclick="Login()" value="login"> login </button><br><br>
+        회원가입 : <button id="join" type="button" onclick="Join()" value="join"> join </button>
+      </div>
+    </div>
+  </body>
+</html>

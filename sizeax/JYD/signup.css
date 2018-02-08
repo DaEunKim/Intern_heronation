@@ -1,0 +1,410 @@
+@charsett"utf-8";
+@import url(https://cdn.rawgit.com/openhiun/hangul/14c0f6faa2941116bb53001d6a7dcd5e82300c3f/nanumbarungothic.css);
+.notosanskr * {
+    font-family: 'Nanum Barun Gothic', sans-serif;
+    font-weight: bold;
+}
+
+html, body { font-family: 'Nanum Barun Gothic', sans-serif; }
+
+/*컨테이너*/
+.signupContainer {
+
+position: absolute;
+width: 740px;
+height: 500px;
+font-family: 'Nanum Barun Gothic', sans-serif;
+font-weight: bold;
+border: 1px;
+border-color: #dfdfdf;
+border-radius: 10px;
+border-style: solid;
+background: white;
+top: 65px;
+left: 30px;
+box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.3);
+}
+
+/*이메일, 비밀번호 입력창*/
+.signupContainer .signupContent {
+position: absolute;
+left: 15px;
+top: 80px;
+width: 710px;
+
+
+
+height: 135px;
+
+}
+
+/*동의화면*/
+.signupContainer .signupPermission {
+
+position: absolute;
+top: 215px;
+left: 15px;
+width: 710px;
+height: 170px;
+
+}
+
+/*버튼이 있는 div*/
+.signupContainer .signupFooter {
+
+position: absolute;
+top: 385px;
+left: 15px;
+width: 710px;
+height: 115px;
+text-align: center;
+}
+
+.signupContainer .signupPermissionBox1 {
+position: absolute;
+top: 40px;
+width: 342px;
+height: 126px;
+outline: 1px solid #dfdfdf;
+
+}
+
+.signupContainer .signupPermissionBox2 {
+position: absolute;
+top: 40px;
+width: 342px;
+height: 126px;
+left: 368px;
+outline: 1px solid #dfdfdf;
+}
+
+.signupContainer .agreement {
+position: absolute;
+width: 342px;
+height: 44px;
+top: 11px;
+text-align: center;
+
+}
+
+
+
+/*타이틀*/
+.signupContainer .signupTitle {
+position: absolute;
+line-height: 20px;
+width: 710px;
+height: 80px;
+
+}
+
+/*메시지 "SIZEAX 회원가입하기"*/
+.signupContainer .titleMessage {
+position: absolute;
+top: 10px;
+width: 710px;
+color: #525252;
+font-size: 18px;
+text-align: right;
+
+}
+
+/*타이틀 메시지 "한번 가입으로 다양한 사이트에서 SIZEAX를 이용하세요.""*/
+.signupContainer .subTitleMessage {
+position: absolute;
+top: 30px;
+width: 710px;
+color: #959595;
+font-size: 15px;
+text-align: right;
+}
+
+/*경계선*/
+.signupContainer .border {
+
+position: absolute;
+width: 710px;
+height: 4px;
+background-color: #dcdcdc;
+
+}
+
+.signupContainer .borderEnd {
+
+position: absolute;
+top: 135px;
+width: 710px;
+height: 4px;
+background-color: #dcdcdc;
+
+}
+
+.signupContainer .textBox {
+position: absolute;
+width: 275px;
+height: 40px;
+outline: 1px solid #dfdfdf;
+
+}
+
+.signupContainer .emailTextBox {
+position: absolute;
+width: 275px;
+height: 40px;
+outline: 1px solid #dfdfdf;
+
+}
+
+.signupContainer .emailBox {
+position: absolute;
+width: 270px;
+left: 5px;
+height: 40px;
+color: #a1a1a1;
+border: none;
+
+}
+
+.signupContainer .signupEmailCheckMessage {
+position: absolute;
+top: 95px;
+left: 40px;
+width: 250px;
+height: 30px;
+    font-size: 12px;
+}
+
+.signupContainer .passwordBox {
+position: absolute;
+width: 270px;
+left: 5px;
+height: 40px;
+color: #a1a1a1;
+border: none;
+
+}
+
+.signupContainer .passwordBox2 {
+position: absolute;
+width: 270px;
+left: 5px;
+height: 40px;
+color: #a1a1a1;
+border: none;
+
+}
+
+.signupContainer .passwordCheckMessage {
+position: absolute;
+width: 250px;
+height: 30px;
+left: 397px;
+top: 110px;
+font-size: 12px;
+color: #959595;
+
+}
+
+.signupContainer .permissionScroll {
+position: absolute;
+width: 338px;
+height: 82px;
+background: #eeeeee;
+
+overflow-y: auto;
+word-wrap: break-word;
+
+scrollbar-arrow-color: #959595;
+
+}
+
+/* 이용 약관 css 새로 작성 by 최현승*/
+
+#permissionInfoBox{
+    position: absolute;
+    left: 180px;
+    width: 380px;
+    height: 500px;
+    z-index: 3;
+    background-color: #FFFFFF;
+    border-radius: 8px 8px 8px 8px;
+    box-shadow: 0px 0px 5px 1px rgba(0, 0, 0, 0.3);
+    display: none;
+}
+
+#permissionInfoBoxTitle{
+  position: absolute;
+    text-align: center;
+    width: 100%;
+    height: 15%;
+    line-height: 75px;
+}
+
+#permissionInfoBoxItem{
+  position: absolute;
+  top: 75px;
+  overflow-y: scroll;
+
+  width: 100%;
+  height: 70%;
+  outline: 1px solid #C0C0C0;
+}
+
+#permissionInfoBoxClose{
+  top: 425px;
+  position: absolute;
+  text-align: center;
+  width: 100%;
+  height: 15%;
+}
+
+#permissionInfoBoxCloseBtn{
+  position: absolute;
+  top: 13px;
+  left: 110px;
+  width: 160px;
+  height: 40px;
+  line-height: 40px;
+  color: #FFFFFF;
+  background-color: #a19df2;
+  cursor: pointer;
+}
+
+.signupPermissionAll{
+    position: absolute;
+    top: 20PX;
+    left: 200px;
+}
+
+#allPermission{
+      display: inline-block;
+}
+
+#signUpItemAll{
+  display: inline-block;
+  font-size: 12pt;
+  font-weight: 500;
+
+}
+
+
+.signupPermissionUse{
+    position: absolute;
+    top: 60PX;
+    left: 230px;
+    cursor: pointer;
+}
+
+#usePermission{
+      display: inline-block;
+}
+
+#signUpItemUse{
+  display: inline-block;
+  font-size: 12pt;
+      font-weight: 500;
+
+}
+
+.signupPermissionPersonalInfo{
+    position: absolute;
+    top: 90PX;
+    left: 230px;
+    cursor: pointer;
+}
+
+#personalInfoPermission{
+      display: inline-block;
+}
+
+#signUpItemPersonalInfo{
+  display: inline-block;
+  font-size: 12pt;
+    font-weight: 500;
+
+}
+
+
+.signupPermissionLocation{
+    position: absolute;
+    top: 120PX;
+    left: 230px;
+    cursor: pointer;
+}
+
+#locationPermission{
+      display: inline-block;
+}
+
+#signUpItemLocation{
+  display: inline-block;
+  font-size: 12pt;
+      font-weight: 500;
+
+}
+
+.signupPermissionMail{
+    position: absolute;
+    top: 150PX;
+    left: 230px;
+    cursor: pointer;
+}
+
+#mailPermission{
+      display: inline-block;
+}
+
+#signUpItemMail{
+  display: inline-block;
+  font-size: 12pt;
+    font-weight: 500;
+
+}
+
+.signupContainer .permissionText {
+  position: absolute;
+  width: 300px;
+  left: 198px;
+  height: 20px;
+  top: 15px;
+  /* margin-top: 15px; */
+  /* margin-bottom: 10px; */
+}
+
+
+.signupContainer .signupButton {
+position: absolute;
+top: 40px;
+left: 368px;
+width: 160px;
+height: 40px;
+color: #FFFFFF;
+background-color: #6a71b7;
+line-height: 40px;
+cursor: pointer;
+font-size: 12pt;
+    font-weight: 500;
+
+}
+
+.signupContainer .signupCancelButton {
+position: absolute;
+top: 40px;
+left: 182px;
+width: 160px;
+height: 40px;
+line-height: 40px;
+color: #FFFFFF;
+background-color: #a19df2;
+cursor: pointer;
+font-size: 12pt;
+    font-weight: 500;
+
+}
+
+.signupContainer .checkboxBox {
+position: absolute;
+width: 28px;
+height: 28px;
+
+}
